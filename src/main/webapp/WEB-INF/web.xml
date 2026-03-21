@@ -15,7 +15,7 @@
 
     <filter>
         <filter-name>MaintenanceFilter</filter-name>
-        <filter-class>vn.edu.hcmuaf.fit.filter.MaintenanceFilter</filter-class>
+        <filter-class>vn.edu.hcmuafa.fit.filter.MaintennceFilter</filter-class>
     </filter>
 
     <filter-mapping>
