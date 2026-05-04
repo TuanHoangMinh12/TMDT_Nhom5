@@ -81,33 +81,6 @@
             </tr>
             </thead>
             <tbody>
-<%--            <c:forEach var="cart" items="${listBill}">--%>
-<%--              <tr>--%>
-<%--                <td width="10"><input type="checkbox" name="check1" value="1"></td>--%>
-<%--                <td><a href="${pageContext.request.contextPath}/findDetail?id=${cart.id}">${cart.id}</a></td>--%>
-<%--                <td>${cart.idUser}</td>--%>
-<%--                <td>${cart.bills.get(0).address}</td>--%>
-<%--                <td>${cart.getTotalPriceFromCart()}</td>--%>
-<%--                <td>${cart.bills.get(0).paymentMethod}</td>--%>
-<%--                <c:if test="${cart.inShip == 1}">--%>
-<%--                  <td><span class="badge bg-danger">Chờ xử lí</span></td>--%>
-<%--                </c:if>--%>
-<%--                <c:if test="${cart.inShip == 2}">--%>
-<%--                  <td><span class="badge bg-warning">Đang giao</span></td>--%>
-<%--                </c:if>--%>
-<%--                <c:if test="${cart.inShip == 3}">--%>
-<%--                  <td><span class="badge bg-success">Đã giao</span></td>--%>
-<%--                </c:if>--%>
-<%--                <c:if test="${cart.inShip == 4}">--%>
-<%--                  <td><span class="badge bg-primary">Đã hủy</span></td>--%>
-<%--                </c:if>--%>
-<%--                <td>--%>
-<%--                  <a href="${pageContext.request.contextPath}/admin-order-detail?id=${cart.id}">--%>
-<%--                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i class="fa fa-edit"></i></button>--%>
-<%--                  </a>--%>
-<%--                </td>--%>
-<%--              </tr>--%>
-<%--            </c:forEach>--%>
             <c:forEach var="cart" items="${listBill}">
               <tr>
                 <td width="10"><input type="checkbox" name="check1" value="1"></td>
@@ -142,7 +115,6 @@
                 </td>
               </tr>
             </c:forEach>
-
             </tbody>
           </table>
         </div>
