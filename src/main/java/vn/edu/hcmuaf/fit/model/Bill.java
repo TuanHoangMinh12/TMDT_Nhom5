@@ -36,7 +36,7 @@ public class Bill {
     public Bill(int idOrder, int idUser, int idBook, String name,
                 int paymentMethod, int pack, int quantity,
                 int totalPrice, int shippingInfo,
-                String info, String phone, String image, String address, Timestamp ship_time, Timestamp receive_time) {
+                String info, String phone,String image, String address, Timestamp ship_time, Timestamp receive_time) {
         this.idOrder = idOrder;
         this.idUser = idUser;
         this.idBook = idBook;
@@ -56,7 +56,7 @@ public class Bill {
     public Bill(int idUser, int idBook, String name,
                 int paymentMethod, int pack, int quantity,
                 int totalPrice, int shippingInfo,
-                String info, String phone, String image) {
+                String info, String phone,String image) {
         this.idUser = idUser;
         this.idBook = idBook;
         this.name = name;
@@ -266,7 +266,7 @@ public class Bill {
         CartDao cartDao = new CartDao();
         ArrayList<CartModel> listModel = cartDao.getAllCartByIdUser(40);
         for(int i =0 ;i < listModel.size();i++) {
-                listModel.get(i).setBills(new BillDAO().findAllBillByIdCart( listModel.get(i).getId()));
+            listModel.get(i).setBills(new BillDAO().findAllBillByIdCart( listModel.get(i).getId()));
 
         }
         System.out.println(listModel.size());

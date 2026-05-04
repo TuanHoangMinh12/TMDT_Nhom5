@@ -1,6 +1,6 @@
 package vn.edu.hcmuaf.fit.model;
 
-public class BookModel extends AbstractModel<BookModel> {
+public class BookModel  extends AbstractModel<BookModel> {
     private int idBook;
     private String name;
     private String nameAuthor;
