@@ -2,7 +2,9 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.dao.IBillDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
-import vn.edu.hcmuaf.fit.model.*;
+import vn.edu.hcmuaf.fit.model.Bill;
+import vn.edu.hcmuaf.fit.model.BookDetails;
+import vn.edu.hcmuaf.fit.model.ShippingInfoModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,15 +99,15 @@ public class BillDAO implements IBillDAO {
                 statement.setInt(1, id);
                 resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    Bill bill = new Bill();
-                    bill.setIdOrder(resultSet.getInt(1));
-                    bill.setName(resultSet.getString(2));
+                   Bill bill = new Bill();
+                   bill.setIdOrder(resultSet.getInt(1));
+                   bill.setName(resultSet.getString(2));
                     bill.setTotalPrice(resultSet.getInt(3));
                     bill.setQuantity(resultSet.getInt(4));
-                    bill.setIdUser(resultSet.getInt(5));
-                    bill.setImage(findImageById(resultSet.getInt(6)));
-                    bill.setIdCart(resultSet.getInt(7));
-                    results.add(bill);
+                   bill.setIdUser(resultSet.getInt(5));
+                   bill.setImage(findImageById(resultSet.getInt(6)));
+                   bill.setIdCart(resultSet.getInt(7));
+                   results.add(bill);
                 }
 
                 return results;
@@ -465,17 +467,17 @@ public class BillDAO implements IBillDAO {
                 resultSet = statement.executeQuery();
                 resultSet.next();
                 Bill bill = new Bill();
-                bill.setIdOrder(resultSet.getInt(1));
-                bill.setName(resultSet.getString(2));
-                bill.setTotalPrice(resultSet.getInt(3));
-                bill.setQuantity(resultSet.getInt(4));
-                bill.setIdUser(resultSet.getInt(5));
-                bill.setIdBook(resultSet.getInt(6));
-                bill.setImage(findImageById(resultSet.getInt(6)));
-                bill.setAddress(resultSet.getString(7));
-                bill.setShippingInfo(resultSet.getInt(8));
-                bill.setShip_time(resultSet.getTimestamp(11));
-                bill.setReceive_time(resultSet.getTimestamp(12));
+                    bill.setIdOrder(resultSet.getInt(1));
+                    bill.setName(resultSet.getString(2));
+                    bill.setTotalPrice(resultSet.getInt(3));
+                    bill.setQuantity(resultSet.getInt(4));
+                    bill.setIdUser(resultSet.getInt(5));
+                    bill.setIdBook(resultSet.getInt(6));
+                    bill.setImage(findImageById(resultSet.getInt(6)));
+                    bill.setAddress(resultSet.getString(7));
+                    bill.setShippingInfo(resultSet.getInt(8));
+                    bill.setShip_time(resultSet.getTimestamp(11));
+                    bill.setReceive_time(resultSet.getTimestamp(12));
                 return bill;
             } catch (SQLException e) {
                 return null;

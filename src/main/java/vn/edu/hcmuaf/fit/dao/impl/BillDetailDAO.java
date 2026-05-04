@@ -3,8 +3,6 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.dao.IBillDetailsDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.BillDetail;
-import vn.edu.hcmuaf.fit.model.BookManagementModel;
-import vn.edu.hcmuaf.fit.model.BookModel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

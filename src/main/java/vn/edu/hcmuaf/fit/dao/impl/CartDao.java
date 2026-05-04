@@ -1,7 +1,10 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
-import vn.edu.hcmuaf.fit.model.*;
+import vn.edu.hcmuaf.fit.model.BookModel;
+import vn.edu.hcmuaf.fit.model.CartDetailModel;
+import vn.edu.hcmuaf.fit.model.CartModel;
+import vn.edu.hcmuaf.fit.model.OrderReviewDetail;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -429,7 +432,7 @@ public class CartDao {
         }
         return null;
     }
-    public CartModel getCartById(int idCart) {
+    public CartModel getCartById( int idCart) {
         CartModel result = new CartModel();
 
         String sql = "SELECT id, idUser, timeShip, feeShip, totalPrice, infoShip, create_Time FROM carts WHERE id =?";
