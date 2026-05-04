@@ -84,3 +84,20 @@ ul, li {
     font-weight: 700;
     margin-bottom: 24px;
 }
+
+.content_author {
+    display: flex;
+}
+
+.img_author {
+    width: 100%;
+
+}
+
+.img_author img {
+    width: 100%;
+}
+
+.author_info {
+    margin-left: 36px;
+}
