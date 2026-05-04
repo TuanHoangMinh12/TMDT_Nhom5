@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.web.loginWithGoogle;
+package vn.edu.hcmuaf.fit.controller.loginWithGoogle;
 
 
 import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;

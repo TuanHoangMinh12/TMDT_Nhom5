@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.web;
+package vn.edu.hcmuaf.fit.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
