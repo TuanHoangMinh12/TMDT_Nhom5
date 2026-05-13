@@ -41,10 +41,10 @@
                     </span>
                 <ul class="type_hot-child">
                     <li><a href="">
-                        <p>Sách bán chạy</p>
+                        <p>Sách </p>
                     </a></li>
                     <li><a href="">
-                        <p>Sách mới</p>
+                        <p>Sách </p>
                     </a></li>
                     <li><a href="">
                         <p>Sắp phát hành</p>

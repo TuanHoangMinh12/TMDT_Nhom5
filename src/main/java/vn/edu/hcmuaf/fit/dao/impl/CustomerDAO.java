@@ -4,9 +4,11 @@ import vn.edu.hcmuaf.fit.bean.Log;
 import vn.edu.hcmuaf.fit.dao.ICustomerDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.CustomerModel;
+import vn.edu.hcmuaf.fit.utils.RSAUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,6 +223,18 @@ CustomerDAO implements ICustomerDAO {
                 idR = (int) id;
 
             }
+            // Tạo RSA key
+            RSAUtil rsa = new RSAUtil();
+            rsa.genKey();
+
+            String publicKey = rsa.getPublicKeyAsString();
+            String privateKey = rsa.getPrivateKeyAsString();
+
+            // lưu public key vào DB
+            insert_publicKey(idR, publicKey);
+
+            // có thể log private key test
+            System.out.println("PRIVATE KEY: " + privateKey);
             InetAddress address1 = InetAddress.getLocalHost();
             String ip = address1.getHostAddress();
             Log log = new Log(Log.INFO,ip,"Register", idR,"User register suscess",1);
@@ -228,6 +242,8 @@ CustomerDAO implements ICustomerDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } finally {
             if (rs != null) {

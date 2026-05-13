@@ -24,7 +24,7 @@ public class SaveVoucherController extends HttpServlet {
             iVoucherDAO.saveVoucherCus(idInt, cus.getIdUser());
             iVoucherDAO.updateVoucher(idInt);
         }
-        response.sendRedirect("/voucher");
+        request.getRequestDispatcher("/views/web/voucher.jsp").forward(request,response);
     }
 
     @Override

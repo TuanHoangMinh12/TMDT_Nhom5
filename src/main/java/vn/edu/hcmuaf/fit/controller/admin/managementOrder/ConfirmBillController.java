@@ -1,8 +1,12 @@
 package vn.edu.hcmuaf.fit.controller.admin.managementOrder;
 
 import vn.edu.hcmuaf.fit.bean.Log;
+import vn.edu.hcmuaf.fit.dao.impl.CartDao;
+import vn.edu.hcmuaf.fit.dao.impl.InformationDeliverDao;
 import vn.edu.hcmuaf.fit.model.CustomerModel;
+import vn.edu.hcmuaf.fit.model.InformationDeliverModel;
 import vn.edu.hcmuaf.fit.services.IBillManagementService;
+import vn.edu.hcmuaf.fit.utils.FeeGHNUtils;
 import vn.edu.hcmuaf.fit.utils.SessionUtil;
 
 import javax.inject.Inject;
@@ -26,16 +30,24 @@ public class ConfirmBillController extends HttpServlet {
         CustomerModel cus = (CustomerModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
         InetAddress myIP=InetAddress.getLocalHost();
         String ip= myIP.getHostAddress();
+
+        CartDao cartDao = new CartDao();
+        String idCus = request.getParameter("variable");
+
         if(id != null) {
-
             int idInt = Integer.parseInt(id);
+            int idCusInt = Integer.parseInt(idCus);
+
+            InformationDeliverDao daoInFo = new InformationDeliverDao();
+            InformationDeliverModel info = daoInFo.getById(idInt);
+            daoInFo.updateToken(idInt, FeeGHNUtils.registerShipForDeliver(info.getX()+"", info.getY()+"", info.getZ()+"", info.getW()+"",1463,21808,info.getDistrictTo(), info.getWarTo()));
             iBillManagementService.confirmBill(id);
-            request.setAttribute("message", "Xác nhận thành công đơn hàng: " + id);
-            Log log = new Log(Log.ALER,ip,"Xác nhận đơn hàng",cus.getIdUser(),"Xác nhận đơn hàng: " + id,1);
+            cartDao.updateCart(idInt, 3);
+            Log log = new Log(Log.ALER,ip,"Xác nhận đơn hàng",cus.getIdUser(),"Đã guao: " + id,1);
             log.insert();
-            response.sendRedirect(request.getContextPath() + "/admin-table-order-confirm");
-
-
+            request.setAttribute("message", "Xác nhận đơn hàng thành công: " + id);
+            request.setAttribute("alert", "success");
+            response.sendRedirect(request.getContextPath() + "/admin-order-detail?id="+id);
         }
     }
 

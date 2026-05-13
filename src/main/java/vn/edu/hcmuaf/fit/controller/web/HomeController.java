@@ -82,13 +82,14 @@ public class HomeController extends HttpServlet {
 
                     } else if (customer.getRole().equalsIgnoreCase("admin")) {
 
-                        resp.sendRedirect(req.getContextPath() + "/admin-root-home");
-
-                    } else if (customer.getRole().equalsIgnoreCase("mod")) {
-
                         resp.sendRedirect(req.getContextPath() + "/admin-home");
 
                     }
+//                    else if (customer.getRole().equalsIgnoreCase("mod")) {
+//
+//                        resp.sendRedirect(req.getContextPath() + "/admin-home");
+//
+//                    }
                 } else {
 
                     CustomerModel account = customerService.findByUsername(email);
