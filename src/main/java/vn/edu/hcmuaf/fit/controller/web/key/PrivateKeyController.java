@@ -30,26 +30,40 @@ public class PrivateKeyController extends HttpServlet {
                 new MessageParameterUntil("Chưa chọn sản phẩm", "warning", "/views/web/cart.jsp", request, response).send();
             }else if(orderService.checkIdExistsInCart(listId, request, response)) {
                 new MessageParameterUntil("Sản phẩm không tồn tại", "warning", "/views/web/cart.jsp", request, response).send();
-            }else{
-                request.getRequestDispatcher("/views/web/formPrivateKey.jsp").forward(request, response);
+                return;
+            }
+            try {
+                // nếu chưa có private key thì generate mới
+                if(request.getSession().getAttribute("PRIVATE_KEY") == null) {
+                    RSAUtil rsa = new RSAUtil();
+                    rsa.genKey();
+                    String privateKey = rsa.getPrivateKeyAsString();
+                    // lưu session
+                    request.getSession().setAttribute("PRIVATE_KEY", privateKey);
+                }
+                // chuyển luôn qua đặt hàng
+                response.sendRedirect(request.getContextPath() + "/orderAddVoucher?list_id=" + listId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                new MessageParameterUntil("Lỗi tạo khóa bảo mật!", "danger", "/views/web/cart.jsp", request, response).send();
             }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String privateKey = request.getParameter("privateKey").trim();
-        RSAUtil rsa = new RSAUtil();
-        try {
-            rsa.setPrivateKey(privateKey);
-//            rsa.encrypt("Test");
-            request.getSession().setAttribute("PRIVATE_KEY", privateKey);
-            response.sendRedirect(request.getContextPath()+"/orderAddVoucher?list_id="+listId);
-        } catch (Exception e) {
-            request.getSession().setAttribute("PRIVATE_KEY", privateKey);
-            response.sendRedirect(request.getContextPath()+"/orderAddVoucher?list_id="+listId);
-//            new MessageParameterUntil("Private key không hợp lệ!", "danger", "/views/web/cart.jsp", request, response).send();
-        }
-
+//        String privateKey = request.getParameter("privateKey").trim();
+//        RSAUtil rsa = new RSAUtil();
+//        try {
+//            rsa.setPrivateKey(privateKey);
+////            rsa.encrypt("Test");
+//            request.getSession().setAttribute("PRIVATE_KEY", privateKey);
+//            response.sendRedirect(request.getContextPath()+"/orderAddVoucher?list_id="+listId);
+//        } catch (Exception e) {
+//            request.getSession().setAttribute("PRIVATE_KEY", privateKey);
+//            response.sendRedirect(request.getContextPath()+"/orderAddVoucher?list_id="+listId);
+////            new MessageParameterUntil("Private key không hợp lệ!", "danger", "/views/web/cart.jsp", request, response).send();
+//        }
+        doGet(request, response);
     }
 }

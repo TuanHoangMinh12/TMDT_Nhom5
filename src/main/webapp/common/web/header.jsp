@@ -12,7 +12,7 @@
     <div id="header">
         <div class="top-header">
             <div class="container top-header-content">
-                <a class="logo" href="${pageContext.request.contextPath}/home">DORAEMON</a>
+                <a class="logo" href="${pageContext.request.contextPath}/home">Hoàng Tiến</a>
                 <form action="/products/search" method="post">
                     <div class="top-header_search">
                         <input type="text" name="key" placeholder="Tìm kiếm">

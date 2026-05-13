@@ -152,14 +152,47 @@
                                       </tr>
                                       <tr>
                                           <td>Đăng kí giao hàng:</td>
-                                          <c:if test="${cart.getInFoShipString() == 'Chờ xử lý'}">
-                                              <td><button type="button" class="btn btn-danger">
-                                                  <a style="color: #FFFFFF" href="${pageContext.request.contextPath}/admin-register-order?id=${cart.id}&variable=${CUSTOMER.idUser}">Đăng kí đơn hàng</a>
-                                              </button></td>
-                                          </c:if>
-                                          <c:if test="${cart.getInFoShipString() != 'Chờ xử lý'}">
-                                              <td>Đã đăng kí vận chuyển</td>
-                                          </c:if>
+                                          <td>
+                                              <c:if test="${cart.getInFoShipString().equals('Chờ xử lý')}">
+                                                  <button type="button" class="btn btn-danger" style="margin-right: 10px;">
+                                                      <a style="color: #FFFFFF"
+                                                         href="${pageContext.request.contextPath}/admin-register-order?id=${cart.id}&variable=${CUSTOMER.idUser}">
+                                                          Đăng kí đơn hàng
+                                                      </a>
+                                                  </button>
+
+                                                  <button type="button" class="btn btn-warning">
+                                                      <a style="color: #FFFFFF"
+                                                         href="${pageContext.request.contextPath}/removerBill?id=${cart.id}&user=${CUSTOMER.idUser}">
+                                                          Hủy đơn
+                                                      </a>
+                                                  </button>
+                                              </c:if>
+
+                                              <c:if test="${cart.getInFoShipString().equals('Đang vận chuyển')}">
+                                                  <button type="button" class="btn btn-danger" style="margin-right: 10px;">
+                                                      <a style="color: #FFFFFF"
+                                                         href="${pageContext.request.contextPath}/confirmBill?id=${cart.id}&variable=${CUSTOMER.idUser}">
+                                                          Đã giao
+                                                      </a>
+                                                  </button>
+
+                                                  <button type="button" class="btn btn-warning">
+                                                      <a style="color: #FFFFFF"
+                                                         href="${pageContext.request.contextPath}/removerBill?id=${cart.id}&user=${CUSTOMER.idUser}">
+                                                          Hủy đơn
+                                                      </a>
+                                                  </button>
+                                              </c:if>
+
+                                              <c:if test="${cart.getInFoShipString().equals('Đã hoàn thành')}">
+                                                  Đơn hàng đã giao
+                                              </c:if>
+
+                                              <c:if test="${cart.getInFoShipString().equals('Đã hủy')}">
+                                                  Đơn hàng đã hủy
+                                              </c:if>
+                                          </td>
                                       </tr>
                                       </tbody>
                                   </table>

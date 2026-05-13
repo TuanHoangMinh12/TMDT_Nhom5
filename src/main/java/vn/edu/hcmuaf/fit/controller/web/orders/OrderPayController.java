@@ -1,26 +1,23 @@
 package vn.edu.hcmuaf.fit.controller.web.orders;
 
+import vn.edu.hcmuaf.fit.bean.Log;
+import vn.edu.hcmuaf.fit.dao.impl.BillDAO;
 import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;
 import vn.edu.hcmuaf.fit.dao.impl.InformationDeliverDao;
-import vn.edu.hcmuaf.fit.model.CartItem;
 import vn.edu.hcmuaf.fit.model.CartModel;
+import vn.edu.hcmuaf.fit.model.CartItem;
 import vn.edu.hcmuaf.fit.model.CustomerModel;
 import vn.edu.hcmuaf.fit.model.InformationDeliverModel;
 import vn.edu.hcmuaf.fit.services.IBillService;
 import vn.edu.hcmuaf.fit.services.impl.BillService;
-import vn.edu.hcmuaf.fit.utils.ObjectVerifyUtil;
-import vn.edu.hcmuaf.fit.utils.RSAUtil;
-import vn.edu.hcmuaf.fit.utils.SHA256Util;
-import vn.edu.hcmuaf.fit.utils.SessionUtil;
+import vn.edu.hcmuaf.fit.utils.*;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.SyncFailedException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -84,8 +81,11 @@ public class OrderPayController extends HttpServlet {
         // lấy thông tin từ session ra
         HttpSession httpSession = request.getSession();
         InformationDeliverModel informationDeliverModel = (InformationDeliverModel) httpSession.getAttribute("deliver");
+        if (informationDeliverModel == null) {
+            informationDeliverModel = new InformationDeliverModel();
+            httpSession.setAttribute("deliver", informationDeliverModel);
+        }
         informationDeliverModel.setIdCart(idCart);
-
 
         // lưu informationDeliver vào DB
         informationDeliverDao.insertInfomationDeliver(informationDeliverModel);
