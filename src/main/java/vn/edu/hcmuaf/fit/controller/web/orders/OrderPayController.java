@@ -30,11 +30,11 @@ public class OrderPayController extends HttpServlet {
     CartDao cartDao = new CartDao();
 
     InformationDeliverDao informationDeliverDao = new InformationDeliverDao();
-    SHA256Util sha256 = new SHA256Util();
+
     ObjectVerifyUtil objectVerify = new ObjectVerifyUtil();
     CustomerDAO customerDAO = new CustomerDAO();
     RSAUtil rsa = new RSAUtil();
-
+    SHA256Util sha256 = new SHA256Util();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -86,6 +86,9 @@ public class OrderPayController extends HttpServlet {
             httpSession.setAttribute("deliver", informationDeliverModel);
         }
         informationDeliverModel.setIdCart(idCart);
+
+
+
 
         // lưu informationDeliver vào DB
         informationDeliverDao.insertInfomationDeliver(informationDeliverModel);

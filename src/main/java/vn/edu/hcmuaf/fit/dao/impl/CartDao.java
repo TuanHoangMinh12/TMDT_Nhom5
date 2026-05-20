@@ -125,7 +125,7 @@ public class CartDao {
 
         if (connection != null) {
             try {
-                String sql = "INSERT INTO carts( idUser, timeShip, feeShip, totalPrice, infoShip , create_time) VALUES ( ?, ?, ?, ?, ?,current_timestamp())";
+                String sql = "INSERT INTO carts( idUser, timeShip, feeShip, totalPrice, infoShip, create_time) VALUES ( ?, ?, ?, ?, ?,current_timestamp())";
                 statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 statement.setInt(1, idUser);
                 statement.setString(2, timeShip);
