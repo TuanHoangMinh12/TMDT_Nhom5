@@ -25,8 +25,8 @@
 
 <body onload="time()" class="app sidebar-mini rtl">
 <!-- Navbar-->
-<%@include file="/common/admin_root/header.jsp"%>
-<%@include file="/common/admin_root/aside.jsp"%>
+<%@include file="/common/admin/header.jsp"%>
+<%@include file="/common/admin/aside.jsp"%>
 <main class="app-content">
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb side">
@@ -43,7 +43,7 @@
                     <div class="row element-button">
                         <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" href="${pageContext.request.contextPath}/admin-root-add-voucher" title="Thêm"><i class="fas fa-plus"></i>
+                            <a class="btn btn-add btn-sm" href="${pageContext.request.contextPath}/admin-add-voucher" title="Thêm"><i class="fas fa-plus"></i>
                                 Tạo mới khuyến mãi</a>
                         </div>
                         <div class="col-sm-2">

@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.adminRoot;
+package vn.edu.hcmuaf.fit.controller.admin;
 
 import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import vn.edu.hcmuaf.fit.dao.impl.StatisticalDao;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "admin-report-management", value = "/admin-root-report-management")
+@WebServlet(name = "admin-report-management", value = "/admin-report-management")
 public class ReportManagementController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,7 +54,7 @@ public class ReportManagementController extends HttpServlet {
        
         // title dung de active aside
         request.setAttribute("title", "Báo Cáo Doanh Thu");
-        request.getRequestDispatcher("views/admin_root/report-management.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/report-management.jsp").forward(request, response);
 
     }
 

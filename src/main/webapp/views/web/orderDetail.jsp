@@ -84,7 +84,7 @@
                             <td>${orderReviewDetail.create_order_time}</td>
                         </tr>
                         <tr>
-                            <td>Ngày giao đến:</td>
+                            <td>Ngày dự kiến giao đến:</td>
                             <td>${orderReviewDetail.timeShip}</td>
                         </tr>
                         <tr>

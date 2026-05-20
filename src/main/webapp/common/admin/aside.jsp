@@ -49,7 +49,6 @@
               class="app-menu__label">Quản lý đơn hàng</span></a></li>
     </c:if>
 
-
 <%--    <c:if test="${title.equals('Danh Sách Bài Viết')}">--%>
 <%--      <li><a class="app-menu__item active" href="<c:url value="/admin-table-news" />"><i class='app-menu__icon bx bx-task'></i><span--%>
 <%--              class="app-menu__label">Quản lý bài viết</span></a></li>--%>
@@ -87,6 +86,26 @@
       <li><a class="app-menu__item" href="<c:url value="/admin-management-contact" />"><i class='app-menu__icon bx bx-calendar-check'></i><span
               class="app-menu__label">Quản lý contact</span></a></li>
     </c:if>
+    <c:if test="${title.equals('Danh Sách Khuyến Mãi')}">
+      <li><a class="app-menu__item active" href="<c:url value="/admin-table-sales" />"><i class='app-menu__icon bx bx-task'></i><span
+              class="app-menu__label">Quản lý khuyến mãi</span></a></li>
+    </c:if>
+    <c:if test="${!title.equals('Danh Sách Khuyến Mãi')}">
+      <li><a class="app-menu__item" href="<c:url value="/admin-table-sales" />"><i class='app-menu__icon bx bx-task'></i><span
+              class="app-menu__label">Quản lý khuyến mãi</span></a></li>
+    </c:if>
+
+    <c:if test="${title.equals('Báo Cáo Doanh Thu')}">
+      <li><a class="app-menu__item active" href="<c:url value="/admin-report-management" />"><i
+              class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
+      </li>
+    </c:if>
+    <c:if test="${!title.equals('Báo Cáo Doanh Thu')}">
+      <li><a class="app-menu__item" href="<c:url value="/admin-report-management" />"><i
+              class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
+      </li>
+    </c:if>
+
 
   </ul>
 </aside>
