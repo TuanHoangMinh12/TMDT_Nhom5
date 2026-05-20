@@ -1,5 +1,8 @@
 package vn.edu.hcmuaf.fit.model;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 public class OrderReviewDetail {
     private String fullName;
     private String address;
@@ -84,7 +87,8 @@ public class OrderReviewDetail {
     }
 
     public String getTimeShip() {
-        return timeShip;
+        LocalDateTime orderTime = LocalDateTime.parse(create_order_time);
+        return orderTime.plusDays(3).toString();
     }
 
     public void setTimeShip(String timeShip) {

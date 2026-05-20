@@ -27,8 +27,8 @@
 
 <body onload="time()" class="app sidebar-mini rtl">
 <!-- Navbar-->
-<%@include file="/common/admin_root/header.jsp"%>
-<%@include file="/common/admin_root/aside.jsp"%>
+<%@include file="/common/admin/header.jsp"%>
+<%@include file="/common/admin/aside.jsp"%>
 <main class="app-content">
   <div class="row">
     <div class="col-md-12">

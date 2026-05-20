@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.adminRoot.managementSale;
+package vn.edu.hcmuaf.fit.controller.admin.managementSale;
 
 import vn.edu.hcmuaf.fit.dao.impl.VoucherDAO;
 
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "admin-root-table-sales", value = "/admin-root-table-sales")
+@WebServlet(name = "admin-table-sales", value = "/admin-table-sales")
 public class ManagementSaleController extends HttpServlet {
     VoucherDAO voucherDAO = new VoucherDAO();
     @Override
@@ -17,7 +17,7 @@ public class ManagementSaleController extends HttpServlet {
         request.setAttribute("title", "Danh Sách Khuyến Mãi");
         request.setAttribute("listVoucher", voucherDAO.findAllVoucher());
         System.out.println(voucherDAO.findAllVoucher());
-        request.getRequestDispatcher("views/admin_root/management-sales.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/management-sales.jsp").forward(request, response);
     }
 
     @Override

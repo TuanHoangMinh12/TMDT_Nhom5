@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class CartModel implements Serializable {
     private double totalPriceShip;
     private double totalPriceShipVoucher;
     private String timeShip;
+
     private int idUser;
     private int inShip;
     private Timestamp createTime;
@@ -29,8 +31,6 @@ public class CartModel implements Serializable {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
-
-
 
     public int getInShip() {
         return inShip;
@@ -52,10 +52,8 @@ public class CartModel implements Serializable {
         this.count = count;
     }
 
-
-
     public String getTimeShip() {
-        return timeShip;
+        return createTime.toLocalDateTime().plusDays(3).toString();
     }
 
     public void setTimeShip(String timeShip) {

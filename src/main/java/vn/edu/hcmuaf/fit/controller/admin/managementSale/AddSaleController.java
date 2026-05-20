@@ -1,4 +1,4 @@
-package vn.edu.hcmuaf.fit.controller.adminRoot.managementSale;
+package vn.edu.hcmuaf.fit.controller.admin.managementSale;
 
 import vn.edu.hcmuaf.fit.dao.impl.VoucherDAO;
 import vn.edu.hcmuaf.fit.utils.MessageParameterUntil;
@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "admin-root-add-voucher", value = "/admin-root-add-voucher")
+@WebServlet(name = "admin-add-voucher", value = "/admin-add-voucher")
 public class AddSaleController extends HttpServlet {
     private VoucherDAO voucherDAO = new VoucherDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("views/admin_root/form-add-voucher.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/form-add-voucher.jsp").forward(request, response);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class AddSaleController extends HttpServlet {
             voucherDAO.addVoucher(name, qualityInt, percent_discountInt, diktat, price_minimumInt);
         }
 
-        new MessageParameterUntil("Thêm thành công", "success", "views/admin_root/form-add-voucher.jsp", request, response).send();
+        new MessageParameterUntil("Thêm thành công", "success", "views/admin/form-add-voucher.jsp", request, response).send();
     }
 }

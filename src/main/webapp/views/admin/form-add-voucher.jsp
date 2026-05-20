@@ -29,19 +29,19 @@
 <body class="app sidebar-mini rtl">
 
 <!-- Navbar-->
-<%@include file="/common/admin_root/header.jsp"%>
-<%@include file="/common/admin_root/aside.jsp"%>>
+<%@include file="/common/admin/header.jsp"%>
+<%@include file="/common/admin/aside.jsp"%>>
 <main class="app-content">
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item">Danh sách nhân viên</li>
-            <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+            <li class="breadcrumb-item">Danh sách khuyến mãi</li>
+            <li class="breadcrumb-item"><a href="#">Thêm khuyến mãi</a></li>
         </ul>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Tạo mới nhân viên</h3>
+                <h3 class="tile-title">Tạo mới khuyến mãi</h3>
                 <div class="tile-body">
 
                     <div class="col-sm-6">
@@ -52,36 +52,32 @@
                         </c:if>
                     </div>
 
-                    <form action="/admin-root-add-staff" method="post" class="row">
+                    <form action="/admin-add-voucher" method="post" class="row">
 
                         <div class="form-group col-md-3">
-                            <label class="control-label">Họ</label>
-                            <input name="nameLast" class="form-control" type="text">
+                            <label class="control-label">Tên khuyến mãi</label>
+                            <input name="name" class="form-control" type="text">
                         </div>
                         <div class="form-group  col-md-3">
-                            <label class="control-label">Tên</label>
-                            <input name="nameFirst" class="form-control" type="text">
+                            <label class="control-label">Số lượng</label>
+                            <input name="quantity" class="form-control" type="number">
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label class="control-label">Email</label>
-                            <input name="email" class="form-control" type="text">
+                            <label class="control-label">Số tiền giảm</label>
+                            <input name="percent_discount" class="form-control" type="number">
                         </div>
                         <div class="form-group col-md-3">
-                            <label class="control-label">Mật khẩu</label>
-                            <input name="password" class="form-control" type="text">
+                            <label class="control-label">Diktat</label>
+                            <input name="diktat" class="form-control" type="text">
                         </div>
                         <div class="form-group col-md-3">
-                            <label class="control-label">Số điện thoại</label>
-                            <input name="numberPhone" class="form-control" type="text">
+                            <label class="control-label">Tiền tối thiểu</label>
+                            <input name="price_minimum" class="form-control" type="number">
                         </div>
-                        <div class="form-group col-md-3">
-                            <label class="control-label">Địa chỉ</label>
-                            <input name="addess" class="form-control"  type="text">
-                        </div>
-                        <div class="form-group col-md-9">
+                        <div class="form-group col-md-12">
                             <button class="btn btn-save" type="submit">Lưu lại</button>
-                            <a class="btn btn-cancel" href="${pageContext.request.contextPath}/admin-root-management-user">Hủy bỏ</a>
+                            <a class="btn btn-cancel" href="${pageContext.request.contextPath}/admin-add-voucher">Hủy bỏ</a>
                         </div>
                     </form>
                 </div>
