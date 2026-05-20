@@ -3,6 +3,7 @@ package vn.edu.hcmuaf.fit.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,10 @@ public class CartModel implements Serializable {
     }
 
     public String getTimeShip() {
-        return createTime.toLocalDateTime().plusDays(3).toString();
+        if(timeShip == null || timeShip.isEmpty()) {
+            timeShip = LocalDateTime.now().plusDays(3).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+        return timeShip;
     }
 
     public void setTimeShip(String timeShip) {
