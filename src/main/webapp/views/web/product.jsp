@@ -176,7 +176,7 @@
                     <i class="fa-solid fa-bars"></i>
                     Danh mục sản phẩm
                     <nav class="menu_item">
-                        <ul class="type_products">
+                        </ul>
                             <li class="type_products-item type_hots">
                                     <span class="container_type-arrow">
                                         <div>Nổi bật</div>
