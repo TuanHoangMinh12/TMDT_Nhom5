@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.model;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class OrderReviewDetail {
     private String fullName;
@@ -87,7 +88,13 @@ public class OrderReviewDetail {
     }
 
     public String getTimeShip() {
-        LocalDateTime orderTime = LocalDateTime.parse(create_order_time);
+
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime orderTime =
+                LocalDateTime.parse(create_order_time, formatter);
+
         return orderTime.plusDays(3).toString();
     }
 
