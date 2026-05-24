@@ -95,7 +95,8 @@ public class OrderReviewDetail {
         LocalDateTime orderTime =
                 LocalDateTime.parse(create_order_time, formatter);
 
-        return orderTime.plusDays(3).toString();
+        return orderTime.plusDays(3)
+                .format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     public void setTimeShip(String timeShip) {
