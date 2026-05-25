@@ -46,8 +46,13 @@ public class HomeController extends HttpServlet {
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
             // neu url :login?action=login thi toi trang logout
         } else if (action != null && action.equals("logout")) {
+
             SessionUtil.getInstance().removeValue(req, "USERMODEL");
-            req.getSession().invalidate();
+            SessionUtil.getInstance().removeValue(req, "PASSWORD_USER");
+            SessionUtil.getInstance().removeValue(req, "ID_USER");
+            SessionUtil.getInstance().removeValue(req, "MAIL");
+
+
             resp.sendRedirect(req.getContextPath() + "/home");
         }
         else {
