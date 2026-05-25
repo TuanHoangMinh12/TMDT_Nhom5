@@ -24,23 +24,48 @@ public class OrderDetailController extends HttpServlet {
     EmailUtil emailUtil = new EmailUtil();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=UTF-8");
-        CustomerModel cus = (CustomerModel) SessionUtil.getInstance().getValue(request ,"USERMODEL");
-        String id = request.getParameter("id");
-        int idInt = Integer.parseInt(id);
-        int idUser = cus.getIdUser();
 
+        try {
 
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("text/html; charset=UTF-8");
 
-        List<CartDetailModel> cartDaos =cartDao.getAllDetailCart(idUser,idInt);
-        for (CartDetailModel c :cartDaos){
-            request.setAttribute("id", c.getId());
+            CustomerModel cus = (CustomerModel) SessionUtil.getInstance().getValue(request ,"USERMODEL");
+
+            System.out.println("CUS = " + cus);
+
+            // KIỂM TRA ĐĂNG NHẬP
+            if (cus == null) {
+                response.sendRedirect(request.getContextPath() + "/login?action=login");
+                return;
+            }
+
+            String id = request.getParameter("id");
+
+            System.out.println("ID = " + id);
+
+            int idInt = Integer.parseInt(id);
+
+            int idUser = cus.getIdUser();
+
+            System.out.println("idUser = " + idUser);
+
+            List<CartDetailModel> cartDaos = cartDao.getAllDetailCart(idUser,idInt);
+
+            System.out.println("cartDaos = " + cartDaos);
+
+            request.setAttribute("orderReviewDetail",
+                    cartDao.getAllByIdUserAndIdCart(idUser,idInt));
+
+            request.setAttribute("cartReviewDetail", cartDaos);
+
+            request.getRequestDispatcher("/views/web/orderDetail.jsp")
+                    .forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        request.setAttribute("orderReviewDetail", cartDao.getAllByIdUserAndIdCart(idUser,idInt));
-        request.setAttribute("cartReviewDetail", cartDao.getAllDetailCart(idUser,idInt));
-        request.getRequestDispatcher("/views/web/orderDetail.jsp").forward(request, response);
     }
 
     @Override
@@ -51,7 +76,7 @@ public class OrderDetailController extends HttpServlet {
         CustomerModel cus = (CustomerModel) SessionUtil.getInstance().getValue(request ,"USERMODEL");
         String id = request.getParameter("id");
         int idInt = Integer.parseInt(id);
-
+        System.out.println("CUS = " + cus);
         int idUser = cus.getIdUser();
         String publicKey= cartDao.getPuclickey( idUser ,idInt);
 

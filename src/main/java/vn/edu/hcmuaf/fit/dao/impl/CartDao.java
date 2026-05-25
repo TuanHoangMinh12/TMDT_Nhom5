@@ -371,31 +371,16 @@ public class CartDao {
     public List<CartDetailModel> getAllDetailCart(int id, int idCart) {
         List<CartDetailModel> result = new ArrayList<>();
 
-        String sql = "SELECT \n" +
-                "    b.idCart,\n" +
-                "    bk.name,\n" +
-                "    b.quantity,\n" +
-                "    imb.image,\n" +
-                "    b.quantity * bk.price AS tongtien\n" +
-                "FROM \n" +
-                "    bill b\n" +
-                "JOIN \n" +
-                "    carts e ON b.idCart = e.id\n" +
-                "JOIN \n" +
-                "    book bk ON b.id_book = bk.id_book\n" +
-                "JOIN (\n" +
-                "    SELECT \n" +
-                "        id_book,\n" +
-                "        image\n" +
-                "    FROM \n" +
-                "        image_book\n" +
-                "    GROUP BY \n" +
-                "        id_book, image\n" +
-                ") imb ON bk.id_book = imb.id_book\n" +
-                "WHERE \n" +
-                "    b.id_user = ? AND b.idCart = ?\n" +
-                "GROUP BY \n" +
-                "    b.idCart, bk.name, b.quantity, imb.image, b.quantity * bk.price;";
+        String sql = "SELECT " +
+                "b.idCart, " +
+                "bk.name, " +
+                "b.quantity, " +
+                "(SELECT image FROM image_book WHERE id_book = bk.id_book LIMIT 1) AS image, " +
+                "b.quantity * bk.price AS tongtien " +
+                "FROM bill b " +
+                "JOIN carts e ON b.idCart = e.id " +
+                "JOIN book bk ON b.id_book = bk.id_book " +
+                "WHERE b.id_user = ? AND b.idCart = ?";
         Connection connection = JDBCConnector.getConnection();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
