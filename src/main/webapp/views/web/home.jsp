@@ -33,7 +33,7 @@
 <!--------- end header---------- -->
 <div id="section1">
     <div class="container d-flex">
-        <ul class="type_products">
+        </ul>
             <li class="type_products-item type_hots">
                     <span class="container_type-arrow">
                         <div>Nổi bật</div>
