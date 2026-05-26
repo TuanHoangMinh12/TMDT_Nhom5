@@ -42,6 +42,7 @@ public class AccountController extends HttpServlet {
                     request.setAttribute("listBillDelivByIdOrder",  listDonHang(cus,2));
                     request.setAttribute("listBillRateByIdOrder",  cartModelsChuaRate(cus,3));
                     request.setAttribute("listBillByIdOrder", listDonHang(cus,3));
+                    request.setAttribute("listBillCancelByIdOrder", listDonHang(cus,-1));
                     request.getRequestDispatcher("/views/web/reviewOrders.jsp").forward(request, response);
                 } else if (action.equalsIgnoreCase("changePrivateKey")) {
                     new MessageParameterUntil("", "", "/views/web/confirmPassPrivateKey.jsp", request, response).send();

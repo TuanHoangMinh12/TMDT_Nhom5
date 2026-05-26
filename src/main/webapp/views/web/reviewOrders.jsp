@@ -120,6 +120,7 @@
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
               <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
               <button class="tablinks" onclick="openCity(event, 'DonHangDaMua')">Đơn hàng đã mua</button>
+              <button class="tablinks" onclick="openCity(event, 'DonDaHuy')">Đơn đã hủy</button>
             </div>
 
             <c:if test="${not empty message}">
@@ -326,6 +327,45 @@
                   </tr>
                 </c:forEach>
 
+                </tbody>
+              </table>
+            </div>
+            <div id="DonDaHuy" class="tabcontent">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th scope="col">Mã đơn hàng</th>
+                  <th scope="col">Tên sản phẩm</th>
+                  <th scope="col">Ảnh</th>
+                  <th scope="col">Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="cartC" items="${listBillCancelByIdOrder}">
+                  <tr>
+                    <td>${cartC.id}</td>
+
+                    <td>
+                      <c:forEach var="billC" items="${cartC.bills}">
+                        <p>${billC.name}<br><br></p>
+                      </c:forEach>
+                    </td>
+
+                    <td>
+                      <c:forEach var="billC" items="${cartC.bills}">
+                        <img style="height:50px"
+                             src="${pageContext.request.contextPath}/${billC.image}">
+                        <br><br>
+                      </c:forEach>
+                    </td>
+
+                    <td>
+          <span style="color:red;font-weight:bold">
+            Đã hủy
+          </span>
+                    </td>
+                  </tr>
+                </c:forEach>
                 </tbody>
               </table>
             </div>
