@@ -44,14 +44,14 @@
           ${message}
       </div>
     </c:if>
-    <c:if test="${!sessionScope.containsKey('cart') || sessionScope.cart.map.size() == 0}">
+    <c:if test="${cart == null || cart.map.size() == 0}">
       <div class="no-data text-center my-5 in-cart">
         <img src="${pageContext.request.contextPath}/templates/images/empty_cart.jpg" alt="No data">
         <a style="font-size: 24px; font-weight: 600;" href="${pageContext.request.contextPath}/home" id="btn-cart-buy">Mua ngay</a>
       </div>
     </c:if>
 
-    <c:if test="${sessionScope.cart.map.size() > 0}">
+    <c:if test="${cart != null && cart.map.size() > 0}">
       <table style="width: 100%; border: 1px solid #ccc;" class="table">
         <thead>
         <tr>
@@ -63,7 +63,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="item" items="${sessionScope.cart.map}">
+        <c:forEach var="item" items="${cart.map}">
             <tr data-product-id="${item.key}">
               <td>
                 <label>
@@ -107,7 +107,7 @@
       <div class="container_right">
         <div class="container_price">
           <span class="provisional">Tạm tính</span>
-          <span class="sum_money">${sessionScope.cart.totalPrice}đ</span>
+          <span class="sum_money">${cart.totalPrice}đ</span>
         </div>
         <div class="order">ĐẶT HÀNG</div>
         <a href="${pageContext.request.contextPath}/home"><div class="add_product">CHỌN THÊM SẢN PHẨM</div></a>

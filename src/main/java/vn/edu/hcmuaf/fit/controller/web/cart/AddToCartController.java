@@ -4,6 +4,7 @@ import vn.edu.hcmuaf.fit.dao.IProductDAO;
 import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import vn.edu.hcmuaf.fit.dao.impl.ProductDAO;
 import vn.edu.hcmuaf.fit.model.CartModel;
+import vn.edu.hcmuaf.fit.model.CustomerModel;
 import vn.edu.hcmuaf.fit.model.Product;
 
 import javax.servlet.*;
@@ -23,9 +24,22 @@ public class AddToCartController extends HttpServlet {
             Product product = productDAO.getProductById(Integer.parseInt(productId));
             int remainQuantity = productDAO.getRemainQuantity(product.getIdBook());
 
-            CartModel cart = (CartModel) request.getSession().getAttribute("cart");
+            CustomerModel user =
+                    (CustomerModel) request.getSession().getAttribute("USERMODEL");
 
-            if (cart == null) cart = new CartModel();
+            if(user == null){
+                response.sendRedirect(request.getContextPath() + "/login?action=login");
+                return;
+            }
+
+            String cartKey = "cart_" + user.getIdUser();
+
+            CartModel cart =
+                    (CartModel) request.getSession().getAttribute(cartKey);
+
+            if (cart == null){
+                cart = new CartModel();
+            }
             cart.setId(cartDao.setID());
             String action = request.getParameter("action");
             if (action != null) {
@@ -56,7 +70,7 @@ public class AddToCartController extends HttpServlet {
                 productDAO.updateQuantity(product.getIdBook(), remainQuantity - 1);
             }
 
-            request.getSession().setAttribute("cart", cart);
+            request.getSession().setAttribute(cartKey, cart);
             cart.setId(cartDao.setID());
             response.sendRedirect(request.getContextPath()+"/cart");
         }
