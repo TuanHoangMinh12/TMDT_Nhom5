@@ -21,8 +21,17 @@
                 </form>
                 <div class="top-header-left">
                     <div class="top-header_cart">Giỏ hàng
-                        <c:if test="${sessionScope.cart.map.size() != 0}">
-                            <span class="top-header_cart-quantity">(${sessionScope.cart.map.size()})</span>
+                        <c:set var="user" value="${sessionScope.USERMODEL}" />
+
+                        <c:if test="${user != null}">
+                            <c:set var="cartKey" value="${'cart_'.concat(user.idUser)}" />
+                            <c:set var="cart" value="${sessionScope[cartKey]}" />
+
+                            <c:if test="${cart != null && cart.map.size() != 0}">
+        <span class="top-header_cart-quantity">
+            (${cart.map.size()})
+        </span>
+                            </c:if>
                         </c:if>
 
                         <i class="fa-solid fa-caret-down"></i>
@@ -62,7 +71,9 @@
                     <a href="${pageContext.request.contextPath}/cart">
                         <div class="container-icon_cart">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <div class="sticker">0</div>
+                            <div class="sticker">
+                                ${cart != null ? cart.map.size() : 0}
+                            </div>
                         </div>
                     </a>
                     <i onclick="openSearch()"
