@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+import vn.edu.hcmuaf.fit.model.CustomerModel;
 public class BillService implements IBillService {
 
     IBillDAO billDAO = new BillDAO();
@@ -39,15 +39,41 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public void removeProductInCart(List<Integer> listIdRemove, HttpServletRequest request) {
-         CartModel cart = (CartModel) request.getSession().getAttribute("cart");
-         CartModel cartOrder = (CartModel) request.getSession().getAttribute("cartOrder");
-         for (int id : listIdRemove) {
-             cart.deleteProductById(id);
-             cartOrder.deleteProductById(id);
-         }
-         request.getSession().setAttribute("cart", cart);
-         request.getSession().setAttribute("cartOrder", cartOrder);
+    public void removeProductInCart(List<Integer> listIdRemove,
+                                    HttpServletRequest request) {
+
+        CustomerModel user =
+                (CustomerModel) request.getSession().getAttribute("USERMODEL");
+
+        if (user == null) {
+            return;
+        }
+
+        String cartKey = "cart_" + user.getIdUser();
+
+        CartModel cart =
+                (CartModel) request.getSession().getAttribute(cartKey);
+
+        CartModel cartOrder =
+                (CartModel) request.getSession().getAttribute("cartOrder");
+
+        // tránh lỗi null
+        if (cart == null) {
+            cart = new CartModel();
+        }
+
+        if (cartOrder == null) {
+            cartOrder = new CartModel();
+        }
+
+        for (int id : listIdRemove) {
+
+            cart.deleteProductById(id);
+            cartOrder.deleteProductById(id);
+        }
+
+        request.getSession().setAttribute(cartKey, cart);
+        request.getSession().setAttribute("cartOrder", cartOrder);
     }
 
 

@@ -34,18 +34,21 @@ public class AccountController extends HttpServlet {
                 if (action.equalsIgnoreCase("account")) {
                     request.setAttribute("cus", cus);
                     request.getRequestDispatcher("/views/web/account.jsp").forward(request, response);
+
                 } else if (action.equalsIgnoreCase("changePassword")) {
                     request.getRequestDispatcher("/views/web/changePassword.jsp").forward(request, response);
+
                 } else if (action.equalsIgnoreCase("reviewOrders")) {
                     request.setAttribute("listBillDeliverByIdOrder", listDonHang(cus,1));
                     request.setAttribute("listBillWarByIdOrder",  listDonHang(cus,1));
                     request.setAttribute("listBillDelivByIdOrder",  listDonHang(cus,2));
                     request.setAttribute("listBillRateByIdOrder",  cartModelsChuaRate(cus,3));
                     request.setAttribute("listBillByIdOrder", listDonHang(cus,3));
+                    request.setAttribute("listBillCancelByIdOrder", listDonHang(cus,-1));
+
                     request.getRequestDispatcher("/views/web/reviewOrders.jsp").forward(request, response);
-                } else if (action.equalsIgnoreCase("changePrivateKey")) {
-                    new MessageParameterUntil("", "", "/views/web/confirmPassPrivateKey.jsp", request, response).send();
                 }
+
             } else {
                 request.setAttribute("cus", cus);
                 request.getRequestDispatcher("/views/web/account.jsp").forward(request, response);
