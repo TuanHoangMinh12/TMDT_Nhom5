@@ -31,10 +31,10 @@ public class OrderPayController extends HttpServlet {
 
     InformationDeliverDao informationDeliverDao = new InformationDeliverDao();
 
-    ObjectVerifyUtil objectVerify = new ObjectVerifyUtil();
-    CustomerDAO customerDAO = new CustomerDAO();
-    RSAUtil rsa = new RSAUtil();
-    SHA256Util sha256 = new SHA256Util();
+//    ObjectVerifyUtil objectVerify = new ObjectVerifyUtil();
+//    CustomerDAO customerDAO = new CustomerDAO();
+//    RSAUtil rsa = new RSAUtil();
+//    SHA256Util sha256 = new SHA256Util();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -101,36 +101,38 @@ public class OrderPayController extends HttpServlet {
         }
         cartDao.update_cart_to_bill(idCart);
         // add cột verify
-        int idUser = cus.getIdUser();
-        String stringObject = objectVerify.string(idUser, idCart);
-        String hash1 = sha256.check(stringObject);
-
-        String privateKey = (String) request.getSession().getAttribute("PRIVATE_KEY");
-        System.out.println( privateKey);
-
-        System.out.println( privateKey);
-        int isVerify = 0;
-        try {
-            // set khóa privateKey đã mã hóa
-            rsa.setPrivateKey(privateKey);
-            String result = rsa.encrypt(hash1);
-            //lưu xuống cột verify
-            cartDao.updateVerify(idCart, result);
-
-            String publicKey = customerDAO.getPublicKey(idUser);
-            rsa.setPublicKey(publicKey);
-            String hash2 = rsa.decrypt(result);
-            if(hash1.equals(hash2)) isVerify = 1;
-
-        } catch (Exception e) {
-            isVerify = 0;
-            System.out.println("Đặt hàng thất bại khóa không hợp lệ");
-        }
+//        int idUser = cus.getIdUser();
+//        String stringObject = objectVerify.string(idUser, idCart);
+//        String hash1 = sha256.check(stringObject);
+//
+//        String privateKey = (String) request.getSession().getAttribute("PRIVATE_KEY");
+//        System.out.println( privateKey);
+//
+//        System.out.println( privateKey);
+//        int isVerify = 0;
+//        try {
+//            // set khóa privateKey đã mã hóa
+//            rsa.setPrivateKey(privateKey);
+//            String result = rsa.encrypt(hash1);
+//            //lưu xuống cột verify
+//            cartDao.updateVerify(idCart, result);
+//
+//            String publicKey = customerDAO.getPublicKey(idUser);
+//            rsa.setPublicKey(publicKey);
+//            String hash2 = rsa.decrypt(result);
+//            if(hash1.equals(hash2)) isVerify = 1;
+//
+//        } catch (Exception e) {
+//            isVerify = 0;
+//            System.out.println("Đặt hàng thất bại khóa không hợp lệ");
+//        }
 
         // xóa dữ liệu khỏi session
         billService.removeProductInCart(listIdRemove, request);
-        response.sendRedirect(request.getContextPath()+"/order/reviewOrder?orderSuccess=1&isVerify="+isVerify);
-
+        response.sendRedirect(
+                request.getContextPath()
+                        + "/order/reviewOrder?orderSuccess=1"
+        );
     }
 
 

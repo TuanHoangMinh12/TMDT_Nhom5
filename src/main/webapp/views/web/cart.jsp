@@ -64,11 +64,10 @@
         </thead>
         <tbody>
         <c:forEach var="item" items="${cart.map}">
-            <tr data-product-id="${item.key}">
+          <tr data-product-id="${item.value.product.idBook}">
               <td>
                 <label>
-                  <input type="checkbox" name="settings" value="${item.key}">
-                </label>
+                  <input type="checkbox" name="settings" value="${item.value.product.idBook}">                </label>
               </td>
               <td class="container_img">
                 <div class="col_img"><img src="${pageContext.request.contextPath}/${item.value.product.image}" alt=""></div>
@@ -166,26 +165,28 @@
 </script>
 // chon san pham trong gio hang de mua hang
 <script>
-  let checkboxes = $("input[type=checkbox][name=settings]")
-  let enabledSettings = [];
+  let checkboxes = $("input[type=checkbox][name=settings]");
 
-  // Attach a change event handler to the checkboxes.
-  checkboxes.change(function () {
-    enabledSettings = checkboxes
-            .filter(":checked") // Filter out unchecked boxes.
-            .map(function () { // Extract values using jQuery map.
+  $('.order').on('click', function () {
+
+    let enabledSettings = checkboxes
+            .filter(":checked")
+            .map(function () {
               return this.value;
             })
-            .get() // Get array.
+            .get();
 
+    // kiểm tra chưa chọn sản phẩm
+    if (enabledSettings.length === 0) {
+      alert("Vui lòng chọn sản phẩm!");
+      return;
+    }
+
+    // chuyển sang trang đặt hàng
+    window.location.href =
+            '${pageContext.request.contextPath}/orderAddVoucher?list_id='
+            + enabledSettings.join(",");
   });
-
-  <%--$('.order').on('click', function () {--%>
-  <%--  window.location.href = '${pageContext.request.contextPath}/orderAddVoucher?list_id=' + enabledSettings--%>
-  <%--})--%>
-  $('.order').on('click', function () {
-    window.location.href = '${pageContext.request.contextPath}/privateKey?list_id=' + enabledSettings
-  })
 </script>
 
 </body>
