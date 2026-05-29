@@ -41,7 +41,6 @@ public class CancelProductController extends HttpServlet {
             Log log = new Log(Log.ALER,ip,"Cancel Product", cus.getIdUser(),"Customer cancel product: "+ id,1);
             log.insert();
             new MessageParameterUntil("Hủy đơn hàng thành công", "success", "/views/web/reviewOrders.jsp", request, response).send();
-
         }else {
             new MessageParameterUntil("Hủy đơn hàng thất bại", "danger", "/views/web/reviewOrders.jsp", request, response).send();
         }

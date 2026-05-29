@@ -67,7 +67,7 @@
           <tr data-product-id="${item.value.product.idBook}">
               <td>
                 <label>
-                  <input type="checkbox" name="settings" value="${item.value.product.idBook}">                </label>
+                  <input type="checkbox" name="settings" value="${item.value.product.idBook}"></label>
               </td>
               <td class="container_img">
                 <div class="col_img"><img src="${pageContext.request.contextPath}/${item.value.product.image}" alt=""></div>

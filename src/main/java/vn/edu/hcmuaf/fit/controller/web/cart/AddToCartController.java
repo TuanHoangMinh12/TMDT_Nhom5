@@ -24,20 +24,16 @@ public class AddToCartController extends HttpServlet {
             Product product = productDAO.getProductById(Integer.parseInt(productId));
             int remainQuantity = productDAO.getRemainQuantity(product.getIdBook());
 
-            CustomerModel user =
-                    (CustomerModel) request.getSession().getAttribute("USERMODEL");
+            CustomerModel user = (CustomerModel) request.getSession().getAttribute("USERMODEL");
 
-            if(user == null){
+            if (user == null) {
                 response.sendRedirect(request.getContextPath() + "/login?action=login");
                 return;
             }
 
             String cartKey = "cart_" + user.getIdUser();
-
-            CartModel cart =
-                    (CartModel) request.getSession().getAttribute(cartKey);
-
-            if (cart == null){
+            CartModel cart = (CartModel) request.getSession().getAttribute(cartKey);
+            if (cart == null) {
                 cart = new CartModel();
             }
             cart.setId(cartDao.setID());
@@ -47,7 +43,6 @@ public class AddToCartController extends HttpServlet {
                     case "add":
                         String quantity = request.getParameter("quantity");
                         int qnt = quantity == null ? 1 : Integer.parseInt(quantity);
-
                         if (remainQuantity < qnt) {
                             break;
                         }
@@ -64,18 +59,16 @@ public class AddToCartController extends HttpServlet {
                         productDAO.updateQuantity(product.getIdBook(), remainQuantity + deleteQuantities);
                         break;
                 }
-            }else if (remainQuantity >= 1) {
+            } else if (remainQuantity >= 1) {
                 cart.setId(cartDao.setID());
                 cart.addProduct(product, 1);
                 productDAO.updateQuantity(product.getIdBook(), remainQuantity - 1);
             }
-
             request.getSession().setAttribute(cartKey, cart);
             cart.setId(cartDao.setID());
-            response.sendRedirect(request.getContextPath()+"/cart");
+            response.sendRedirect(request.getContextPath() + "/cart");
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

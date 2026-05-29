@@ -29,7 +29,13 @@ public class MD5Utils {
         }
     }
 
+    public static void main(String[] args) {
+        String password = "12345678";
+        String encrypted = encrypt(password);
 
+        System.out.println("Input: " + password);
+        System.out.println("MD5: " + encrypted);
+    }
 
 
 }

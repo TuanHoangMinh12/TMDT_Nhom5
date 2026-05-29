@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "account", value = "/account")
-
-
 public class AccountController extends HttpServlet {
     IBillDAO iBillDAO = new BillDAO();
     @Override
@@ -29,7 +27,6 @@ public class AccountController extends HttpServlet {
         if(cus == null) {
             response.sendRedirect(request.getContextPath()+"/login?action=login");
         }else {
-
             if (action != null) {
                 if (action.equalsIgnoreCase("account")) {
                     request.setAttribute("cus", cus);
@@ -48,14 +45,12 @@ public class AccountController extends HttpServlet {
 
                     request.getRequestDispatcher("/views/web/reviewOrders.jsp").forward(request, response);
                 }
-
             } else {
                 request.setAttribute("cus", cus);
                 request.getRequestDispatcher("/views/web/account.jsp").forward(request, response);
             }
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -6,7 +6,7 @@
 <%@ page import="vn.edu.hcmuaf.fit.dao.impl.PublisherCompanyDAO" %>
 <%@ page import="vn.edu.hcmuaf.fit.model.PublisherCompanyModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- -----------phần header----------------  -->
+<!-- -----------phần header---------------- -->
 
 <header>
     <div id="header">
@@ -21,11 +21,11 @@
                 </form>
                 <div class="top-header-left">
                     <div class="top-header_cart">Giỏ hàng
-                        <c:set var="user" value="${sessionScope.USERMODEL}" />
+                        <c:set var="user" value="${sessionScope.USERMODEL}"/>
 
                         <c:if test="${user != null}">
-                            <c:set var="cartKey" value="${'cart_'.concat(user.idUser)}" />
-                            <c:set var="cart" value="${sessionScope[cartKey]}" />
+                            <c:set var="cartKey" value="${'cart_'.concat(user.idUser)}"/>
+                            <c:set var="cart" value="${sessionScope[cartKey]}"/>
 
                             <c:if test="${cart != null && cart.map.size() != 0}">
         <span class="top-header_cart-quantity">
@@ -52,19 +52,22 @@
                                     <i class="fa-brands fa-facebook-f"></i>
                                     <span style="font-size: 13px;">Tài khoản Facebook</span>
                                 </a>
-                                <a href="${pageContext.request.contextPath}/login?action=login" class="account--item_center">
+                                <a href="${pageContext.request.contextPath}/login?action=login"
+                                   class="account--item_center">
                                     <span>Đăng nhập</span>
                                 </a>
                                 <div class="account--item_bottom">
                                     <span>Khách hàng mới?</span>
-                                    <a class="register" href="${pageContext.request.contextPath}/signup">Tạo tài khoản</a>
+                                    <a class="register" href="${pageContext.request.contextPath}/signup">Tạo tài
+                                        khoản</a>
                                 </div>
                             </div>
                         </div>
                     </c:if>
                     <c:if test="${not empty USERMODEL}">
                         <a href="${pageContext.request.contextPath}/account" style="display: flex">
-                            <i style="padding: 4px; border-radius: 50%; color: #fff;font-size: 13px" class="fa-solid fa-user"></i>
+                            <i style="padding: 4px; border-radius: 50%; color: #fff;font-size: 13px"
+                               class="fa-solid fa-user"></i>
                             <p style="color: #FFFFFF; font-size: 13px">${USERMODEL.firstName}</p>
                         </a>
                     </c:if>
@@ -169,7 +172,8 @@
                                     </c:forEach>
 
                                     <li>
-                                        <a class="type_company-all" href="${pageContext.request.contextPath}/products?publisherCompany?id=0">
+                                        <a class="type_company-all"
+                                           href="${pageContext.request.contextPath}/products?publisherCompany?id=0">
                                             <p style="font-weight: 600;">Tất cả nhà xuất bản</p>
                                         </a>
                                     </li>
@@ -179,7 +183,8 @@
                     </nav>
                 </div>
                 <div class="f_right" style="display: flex">
-                    <a style="background-color: #ed4d2b; padding: 5px; color: #FFFFFF;border-radius: 5px"  href="${pageContext.request.contextPath}/voucher">Săn mã giảm giá</a>
+                    <a style="background-color: #ed4d2b; padding: 5px; color: #FFFFFF;border-radius: 5px"
+                       href="${pageContext.request.contextPath}/voucher">Săn mã giảm giá</a>
                     <a href="" class="hotline d-flex">
                         <i class="fa-solid fa-phone"></i>
                         <h4>Hotline: </h4>

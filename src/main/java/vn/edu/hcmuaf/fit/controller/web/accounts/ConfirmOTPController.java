@@ -14,35 +14,18 @@ import java.io.IOException;
 
 @WebServlet(name = "confirmOTP", value = "/confirmOTP")
 public class ConfirmOTPController extends HttpServlet {
-
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
-
-        request.getRequestDispatcher("/views/web/signup.jsp")
-                .forward(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/views/web/signup.jsp").forward(request, response);
     }
-
-    protected void processRequest(HttpServletRequest request,
-                                  HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html; charset=UTF-8");
-
         String code = request.getParameter("code");
-
         HttpSession session = request.getSession();
-
-        CustomerModel user =
-                (CustomerModel) session.getAttribute("registerUser");
-
+        CustomerModel user = (CustomerModel) session.getAttribute("registerUser");
         CustomerDAO dao = new CustomerDAO();
 
-        if (code.equals(user.getCode())
-                && (System.currentTimeMillis() / 1000 / 60)
-                - user.getTime_active_code() <= 5) {
-
+        if (code.equals(user.getCode()) && (System.currentTimeMillis() / 1000 / 60) - user.getTime_active_code() <= 5) {
             dao.signup(
                     user.getEmail(),
                     MD5Utils.encrypt(user.getPassword()),
@@ -51,48 +34,16 @@ public class ConfirmOTPController extends HttpServlet {
                     user.getPhone(),
                     user.getAddress()
             );
-
-            // ===== ĐÃ TẮT RSA / PRIVATE KEY =====
-
-            // String public_key =
-            //         (String) session.getAttribute("public_key");
-
-            // String private_key =
-            //         (String) session.getAttribute("private_key");
-
-            // dao.insert_publicKey(dao.take_id(), public_key);
-
-            // EmailUtil sm = new EmailUtil();
-            // sm.sendEmail(toEmail, private_key);
-
             session.removeAttribute("registerUser");
-
-            request.getRequestDispatcher("/views/login.jsp")
-                    .forward(request, response);
-
+            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
         } else {
-
-            request.setAttribute(
-                    "message",
-                    "Incorrect verification code"
-            );
-
-            request.setAttribute(
-                    "alert",
-                    "danger"
-            );
-
-            request.getRequestDispatcher(
-                    "/views/web/confirmRegister.jsp"
-            ).forward(request, response);
+            request.setAttribute("message", "Incorrect verification code");
+            request.setAttribute("alert", "danger");
+            request.getRequestDispatcher("/views/web/confirmRegister.jsp").forward(request, response);
         }
     }
-
     @Override
-    protected void doPost(HttpServletRequest request,
-                          HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 }

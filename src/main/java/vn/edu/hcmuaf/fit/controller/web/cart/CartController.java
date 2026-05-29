@@ -12,25 +12,15 @@ import java.io.IOException;
 public class CartController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        CustomerModel user =
-                (CustomerModel) request.getSession()
-                        .getAttribute("USERMODEL");
+        CustomerModel user = (CustomerModel) request.getSession().getAttribute("USERMODEL");
 
-        if(user != null){
+        if (user != null) {
             String cartKey = "cart_" + user.getIdUser();
-
-            CartModel cart =
-                    (CartModel) request.getSession()
-                            .getAttribute(cartKey);
-
+            CartModel cart = (CartModel) request.getSession().getAttribute(cartKey);
             request.setAttribute("cart", cart);
         }
-
-        request.getRequestDispatcher("/views/web/cart.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher("/views/web/cart.jsp").forward(request, response);
     }
 }
