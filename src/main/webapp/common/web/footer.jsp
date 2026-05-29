@@ -88,7 +88,12 @@
             </div>
         </div>
     </div>
-
+    <script>
+        document.querySelectorAll('.card-text_price, .card-text_price--sale, .giamoi, .giacu').forEach(el => {
+            const num = parseFloat(el.textContent.replace('đ', '').replace('₫', '').trim());
+            if (!isNaN(num)) el.textContent = num.toLocaleString('vi-VN') + 'đ';
+        });
+    </script>
 </footer>
 
 <!-- nut cuon len dau trang -->
