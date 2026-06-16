@@ -47,12 +47,11 @@ public class HomeController extends HttpServlet {
             // neu url :login?action=login thi toi trang logout
         } else if (action != null && action.equals("logout")) {
 
-            SessionUtil.getInstance().removeValue(req, "USERMODEL");
-            SessionUtil.getInstance().removeValue(req, "PASSWORD_USER");
-            SessionUtil.getInstance().removeValue(req, "ID_USER");
-            SessionUtil.getInstance().removeValue(req, "MAIL");
-
-
+//            SessionUtil.getInstance().removeValue(req, "USERMODEL");
+//            SessionUtil.getInstance().removeValue(req, "PASSWORD_USER");
+//            SessionUtil.getInstance().removeValue(req, "ID_USER");
+//            SessionUtil.getInstance().removeValue(req, "MAIL");
+            req.getSession().invalidate();
             resp.sendRedirect(req.getContextPath() + "/home");
         }
         else {

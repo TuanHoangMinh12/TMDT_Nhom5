@@ -8,15 +8,14 @@ import vn.edu.hcmuaf.fit.services.IBookManagementService;
 import vn.edu.hcmuaf.fit.services.impl.BookManagementService;
 import vn.edu.hcmuaf.fit.utils.SessionUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.inject.Inject;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @MultipartConfig
 @WebServlet(name = "admin-add-san-pham", value = "/admin-add-san-pham")
@@ -74,42 +73,62 @@ public class AddProductController extends HttpServlet {
 
             if(name != null && quantity != null && price != null && primeCost != null) {
 
-                    int quantityInt = Integer.parseInt(quantity);
-                    double priceDouble = Double.parseDouble(price);
-                    double primeCostDouble = Double.parseDouble(primeCost);
-                    double weightDouble = Double.parseDouble(weight);
-                    int pageInt = Integer.parseInt(page);
-                    int yearIn = Integer.parseInt(year);
+                System.out.println("name = " + name);
+                System.out.println("quantity = " + quantity);
+                System.out.println("price = " + price);
+                System.out.println("primeCost = " + primeCost);
+                System.out.println("weight = " + weight);
+                System.out.println("page = " + page);
+                System.out.println("year = " + year);
 
-                    if(!iBookManagementService.checkNameBook(name)) {
-                        //add book và book details
-                        boolean checkInsert = iBookManagementService
-                                .addBook(name, quantityInt, status, isNew, catalog, publisherCompany
-                                        ,priceDouble, primeCostDouble, isbn, yearIn, weightDouble, size, pageInt,
-                                        language, description , publisher);
-                        if(checkInsert) {
-                            int id = iBookManagementDAO.findIdByName(name);
-                            //add image
-                            if(part1 != null) iBookManagementService.addImage(request, response, part1, id);
-                            if(part2 != null) iBookManagementService.addImage(request, response, part2, id);
-                            if(part3 != null) iBookManagementService.addImage(request, response, part3, id);
-                            if(part4 != null) iBookManagementService.addImage(request, response, part4, id);
-                            Log log = new Log(Log.INFO,ip,"Quản lý sản phẩm",cus.getIdUser(),"Thêm sản phẩm",1);
-                            log.insert();
-                            response.sendRedirect("/admin-add-san-pham?message=Them thanh cong&alert=success");
-                        }else {
-                            response.sendRedirect("/admin-add-san-pham?message=Them that bai&alert=danger");
-                        }
-                    }else  {
-                        response.sendRedirect("/admin-add-san-pham?message=Ten sach da ton tai&alert=danger");
+                int quantityInt = Integer.parseInt(quantity);
+                double priceDouble = Double.parseDouble(price);
+                double primeCostDouble = Double.parseDouble(primeCost);
+
+                if(weight == null || weight.trim().isEmpty())
+                    weight = "0";
+
+                if(page == null || page.trim().isEmpty())
+                    page = "0";
+
+                if(year == null || year.trim().isEmpty())
+                    year = "0";
+
+                double weightDouble = Double.parseDouble(weight);
+                int pageInt = Integer.parseInt(page);
+                int yearIn = Integer.parseInt(year);
+
+                if(!iBookManagementService.checkNameBook(name)) {
+                    //add book và book details
+                    boolean checkInsert = iBookManagementService
+                            .addBook(name, quantityInt, status, isNew, catalog, publisherCompany
+                                    ,priceDouble, primeCostDouble, isbn, yearIn, weightDouble, size, pageInt,
+                                    language, description , publisher);
+                    if(checkInsert) {
+                        int id = iBookManagementDAO.findIdByName(name);
+                        //add image
+                        if(part1 != null && part1.getSize() > 0) iBookManagementService.addImage(request, response, part1, id);
+                        if(part2 != null && part2.getSize() > 0) iBookManagementService.addImage(request, response, part2, id);
+                        if(part3 != null && part3.getSize() > 0) iBookManagementService.addImage(request, response, part3, id);
+                        if(part4 != null && part4.getSize() > 0) iBookManagementService.addImage(request, response, part4, id);
+                        Log log = new Log(Log.INFO,ip,"Quản lý sản phẩm",cus.getIdUser(),"Thêm sản phẩm",1);
+                        log.insert();
+                        response.sendRedirect(request.getContextPath() +"/admin-add-san-pham?message=Them thanh cong&alert=success");
+                    }else {
+                        response.sendRedirect(request.getContextPath() +"/admin-add-san-pham?message=Them that bai&alert=danger");
                     }
+                }else  {
+                    response.sendRedirect(request.getContextPath() +"/admin-add-san-pham?message=Ten sach da ton tai&alert=danger");
+                }
 
             }else {
-                response.sendRedirect("/admin-add-san-pham?message=Vui long nhap thong tin can thiet&alert=warning");
+                response.sendRedirect(request.getContextPath() + "/admin-add-san-pham?message=Vui long nhap thong tin can thiet&alert=warning");
             }
         }catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/admin-add-san-pham?message=Vui long nhap thong tin can thiet&alert=warning");
+            response.getWriter().println(e.getMessage());
+//            response.sendRedirect(request.getContextPath() +"/admin-add-san-pham?message=Vui long nhap thong tin can thiet&alert=warning");
+
         }
 
     }

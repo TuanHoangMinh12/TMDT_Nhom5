@@ -56,10 +56,10 @@
                             <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addnhaxuatban"><i
                                     class="fas fa-folder-plus"></i> Thêm nhà xuất bản</a>
                         </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                    class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                        </div>
+<%--                        <div class="col-sm-2">--%>
+<%--                            <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i--%>
+<%--                                    class="fas fa-folder-plus"></i> Thêm tình trạng</a>--%>
+<%--                        </div>--%>
                     </div>
                     <div class="col-sm-6">
                         <c:if test="${not empty message}">
@@ -69,14 +69,14 @@
                         </c:if>
                     </div>
 
-                    <form action="/admin-add-san-pham" enctype="multipart/form-data" method="post" class="row">
+                    <form action="${pageContext.request.contextPath}/admin-add-san-pham" enctype="multipart/form-data" method="post" class="row">
                         <div class="form-group col-md-3">
                             <label class="control-label">Tên sản phẩm</label>
-                            <input name="name" class="form-control" type="text">
+                            <input name="name" class="form-control" type="text" value="${name}">
                         </div>
                         <div class="form-group  col-md-3">
                             <label class="control-label">Số lượng</label>
-                            <input name="quantity" class="form-control" type="number">
+                            <input name="quantity" class="form-control" type="number" value="${quantity}">
                         </div>
                         <div class="form-group col-md-3 ">
                             <label for="exampleSelect1" class="control-label">Tình trạng</label>
@@ -120,31 +120,31 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Giá bán</label>
-                            <input name="primeCost" class="form-control" type="number">
+                            <input name="primeCost" class="form-control" type="number" value="${price}">
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Giá vốn</label>
-                            <input name="price" class="form-control" type="number">
+                            <input name="price" class="form-control" type="number" value="${priceCost}">
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Mã ISBN</label>
-                            <input name="isbn" class="form-control" type="text">
+                            <input name="isbn" class="form-control" type="text" value="${isbn}">
                         </div>
                         <div class="form-group col-md-3">
-                            <label class="control-label">Năm xuất bản</label>
+                            <label class="control-label">Năm xuất bản</label>5
                             <input name="year" class="form-control" value="2022" type="number">
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Khối lượng</label>
-                            <input name="weight" class="form-control" type="number">
+                            <input name="weight" class="form-control" type="number" value="${weight}">
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Kích thước</label>
-                            <input name="size" class="form-control" type="text">
+                            <input name="size" class="form-control" type="text" value="${size}">
                         </div>
                         <div class="form-group col-md-3">
                             <label class="control-label">Tổng số trang</label>
-                            <input name="page" class="form-control" type="number">
+                            <input name="page" class="form-control" type="number" value="${page}">
                         </div>
                         <div class="form-group col-md-3 ">
                             <label for="exampleSelect1" class="control-label">Ngôn ngữ</label>
@@ -171,7 +171,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="control-label">Mô tả sản phẩm</label>
-                            <textarea class="form-control" name="description"></textarea>
+                            <textarea class="form-control" name="description">${description}</textarea>
                         </div>
 
                         <div>
@@ -193,7 +193,7 @@ MODAL CHỨC VỤ
      data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form method="post" action="/admin-add-publisher-company">
+            <form method="post" action="${pageContext.request.contextPath}/admin-add-publisher-company">
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -234,7 +234,7 @@ MODAL
      data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/admin-add-publisher" method="post">
+            <form action="${pageContext.request.contextPath}/admin-add-publisher" method="post">
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group  col-md-12">
@@ -275,7 +275,7 @@ MODAL DANH MỤC
      data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="/admin-add-catalog" method="post" >
+            <form action="${pageContext.request.contextPath}/admin-add-catalog" method="post" >
                 <div class="modal-body">
                 <div class="row">
                     <div class="form-group  col-md-12">
@@ -319,7 +319,6 @@ MODAL TÌNH TRẠNG
      data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-
             <div class="modal-body">
                 <div class="row">
                     <div class="form-group  col-md-12">
