@@ -323,7 +323,7 @@ hr {
 }
 
 .menu_products .menu_item {
-    z-index: 11;
+    z-index: 999;
     width: 224px;
     background-color: #fff;
     position: absolute;
@@ -332,83 +332,95 @@ hr {
     top: 35px;
     left: -1px;
 
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
+    display: none;
+    flex-direction: column;
 }
 
 .menu_products:hover .menu_item {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    display: flex;
-    cursor: pointer;
+    display: block;
 }
 
 .menu_products .menu_item .type_products {
     width: 100%;
+    display: block;
 }
 
-.menu_products .type_hot-child, .type_companys-child {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: -222px;
-    z-index: 10;
-    background-color: #f2f2f2;
-    width: 222px;
-    height: 100%;
-    border-left: 5px solid var(--bs-blue-default);
+.menu_products .type_products-item {
+    width: 100%;
+    display: block;
+    position: relative;
 }
 
-.menu_products .type_hot-child p ,.menu_products .type_companys-child p{
-    padding: 6px 12px;
+.menu_products .type_products-item span {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
     color: #000;
-    font-size: 10px;
+    white-space: normal;
 }
 
-.menu_products .type_hot-child li:hover p ,.menu_products .type_companys-child li:hover p {
-    color: var(--bs-blue-default);
-}
-
-.menu_products .type_hots:hover .type_hot-child,.menu_products .type_companys:hover .type_companys-child{
-    display: flex;
-    flex-direction: column;
+.menu_products .type_products-item:hover span,
+.menu_products .type_products-item:hover i {
+    background-color: var(--bs-blue-default);
+    color: #fff;
+    transition: all 0.2s ease-in;
 }
 
 .menu_products .container_type-arrow {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .menu_products .container_type-arrow i {
     font-size: 10px;
     font-weight: 700;
     color: #ccc;
-    padding-top: 6px
+    padding-top: 0;
 }
 
 .menu_products .container_type-arrow div {
     font-weight: 600;
 }
 
-.menu_products .type_products-item span{
-    padding: 6px;
+.menu_products .type_hot-child,
+.menu_products .type_companys-child {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 223px;
+    z-index: 1000;
+    background-color: #f2f2f2;
+    width: 222px;
+    min-height: 100%;
+    border-left: 5px solid var(--bs-blue-default);
+}
+
+.menu_products .type_hot-child li,
+.menu_products .type_companys-child li {
+    display: block;
     width: 100%;
 }
 
-
-.menu_products .type_products-item span {
+.menu_products .type_hot-child p,
+.menu_products .type_companys-child p {
+    padding: 6px 12px;
     color: #000;
+    font-size: 13px;
+    margin: 0;
 }
 
-.menu_products .type_products-item:hover span,.menu_products .type_products-item:hover i {
-    background-color: var(--bs-blue-default);
-    color: #fff;
-    /* transform: translateX(12px); */
-    transition: all 0.2s ease-in;
+.menu_products .type_hot-child li:hover p,
+.menu_products .type_companys-child li:hover p {
+    color: var(--bs-blue-default);
 }
+
+.menu_products .type_hots:hover .type_hot-child,
+.menu_products .type_companys:hover .type_companys-child {
+    display: block;
+}
+
+
 
 .center-header_div {
     /*d-flex justify-content-between*/
