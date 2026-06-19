@@ -103,7 +103,7 @@
     <div id="header">
         <div class="top-header">
             <div class="container top-header-content">
-                <a class="logo" href="${pageContext.request.contextPath}/home">DORAEMON</a>
+                <a class="logo" href="${pageContext.request.contextPath}/home">Hoàng Tiến</a>
                 <form action="${pageContext.request.contextPath}/products/search" method="post">
                     <div class="top-header_search">
                         <input type="text" name="key" placeholder="Tìm kiếm">
@@ -176,7 +176,7 @@
                     <i class="fa-solid fa-bars"></i>
                     Danh mục sản phẩm
                     <nav class="menu_item">
-                        </ul>
+                        <ul class="type_products">
                             <li class="type_products-item type_hots">
                                     <span class="container_type-arrow">
                                         <div>Nổi bật</div>
@@ -184,16 +184,16 @@
                                     </span>
                                 <ul class="type_hot-child">
                                     <li><a href="${pageContext.request.contextPath}/products?hot=1">
-                                        <p>Sách bán chạy</p>
+                                        <p>Sách cũ bán chạy</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=2">
-                                        <p>Sách mới</p>
+                                        <p>Sách cũ mới</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=3">
-                                        <p>Sắp phát hành</p>
+                                        <p>Sắp cũ giá rẻ</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=4">
-                                        <p>Sách giảm giá</p>
+                                        <p>Sách giáo khoa cũ</p>
                                     </a></li>
                                 </ul>
                             </li>

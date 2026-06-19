@@ -32,80 +32,88 @@
 <%@include file="/common/web/header.jsp" %>
 <!--------- end header---------- -->
 <div id="section1">
-    <div class="container">
+    <div class="container d-flex">
+        <ul class="type_products">
+            <li class="type_products-item type_hots">
+                    <span class="container_type-arrow">
+                        <div>Nổi bật</div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </span>
+                <ul class="type_hot-child">
+                    <li><a href="${pageContext.request.contextPath}/products?hot=1">
+                        <p>Sách cũ bán chạy</p>
+                    </a></li>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=2">
+                        <p>Sách cũ mới</p>
+                    </a></li>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=3">
+                        <p>Sắp cũ giá rẻ</p>
+                    </a></li>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=4">
+                        <p>Sách giáo khoa cũ</p>
+                    </a></li>
+                </ul>
+            </li>
+
+            <c:forEach var="catalog" items="<%=listCatalog%>">
+                <li class="type_products-item"><a href="${pageContext.request.contextPath}/products/catalogs?id=<c:out value ="${catalog.idCatalog}"/>">
+                    <span><c:out value="${catalog.name}"/></span>
+                </a></li>
+            </c:forEach>
+            <li class="type_products-item type_companys">
+                <a href="">
+                        <span class="container_type-arrow">
+                            <div>Công Ty Phát Hành</div><i class="fa-solid fa-chevron-right"></i>
+                        </span>
+                </a>
+                <ul class="type_companys-child" style="font-size: 10px">
+                    <c:forEach var="publisherCompany" items="<%=listPublisherCompany%>">
+                        <li><a href="${pageContext.request.contextPath}/products/publisherCompany?id=<c:out value ="${publisherCompany.idPc}"/>">
+                            <p><c:out value="${publisherCompany.name}"/></p>
+                        </a></li>
+                    </c:forEach>
+                    <li><a class="type_company-all" href="">
+                        <p>Tất cả công ty phát hành</p>
+                    </a></li>
+                </ul>
+            </li>
+        </ul>
         <div id="carouselExampleIndicators" class="carousel slide section1_slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
             </ol>
-
             <div class="carousel-inner">
+
                 <c:forEach var="slide" items="${listSlide}">
                     <c:if test="${slide.idPr == 1}">
                         <div class="carousel-item active">
                             <a href="${slide.link}">
-                                <img src="${pageContext.request.contextPath}/${slide.img}"
-                                     class="d-block w-100"
-                                     alt="${slide.namePr}">
+                                <img src="${pageContext.request.contextPath}/${slide.img}" class="d-block w-100" alt="${slide.namePr}">
                             </a>
                         </div>
                     </c:if>
-
                     <c:if test="${slide.idPr != 1}">
                         <div class="carousel-item">
                             <a href="${slide.link}">
-                                <img src="${pageContext.request.contextPath}/${slide.img}"
-                                     class="d-block w-100"
-                                     alt="${slide.namePr}">
+                                <img src="${pageContext.request.contextPath}/${slide.img}" class="d-block w-100" alt="${slide.namePr}">
                             </a>
                         </div>
                     </c:if>
                 </c:forEach>
-            </div>
 
-            <button class="carousel-control-prev" type="button"
-                    data-target="#carouselExampleIndicators"
+            </div>
+            <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators"
                     data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
             </button>
-
-            <button class="carousel-control-next" type="button"
-                    data-target="#carouselExampleIndicators"
+            <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators"
                     data-slide="next">
-                <span class="carousel-control-next-icon"></span>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </button>
-        </div>
-    </div>
-</div>
-
-<div class="home-introduce">
-    <div class="container">
-        <h2>Hoàng Tiến - Nhà sách cũ uy tín</h2>
-        <p>
-            Hoàng Tiến chuyên mua bán sách cũ, sách đã qua sử dụng, sách giáo khoa,
-            truyện, tiểu thuyết, sách kỹ năng và nhiều đầu sách chọn lọc khác.
-            Chúng tôi mong muốn mang đến cho bạn những cuốn sách chất lượng với
-            mức giá tiết kiệm, góp phần lan tỏa văn hóa đọc và tái sử dụng sách.
-        </p>
-
-        <div class="home-introduce-list">
-            <div class="home-introduce-item">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Sách cũ đa dạng thể loại</span>
-            </div>
-
-            <div class="home-introduce-item">
-                <i class="fa-solid fa-tags"></i>
-                <span>Giá rẻ, nhiều ưu đãi</span>
-            </div>
-
-            <div class="home-introduce-item">
-                <i class="fa-solid fa-truck-fast"></i>
-                <span>Giao hàng nhanh chóng</span>
-            </div>
         </div>
     </div>
 </div>

@@ -40,7 +40,6 @@
 <body>
 
 <%@include file="/common/web/header.jsp"%>
-
 <!-------------------------Product----------------------->
 <section class="product">
   <div class="container">
