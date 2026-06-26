@@ -5,12 +5,17 @@ import java.sql.Timestamp;
 public class AuctionModel {
 
     private int id;
+
     private int bookId;
+
     private double startPrice;
+
     private double currentPrice;
+
     private double minIncrement;
 
     private Timestamp startTime;
+
     private Timestamp endTime;
 
     private Integer winnerId;
@@ -19,10 +24,29 @@ public class AuctionModel {
 
     private Timestamp createdAt;
 
-    // Hiển thị thông tin sách
+    // Thông tin sách
     private Product product;
 
+    // Thông tin người thắng (tùy chọn)
+    private CustomerModel winner;
+
     public AuctionModel() {
+    }
+
+    public AuctionModel(int id, int bookId, double startPrice, double currentPrice,
+                        double minIncrement, Timestamp startTime,
+                        Timestamp endTime, Integer winnerId,
+                        String status, Timestamp createdAt) {
+        this.id = id;
+        this.bookId = bookId;
+        this.startPrice = startPrice;
+        this.currentPrice = currentPrice;
+        this.minIncrement = minIncrement;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.winnerId = winnerId;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -111,5 +135,13 @@ public class AuctionModel {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public CustomerModel getWinner() {
+        return winner;
+    }
+
+    public void setWinner(CustomerModel winner) {
+        this.winner = winner;
     }
 }
