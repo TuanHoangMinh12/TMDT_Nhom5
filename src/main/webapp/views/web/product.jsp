@@ -25,9 +25,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="<c:url value='/templates/styles/Product.css'/> "/>
-    <link rel="stylesheet" href="<c:url value='/templates/styles/HeaderProduct.css'/> "/>
-    <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> "/>
+<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/Product.css'/> "/>--%>
+<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/HeaderProduct.css'/> "/>--%>
+<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> "/>--%>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Product.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/HeaderProduct.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
+
     <style>
         .paginationA {
             display: flex;

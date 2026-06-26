@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,7 +145,10 @@
                                       </tr>
                                       <tr>
                                           <td>Tổng giá trị:</td>
-                                          <td>${cart.getTotalPriceFromCart()} VNĐ
+                                          <td>
+                                              <b>
+                                                  <fmt:formatNumber value="${cart.getTotalPriceFromCart()}" type="number" groupingUsed="true"/> VNĐ
+                                              </b>
                                           </td>
                                       </tr>
                                       <tr>
@@ -151,47 +156,49 @@
                                           <td>${cart.getInFoShipString()}</td>
                                       </tr>
                                       <tr>
-                                          <td>Đăng kí giao hàng:</td>
+                                          <td>Đăng ký giao hàng:</td>
                                           <td>
-                                              <c:if test="${cart.getInFoShipString().equals('Chờ xử lý')}">
-                                                  <button type="button" class="btn btn-danger" style="margin-right: 10px;">
-                                                      <a style="color: #FFFFFF"
-                                                         href="${pageContext.request.contextPath}/admin-register-order?id=${cart.id}&variable=${CUSTOMER.idUser}">
-                                                          Đăng kí đơn hàng
-                                                      </a>
-                                                  </button>
-
-                                                  <button type="button" class="btn btn-warning">
-                                                      <a style="color: #FFFFFF"
-                                                         href="${pageContext.request.contextPath}/removerBill?id=${cart.id}&user=${CUSTOMER.idUser}">
+                                              <c:choose>
+                                                  <c:when test="${cart.inShip == 1}">
+                                                      <button type="button"
+                                                              class="btn btn-danger btn-sm btn-register-ghn"
+                                                              data-id="${cart.id}"
+                                                              data-cus="${CUSTOMER.idUser}">
+                                                          Đăng ký đơn hàng
+                                                      </button>
+                                                      <button type="button"
+                                                              class="btn btn-warning btn-sm btn-cancel-order"
+                                                              data-id="${cart.id}">
                                                           Hủy đơn
-                                                      </a>
-                                                  </button>
-                                              </c:if>
-
-                                              <c:if test="${cart.getInFoShipString().equals('Đang vận chuyển')}">
-                                                  <button type="button" class="btn btn-danger" style="margin-right: 10px;">
-                                                      <a style="color: #FFFFFF"
-                                                         href="${pageContext.request.contextPath}/confirmBill?id=${cart.id}&variable=${CUSTOMER.idUser}">
-                                                          Đã giao
-                                                      </a>
-                                                  </button>
-
-                                                  <button type="button" class="btn btn-warning">
-                                                      <a style="color: #FFFFFF"
-                                                         href="${pageContext.request.contextPath}/removerBill?id=${cart.id}&user=${CUSTOMER.idUser}">
+                                                      </button>
+                                                  </c:when>
+                                                  <c:when test="${cart.inShip == 2}">
+                                                      <button type="button"
+                                                              class="btn btn-success btn-sm btn-confirm-delivered"
+                                                              data-id="${cart.id}"
+                                                              data-cus="${CUSTOMER.idUser}">
+                                                          Xác nhận Đã giao
+                                                      </button>
+                                                      <button type="button"
+                                                              class="btn btn-warning btn-sm btn-cancel-order"
+                                                              data-id="${cart.id}">
                                                           Hủy đơn
-                                                      </a>
-                                                  </button>
-                                              </c:if>
-
-                                              <c:if test="${cart.getInFoShipString().equals('Đã hoàn thành')}">
-                                                  Đơn hàng đã giao
-                                              </c:if>
-
-                                              <c:if test="${cart.getInFoShipString().equals('Đã hủy')}">
-                                                  Đơn hàng đã hủy
-                                              </c:if>
+                                                      </button>
+                                                  </c:when>
+                                                  <c:when test="${cart.inShip == 3}">
+                                                        <span class="text-success">
+                                                            <i class="fas fa-check"></i> Đơn hàng đã giao thành công
+                                                        </span>
+                                                  </c:when>
+                                                  <c:when test="${cart.inShip == 4}">
+                                                        <span class="text-danger" style="font-weight: 500;">
+                                                            <i class="fas fa-times-circle"></i> Đơn hàng đã hủy
+                                                        </span>
+                                                  </c:when>
+                                                  <c:otherwise>
+                                                      <span class="text-muted">${cart.getInFoShipString()}</span>
+                                                  </c:otherwise>
+                                              </c:choose>
                                           </td>
                                       </tr>
                                       </tbody>
@@ -216,22 +223,24 @@
                                               <td>${item.nameSach}</td>
                                               <td><img style="height: 50px" src="${pageContext.request.contextPath}/${item.image}"></td>
                                               <td>${item.quantity}</td>
-                                              <td>${item.totalPrice}</td>
+                                              <td>
+                                                  <fmt:formatNumber value="${item.totalPrice}" type="number" groupingUsed="true"/> VNĐ
+                                              </td>
                                           </tr>
                                       </c:forEach>
                                       </tbody>
                                   </table>
 
-<%--nut button hien khi inship la 1 2 3--%>
-                             <c:if test="${cart.getInShip() == 1}">
-                                 <div   class="parent-button"><button  class="centered-button" >check</button></div>
-                             </c:if>
-                                  <c:if test="${cart.getInShip() == 2}">
-                                      <div   class="parent-button"><button  class="centered-button" >check</button></div>
-                                  </c:if>
-                                  <c:if test="${cart.getInShip() == 3}">
-                                      <div   class="parent-button"><button  class="centered-button" >check</button></div>
-                                  </c:if>
+<%--&lt;%&ndash;nut button hien khi inship la 1 2 3&ndash;%&gt;--%>
+<%--                             <c:if test="${cart.getInShip() == 1}">--%>
+<%--                                 <div   class="parent-button"><button  class="centered-button" >check</button></div>--%>
+<%--                             </c:if>--%>
+<%--                                  <c:if test="${cart.getInShip() == 2}">--%>
+<%--                                      <div   class="parent-button"><button  class="centered-button" >check</button></div>--%>
+<%--                                  </c:if>--%>
+<%--                                  <c:if test="${cart.getInShip() == 3}">--%>
+<%--                                      <div   class="parent-button"><button  class="centered-button" >check</button></div>--%>
+<%--                                  </c:if>--%>
                               </div>
                           </div>
                       </div>
@@ -243,71 +252,71 @@
     </div>
 </main>
 
-<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-     data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+<%--<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"--%>
+<%--     data-keyboard="false">--%>
+<%--    <div class="modal-dialog modal-dialog-centered" role="document">--%>
+<%--        <div class="modal-content">--%>
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>
-          </span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Mã sản phẩm </label>
-                        <input class="form-control" type="number" value="8936071672704">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Tên sản phẩm</label>
-                        <input class="form-control" type="text" required value="Tôi vẽ - Phương pháp tự học vẽ truyện tranh">
-                    </div>
-                    <div class="form-group  col-md-6">
-                        <label class="control-label">Số lượng</label>
-                        <input class="form-control" type="number" required value="20">
-                    </div>
-                    <div class="form-group col-md-6 ">
-                        <label for="exampleSelect1" class="control-label">Tình trạng sản phẩm</label>
-                        <select class="form-control" id="exampleSelect1">
-                            <option>Còn hàng</option>
-                            <option>Hết hàng</option>
-                            <option>Đang nhập hàng</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Giá bán</label>
-                        <input class="form-control" type="text" value="80.000">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="exampleSelect1" class="control-label">Danh mục</label>
-                        <select class="form-control" id="exampleSelect1">
-                            <option>Sách Văn học văn ngoài</option>
-                            <option>Sách Thiếu nhi</option>
-                            <option>Sách Kinh tế</option>
-                            <option>Sách tâm lý - kỹ năng sống</option>
-                            <option>Sách Văn học nước ngoài</option>
-                            <option>Truyện tranh</option>
-                            <option>Khoa học kỹ thuật</option>
-                            <option>Lịch sử - Địa lý - Tôn giáo</option>
-                            <option>Tạp chí - Báo</option>
-                        </select>
-                    </div>
-                </div>
-                <BR>
-                <BR>
-                <BR>
-                <button href="/ad" class="btn btn-save" type="button">Lưu lại</button>
-                <a class="btn btn-cancel" data-dismiss="modal" href="${pageContext.request.contextPath}/admin-table-product">Hủy bỏ</a>
-                <BR>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
+<%--            <div class="modal-body">--%>
+<%--                <div class="row">--%>
+<%--                    <div class="form-group  col-md-12">--%>
+<%--          <span class="thong-tin-thanh-toan">--%>
+<%--            <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>--%>
+<%--          </span>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="row">--%>
+<%--                    <div class="form-group col-md-6">--%>
+<%--                        <label class="control-label">Mã sản phẩm </label>--%>
+<%--                        <input class="form-control" type="number" value="8936071672704">--%>
+<%--                    </div>--%>
+<%--                    <div class="form-group col-md-6">--%>
+<%--                        <label class="control-label">Tên sản phẩm</label>--%>
+<%--                        <input class="form-control" type="text" required value="Tôi vẽ - Phương pháp tự học vẽ truyện tranh">--%>
+<%--                    </div>--%>
+<%--                    <div class="form-group  col-md-6">--%>
+<%--                        <label class="control-label">Số lượng</label>--%>
+<%--                        <input class="form-control" type="number" required value="20">--%>
+<%--                    </div>--%>
+<%--                    <div class="form-group col-md-6 ">--%>
+<%--                        <label for="exampleSelect1" class="control-label">Tình trạng sản phẩm</label>--%>
+<%--                        <select class="form-control" id="exampleSelect1">--%>
+<%--                            <option>Còn hàng</option>--%>
+<%--                            <option>Hết hàng</option>--%>
+<%--                            <option>Đang nhập hàng</option>--%>
+<%--                        </select>--%>
+<%--                    </div>--%>
+<%--                    <div class="form-group col-md-6">--%>
+<%--                        <label class="control-label">Giá bán</label>--%>
+<%--                        <input class="form-control" type="text" value="80.000">--%>
+<%--                    </div>--%>
+<%--                    <div class="form-group col-md-6">--%>
+<%--                        <label for="exampleSelect1" class="control-label">Danh mục</label>--%>
+<%--                        <select class="form-control" id="exampleSelect1">--%>
+<%--                            <option>Sách Văn học văn ngoài</option>--%>
+<%--                            <option>Sách Thiếu nhi</option>--%>
+<%--                            <option>Sách Kinh tế</option>--%>
+<%--                            <option>Sách tâm lý - kỹ năng sống</option>--%>
+<%--                            <option>Sách Văn học nước ngoài</option>--%>
+<%--                            <option>Truyện tranh</option>--%>
+<%--                            <option>Khoa học kỹ thuật</option>--%>
+<%--                            <option>Lịch sử - Địa lý - Tôn giáo</option>--%>
+<%--                            <option>Tạp chí - Báo</option>--%>
+<%--                        </select>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <BR>--%>
+<%--                <BR>--%>
+<%--                <BR>--%>
+<%--                <button href="/ad" class="btn btn-save" type="button">Lưu lại</button>--%>
+<%--                <a class="btn btn-cancel" data-dismiss="modal" href="${pageContext.request.contextPath}/admin-table-product">Hủy bỏ</a>--%>
+<%--                <BR>--%>
+<%--            </div>--%>
+<%--            <div class="modal-footer">--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <!--
 MODAL
 -->
@@ -369,6 +378,108 @@ MODAL
             return i;
         }
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        // 1. XỬ LÝ NÚT ĐĂNG KÝ GIAO HÀNG
+        $(document).on('click', '.btn-register-ghn', function (e) {
+            e.preventDefault();
+
+            var orderId = $(this).data('id');
+            var cusId = $(this).data('cus');
+            var $btn = $(this);
+            var $tdContainer = $btn.parent();
+
+            $btn.prop('disabled', true).addClass('disabled').text('Đang xử lý...');
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/admin-register-order',
+                type: 'POST',
+                data: {id: orderId, variable: cusId},
+                success: function (response) {
+                    if (response.trim() === "processing") {
+                        swal("Thành công!", "Đơn hàng đã được chuyển sang vận chuyển!", "success");
+
+                        // Cập nhật trạng thái hiển thị
+                        $('td:contains("Đăng ký giao hàng:")').prev().text('Tình trạng:').next().html('<span class="text-warning" style="font-weight:500;">Đang vận chuyển</span>');
+
+                        // Cập nhật nút bấm thành: Đã giao + Hủy đơn
+                        var newButtons =
+                            '<button type="button" class="btn btn-success btn-sm btn-confirm-delivered" data-id="' + orderId + '" data-cus="' + cusId + '" style="margin-right: 5px;">' +
+                            '   Xác nhận Đã giao' +
+                            '</button>' +
+                            '<button type="button" class="btn btn-warning btn-sm btn-cancel-order" data-id="' + orderId + '">' +
+                            '   Hủy đơn' +
+                            '</button>';
+                        $tdContainer.html(newButtons);
+                    } else {
+                        swal("Lỗi", "Không thể đăng ký vận chuyển.", "error");
+                        $btn.prop('disabled', false).removeClass('disabled').text('Đăng ký đơn hàng');
+                    }
+                },
+                error: function () {
+                    swal("Lỗi kết nối", "Không thể gửi dữ liệu lên hệ thống.", "error");
+                    $btn.prop('disabled', false).removeClass('disabled').text('Đăng ký đơn hàng');
+                }
+            });
+        });
+
+        // 2. XỬ LÝ NÚT XÁC NHẬN ĐÃ GIAO
+        $(document).on('click', '.btn-confirm-delivered', function (e) {
+            e.preventDefault();
+            var orderId = $(this).data('id');
+            var cusId = $(this).data('cus');
+            var $btn = $(this);
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/confirmBill',
+                type: 'POST',
+                data: {id: orderId, variable: cusId},
+                success: function (response) {
+                    if (response.trim() === "success") {
+                        swal("Thành công!", "Đơn hàng đã được xác nhận hoàn thành!", "success");
+
+                        // Cập nhật lại giao diện đơn hàng đã hoàn thành
+                        $('span.text-warning').text('Đã hoàn thành').removeClass('text-warning').addClass('text-success');
+                        $('.btn-confirm-delivered, .btn-cancel-order').remove();
+                    } else {
+                        swal("Lỗi", "Không thể cập nhật trạng thái.", "error");
+                    }
+                }
+            });
+        });
+
+        // 3. XỬ LÝ NÚT HỦY ĐƠN HÀNG
+        $(document).on('click', '.btn-cancel-order', function (e) {
+            e.preventDefault();
+            var orderId = $(this).data('id');
+
+            swal({
+                title: "Xác nhận hủy đơn?",
+                icon: "warning",
+                buttons: ["Quay lại", "Đồng ý hủy"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/removerBill',
+                        type: 'POST',
+                        data: {id: orderId},
+                        success: function(response) {
+                            if(response.trim() === "success") {
+                                swal("Đã hủy!", "Đơn hàng đã hủy thành công.", "success");
+                                // Cập nhật giao diện
+                                $('span.text-warning').text('Đã hủy').removeClass('text-warning').addClass('text-danger');
+                                $('.btn-confirm-delivered, .btn-cancel-order').remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
 </script>
 </body>
 

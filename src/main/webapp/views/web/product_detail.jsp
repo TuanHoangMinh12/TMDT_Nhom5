@@ -361,6 +361,8 @@
       </div>
     </div>
   </div>
+  </div>
+
 </section>
 
 <%@include file="/common/web/footer.jsp"%>

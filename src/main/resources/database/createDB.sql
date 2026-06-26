@@ -725,20 +725,6 @@ CREATE TABLE IF NOT EXISTS `owner` (
 INSERT INTO `owner` (`id_company`, `name_website`, `name_company`, `time_start_proprietary`, `time_finish_proprietary`, `information_company`) VALUES
     (1, 'DORAEMON', 'Doraemon', '2022-11-11 20:41:21', NULL, 'Doraemon gồm 3 thành viên.');
 
--- Dumping structure for table web_ban_sach.public_key
-CREATE TABLE IF NOT EXISTS `public_key` (
-    `id_key` int(11) NOT NULL AUTO_INCREMENT,
-    `id_user` int(11) NOT NULL,
-    `public_Key` text DEFAULT NULL,
-    `status` int(11) DEFAULT NULL,
-    `create_date` timestamp NOT NULL DEFAULT current_timestamp(),
-    `expire`  timestamp NULL,
-    PRIMARY KEY (`id_key`),
-    KEY `id_user` (`id_user`),
-    CONSTRAINT `public_key_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `customer` (`id_user`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table web_ban_sach.public_key: ~0 rows (approximately)
 
 -- Dumping structure for table web_ban_sach.publisher
 CREATE TABLE IF NOT EXISTS `publisher` (
@@ -910,32 +896,4 @@ CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_sl_pay_top` AS SELECT `b
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-CREATE PROCEDURE getSelectPublicKey(IN user_id INT, IN cart_id INT)
-BEGIN
-    -- Check if there is a record with a non-null expire date that satisfies the conditions
-    IF EXISTS (SELECT 1 FROM carts
-               JOIN public_key ON carts.idUser = public_key.id_user
-               WHERE carts.id = cart_id
-                 AND carts.idUser = user_id
-                 AND public_key.expire IS NOT NULL
-                 AND carts.create_time <= public_key.expire) THEN
 
-SELECT pk.public_Key
-FROM customer c
-         JOIN public_key pk ON c.id_user = pk.id_user
-         JOIN carts ct ON c.id_user = ct.idUser
-WHERE ct.id = cart_id
-  AND ct.idUser = user_id
-  AND ct.create_time > pk.create_date
-  AND ct.create_time <= pk.expire;
-ELSE
-SELECT pk.public_Key
-FROM customer c
-         JOIN public_key pk ON c.id_user = pk.id_user
-         JOIN carts ct ON c.id_user = ct.idUser
-WHERE ct.id = cart_id
-  AND ct.idUser = user_id
-  AND ct.create_time > pk.create_date
-  AND pk.expire IS NULL;
-END IF;
-END
