@@ -6,18 +6,28 @@ public class AuctionBidModel {
 
     private int id;
 
+    // id phiên đấu giá
     private int auctionId;
 
+    // id người đấu giá
     private int userId;
 
+    // số tiền đặt
     private double bidPrice;
 
+    // thời gian đặt
     private Timestamp bidTime;
 
-    // dùng để hiển thị tên người bid
+    // Hiển thị thông tin người đặt
     private CustomerModel customer;
 
     public AuctionBidModel() {
+    }
+
+    public AuctionBidModel(int auctionId, int userId, double bidPrice) {
+        this.auctionId = auctionId;
+        this.userId = userId;
+        this.bidPrice = bidPrice;
     }
 
     public int getId() {
@@ -66,5 +76,16 @@ public class AuctionBidModel {
 
     public void setCustomer(CustomerModel customer) {
         this.customer = customer;
+    }
+
+    @Override
+    public String toString() {
+        return "AuctionBidModel{" +
+                "id=" + id +
+                ", auctionId=" + auctionId +
+                ", userId=" + userId +
+                ", bidPrice=" + bidPrice +
+                ", bidTime=" + bidTime +
+                '}';
     }
 }

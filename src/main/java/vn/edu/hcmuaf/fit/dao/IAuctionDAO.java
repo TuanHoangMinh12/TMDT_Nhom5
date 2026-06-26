@@ -6,15 +6,17 @@ import java.util.List;
 
 public interface IAuctionDAO {
 
-    boolean createAuction(AuctionModel auction);
+    List<AuctionModel> findAll();
 
-    AuctionModel getAuctionById(int id);
+    AuctionModel findById(int id);
 
-    List<AuctionModel> getAllAuction();
+    AuctionModel findByBookId(int bookId);
 
-    List<AuctionModel> getRunningAuction();
+    boolean insert(AuctionModel auction);
 
-    boolean updateCurrentPrice(int auctionId, double price);
+    boolean update(AuctionModel auction);
 
-    boolean updateWinner(int auctionId, int winnerId);
+    boolean delete(int id);
+
+    boolean updateCurrentPrice(int auctionId, double currentPrice, int winnerId);
 }
