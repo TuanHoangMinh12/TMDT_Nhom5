@@ -26,14 +26,14 @@
         <div class="col-md-5">
 
             <img class="img-fluid border rounded"
-                 src="${pageContext.request.contextPath}/${auction.book.image}">
+                 src="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${auction.product.image}">
 
         </div>
 
         <!-- Thông tin -->
         <div class="col-md-7">
 
-            <h2>${auction.book.name}</h2>
+            <h2>${auction.product.name}</h2>
 
             <hr>
 
@@ -43,6 +43,49 @@
                 ${auction.currentPrice} đ
 
             </h4>
+            <c:if test="${message!=null}">
+
+                <div class="alert alert-danger">
+
+                        ${message}
+
+                </div>
+
+            </c:if>
+            <c:if test="${auction.status=='OPEN'}">
+
+                <form action="${pageContext.request.contextPath}/auction/bid"
+                      method="post">
+
+                    <input
+                            type="hidden"
+                            name="auctionId"
+                            value="${auction.id}">
+
+                    <div class="form-group mt-3">
+
+                        <label>Nhập giá đấu</label>
+
+                        <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                step="1000"
+                                min="${auction.currentPrice + auction.minIncrement}"
+                                required>
+
+                    </div>
+
+                    <button
+                            class="btn btn-danger mt-2">
+
+                        Đấu giá
+
+                    </button>
+
+                </form>
+
+            </c:if>
 
             <p>
                 <b>Giá khởi điểm:</b>

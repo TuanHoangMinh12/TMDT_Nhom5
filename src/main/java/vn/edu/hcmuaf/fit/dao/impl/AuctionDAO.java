@@ -14,9 +14,10 @@ public class AuctionDAO {
     public List<AuctionModel> findAll() {
         List<AuctionModel> list = new ArrayList<>();
 
-        String sql = "SELECT a.*, b.name " +
-                "FROM auction a " +
-                "JOIN book b ON a.book_id = b.id_book";
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.image, b.price " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id=b.id_book";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -58,7 +59,11 @@ public class AuctionDAO {
     // Tìm theo id
     public AuctionModel findById(int id) {
 
-        String sql = "SELECT * FROM auction WHERE id=?";
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.image, b.price " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id = b.id_book " +
+                        "WHERE a.id=?";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -83,6 +88,15 @@ public class AuctionDAO {
                 auction.setWinnerId((Integer) rs.getObject("winner_id"));
                 auction.setStatus(rs.getString("status"));
                 auction.setCreatedAt(rs.getTimestamp("created_at"));
+
+                Product product = new Product();
+
+                product.setIdBook(rs.getInt("id_book"));
+                product.setName(rs.getString("name"));
+                product.setImage(rs.getString("image"));
+                product.setPrice(rs.getDouble("price"));
+
+                auction.setProduct(product);
 
                 return auction;
             }
