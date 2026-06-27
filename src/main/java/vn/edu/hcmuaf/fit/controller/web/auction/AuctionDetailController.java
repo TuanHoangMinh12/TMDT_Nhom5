@@ -31,7 +31,13 @@ public class AuctionDetailController extends HttpServlet {
                     auctionService.getBidHistory(auctionId));
 
         }
+        String message =
+                (String) request.getSession().getAttribute("message");
 
+        if(message != null){
+            request.setAttribute("message", message);
+            request.getSession().removeAttribute("message");
+        }
         request.getRequestDispatcher("/views/web/auction_detail.jsp")
                 .forward(request,response);
 

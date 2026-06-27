@@ -62,4 +62,14 @@ public class AuctionService implements IAuctionService {
 
         return "success";
     }
+
+    @Override
+    public AuctionModel findAuctionById(int id) {
+        return auctionDAO.findById(id);
+    }
+
+    @Override
+    public List<AuctionBidModel> getBidHistory(int auctionId) {
+        return bidDAO.findByAuctionId(auctionId);
+    }
 }

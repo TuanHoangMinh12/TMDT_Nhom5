@@ -12,10 +12,13 @@ import java.util.List;
 
 public class AuctionBidDAO {
 
+    // ===========================
     // Thêm lượt đấu giá
+    // ===========================
     public boolean insertBid(AuctionBidModel bid) {
 
-        String sql = "INSERT INTO auction_bid(auction_id,user_id,bid_price) VALUES(?,?,?)";
+        String sql =
+                "INSERT INTO auction_bid(auction_id,user_id,bid_price) VALUES(?,?,?)";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -35,17 +38,22 @@ public class AuctionBidDAO {
         return false;
     }
 
-    // Lịch sử đấu giá
+    // ===========================
+    // Lịch sử đấu giá theo phiên
+    // ===========================
     public List<AuctionBidModel> findByAuctionId(int auctionId) {
 
         List<AuctionBidModel> list = new ArrayList<>();
 
         String sql =
-                "SELECT ab.*, c.first_name, c.last_name " +
+                "SELECT ab.id,ab.auction_id,ab.user_id," +
+                        "ab.bid_price,ab.bid_time," +
+                        "c.first_name,c.last_name " +
                         "FROM auction_bid ab " +
-                        "JOIN customer c ON ab.user_id = c.id_user " +
-                        "WHERE auction_id=? " +
-                        "ORDER BY bid_price DESC";
+                        "INNER JOIN customer c " +
+                        "ON ab.user_id=c.id_user " +
+                        "WHERE ab.auction_id=? " +
+                        "ORDER BY ab.bid_time DESC";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -83,13 +91,15 @@ public class AuctionBidDAO {
         return list;
     }
 
-    // Giá cao nhất
+    // ===========================
+    // Giá cao nhất của phiên
+    // ===========================
     public AuctionBidModel findHighestBid(int auctionId) {
 
         String sql =
                 "SELECT * FROM auction_bid " +
                         "WHERE auction_id=? " +
-                        "ORDER BY bid_price DESC " +
+                        "ORDER BY bid_price DESC, bid_time ASC " +
                         "LIMIT 1";
 
         try (
@@ -121,7 +131,9 @@ public class AuctionBidDAO {
         return null;
     }
 
-    // Lấy các lượt đấu giá của một user
+    // ===========================
+    // Danh sách đấu giá của user
+    // ===========================
     public List<AuctionBidModel> findByUserId(int userId) {
 
         List<AuctionBidModel> list = new ArrayList<>();
@@ -159,4 +171,5 @@ public class AuctionBidDAO {
 
         return list;
     }
+
 }
