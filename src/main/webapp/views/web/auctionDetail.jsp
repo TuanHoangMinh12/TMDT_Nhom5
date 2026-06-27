@@ -1,245 +1,245 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%--<!DOCTYPE html>--%>
-<%--<html lang="vi">--%>
-<%--<head>--%>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
 
-<%--    <meta charset="UTF-8">--%>
-<%--    <title>${auction.book.name}</title>--%>
+    <meta charset="UTF-8">
+    <title>${auction.book.name}</title>
 
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">--%>
-<%--    <link rel="stylesheet"--%>
-<%--          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">--%>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
-<%--</head>--%>
+</head>
 
-<%--<body>--%>
+<body>
 
-<%--<%@include file="/common/web/header.jsp"%>--%>
+<%@include file="/common/web/header.jsp"%>
 
-<%--<div class="container mt-5 mb-5">--%>
+<div class="container mt-5 mb-5">
 
-<%--    <div class="row">--%>
+    <div class="row">
 
-<%--        <!-- Ảnh sách -->--%>
-<%--        <div class="col-md-5">--%>
+        <!-- Ảnh sách -->
+        <div class="col-md-5">
 
-<%--            <img class="img-fluid border rounded"--%>
-<%--                 src="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${auction.product.image}">--%>
+            <img class="img-fluid border rounded"
+                 src="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${auction.product.image}">
 
-<%--        </div>--%>
+        </div>
 
-<%--        <!-- Thông tin -->--%>
-<%--        <div class="col-md-7">--%>
+        <!-- Thông tin -->
+        <div class="col-md-7">
 
-<%--            <h2>${auction.product.name}</h2>--%>
+            <h2>${auction.product.name}</h2>
 
-<%--            <hr>--%>
+            <hr>
 
-<%--            <h4 class="text-danger">--%>
+            <h4 class="text-danger">
 
-<%--                Giá hiện tại:--%>
-<%--                ${auction.currentPrice} đ--%>
+                Giá hiện tại:
+                ${auction.currentPrice} đ
 
-<%--            </h4>--%>
-<%--            <c:if test="${message!=null}">--%>
+            </h4>
+            <c:if test="${message!=null}">
 
-<%--                <div class="alert alert-danger">--%>
+                <div class="alert alert-danger">
 
-<%--                        ${message}--%>
+                        ${message}
 
-<%--                </div>--%>
+                </div>
 
-<%--            </c:if>--%>
-<%--            <c:if test="${auction.status=='OPEN'}">--%>
+            </c:if>
+            <c:if test="${auction.status=='OPEN'}">
 
-<%--                <form action="${pageContext.request.contextPath}/auction/bid"--%>
-<%--                      method="post">--%>
+                <form action="${pageContext.request.contextPath}/auction/bid"
+                      method="post">
 
-<%--                    <input--%>
-<%--                            type="hidden"--%>
-<%--                            name="auctionId"--%>
-<%--                            value="${auction.id}">--%>
+                    <input
+                            type="hidden"
+                            name="auctionId"
+                            value="${auction.id}">
 
-<%--                    <div class="form-group mt-3">--%>
+                    <div class="form-group mt-3">
 
-<%--                        <label>Nhập giá đấu</label>--%>
+                        <label>Nhập giá đấu</label>
 
-<%--                        <input--%>
-<%--                                type="number"--%>
-<%--                                name="price"--%>
-<%--                                class="form-control"--%>
-<%--                                step="1000"--%>
-<%--                                min="${auction.currentPrice + auction.minIncrement}"--%>
-<%--                                required>--%>
+                        <input
+                                type="number"
+                                name="price"
+                                class="form-control"
+                                step="1000"
+                                min="${auction.currentPrice + auction.minIncrement}"
+                                required>
 
-<%--                    </div>--%>
+                    </div>
 
-<%--                    <button--%>
-<%--                            class="btn btn-danger mt-2">--%>
+                    <button
+                            class="btn btn-danger mt-2">
 
-<%--                        Đấu giá--%>
+                        Đấu giá
 
-<%--                    </button>--%>
+                    </button>
 
-<%--                </form>--%>
+                </form>
 
-<%--            </c:if>--%>
+            </c:if>
 
-<%--            <p>--%>
-<%--                <b>Giá khởi điểm:</b>--%>
-<%--                ${auction.startPrice} đ--%>
-<%--            </p>--%>
+            <p>
+                <b>Giá khởi điểm:</b>
+                ${auction.startPrice} đ
+            </p>
 
-<%--            <p>--%>
-<%--                <b>Bước giá:</b>--%>
-<%--                ${auction.minIncrement} đ--%>
-<%--            </p>--%>
+            <p>
+                <b>Bước giá:</b>
+                ${auction.minIncrement} đ
+            </p>
 
-<%--            <p>--%>
-<%--                <b>Bắt đầu:</b>--%>
-<%--                ${auction.startTime}--%>
-<%--            </p>--%>
+            <p>
+                <b>Bắt đầu:</b>
+                ${auction.startTime}
+            </p>
 
-<%--            <p>--%>
-<%--                <b>Kết thúc:</b>--%>
-<%--                ${auction.endTime}--%>
-<%--            </p>--%>
+            <p>
+                <b>Kết thúc:</b>
+                ${auction.endTime}
+            </p>
 
-<%--            <c:choose>--%>
+            <c:choose>
 
-<%--                <c:when test="${auction.status == 'RUNNING'}">--%>
+                <c:when test="${auction.status == 'RUNNING'}">
 
-<%--                    <span class="badge badge-success p-2">--%>
-<%--                        Đang diễn ra--%>
-<%--                    </span>--%>
+                    <span class="badge badge-success p-2">
+                        Đang diễn ra
+                    </span>
 
-<%--                </c:when>--%>
+                </c:when>
 
-<%--                <c:when test="${auction.status == 'WAITING'}">--%>
+                <c:when test="${auction.status == 'WAITING'}">
 
-<%--                    <span class="badge badge-warning p-2">--%>
-<%--                        Chưa bắt đầu--%>
-<%--                    </span>--%>
+                    <span class="badge badge-warning p-2">
+                        Chưa bắt đầu
+                    </span>
 
-<%--                </c:when>--%>
+                </c:when>
 
-<%--                <c:otherwise>--%>
+                <c:otherwise>
 
-<%--                    <span class="badge badge-danger p-2">--%>
-<%--                        Đã kết thúc--%>
-<%--                    </span>--%>
+                    <span class="badge badge-danger p-2">
+                        Đã kết thúc
+                    </span>
 
-<%--                </c:otherwise>--%>
+                </c:otherwise>
 
-<%--            </c:choose>--%>
+            </c:choose>
 
-<%--            <hr>--%>
+            <hr>
 
-<%--            <!-- Giai đoạn 7 sẽ submit vào đây -->--%>
-<%--            <form action="${pageContext.request.contextPath}/auction/bid"--%>
-<%--                  method="post">--%>
+            <!-- Giai đoạn 7 sẽ submit vào đây -->
+            <form action="${pageContext.request.contextPath}/auction/bid"
+                  method="post">
 
-<%--                <input type="hidden"--%>
-<%--                       name="auctionId"--%>
-<%--                       value="${auction.id}">--%>
+                <input type="hidden"
+                       name="auctionId"
+                       value="${auction.id}">
 
-<%--                <div class="form-group">--%>
+                <div class="form-group">
 
-<%--                    <label>Nhập giá đấu</label>--%>
+                    <label>Nhập giá đấu</label>
 
-<%--                    <input--%>
-<%--                            type="number"--%>
-<%--                            class="form-control"--%>
-<%--                            name="price"--%>
-<%--                            min="${auction.currentPrice + auction.minIncrement}"--%>
-<%--                            required>--%>
+                    <input
+                            type="number"
+                            class="form-control"
+                            name="price"
+                            min="${auction.currentPrice + auction.minIncrement}"
+                            required>
 
-<%--                </div>--%>
+                </div>
 
-<%--                <button class="btn btn-danger">--%>
+                <button class="btn btn-danger">
 
-<%--                    Đặt giá--%>
+                    Đặt giá
 
-<%--                </button>--%>
+                </button>
 
-<%--            </form>--%>
+            </form>
 
-<%--        </div>--%>
+        </div>
 
-<%--    </div>--%>
+    </div>
 
-<%--    <hr class="mt-5">--%>
+    <hr class="mt-5">
 
-<%--    <h3>Lịch sử đấu giá</h3>--%>
+    <h3>Lịch sử đấu giá</h3>
 
-<%--    <table class="table table-bordered table-hover mt-3">--%>
+    <table class="table table-bordered table-hover mt-3">
 
-<%--        <thead class="thead-dark">--%>
+        <thead class="thead-dark">
 
-<%--        <tr>--%>
+        <tr>
 
-<%--            <th>Người đấu</th>--%>
+            <th>Người đấu</th>
 
-<%--            <th>Giá</th>--%>
+            <th>Giá</th>
 
-<%--            <th>Thời gian</th>--%>
+            <th>Thời gian</th>
 
-<%--        </tr>--%>
+        </tr>
 
-<%--        </thead>--%>
+        </thead>
 
-<%--        <tbody>--%>
+        <tbody>
 
-<%--        <c:forEach items="${bidHistory}" var="bid">--%>
+        <c:forEach items="${bidHistory}" var="bid">
 
-<%--            <tr>--%>
+            <tr>
 
-<%--                <td>--%>
+                <td>
 
-<%--                        ${bid.customer.firstName}--%>
-<%--                        ${bid.customer.lastName}--%>
+                        ${bid.customer.firstName}
+                        ${bid.customer.lastName}
 
-<%--                </td>--%>
+                </td>
 
-<%--                <td class="text-danger">--%>
+                <td class="text-danger">
 
-<%--                        ${bid.bidPrice} đ--%>
+                        ${bid.bidPrice} đ
 
-<%--                </td>--%>
+                </td>
 
-<%--                <td>--%>
+                <td>
 
-<%--                        ${bid.bidTime}--%>
+                        ${bid.bidTime}
 
-<%--                </td>--%>
+                </td>
 
-<%--            </tr>--%>
+            </tr>
 
-<%--        </c:forEach>--%>
+        </c:forEach>
 
-<%--        <c:if test="${empty bidHistory}">--%>
+        <c:if test="${empty bidHistory}">
 
-<%--            <tr>--%>
+            <tr>
 
-<%--                <td colspan="3" class="text-center">--%>
+                <td colspan="3" class="text-center">
 
-<%--                    Chưa có ai đấu giá--%>
+                    Chưa có ai đấu giá
 
-<%--                </td>--%>
+                </td>
 
-<%--            </tr>--%>
+            </tr>
 
-<%--        </c:if>--%>
+        </c:if>
 
-<%--        </tbody>--%>
+        </tbody>
 
-<%--    </table>--%>
+    </table>
 
-<%--</div>--%>
+</div>
 
-<%--<%@include file="/common/web/footer.jsp"%>--%>
+<%@include file="/common/web/footer.jsp"%>
 
-<%--</body>--%>
-<%--</html>--%>
+</body>
+</html>

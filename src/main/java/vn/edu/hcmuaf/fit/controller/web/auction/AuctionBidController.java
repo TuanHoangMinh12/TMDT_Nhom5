@@ -65,4 +65,9 @@ public class AuctionBidController extends HttpServlet {
         }
 
     }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        System.out.println("===== AuctionBidController Loaded =====");
+    }
 }

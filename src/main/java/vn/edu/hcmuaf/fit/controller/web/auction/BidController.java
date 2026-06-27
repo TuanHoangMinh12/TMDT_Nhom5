@@ -9,7 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/auction/bid")
+@WebServlet("/auction/bid-old")
 public class BidController extends HttpServlet {
 
     private IAuctionService auctionService = new AuctionService();

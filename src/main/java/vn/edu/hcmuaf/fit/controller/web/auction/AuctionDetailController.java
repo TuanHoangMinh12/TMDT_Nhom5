@@ -42,4 +42,9 @@ public class AuctionDetailController extends HttpServlet {
                 .forward(request,response);
 
     }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        System.out.println("===== AuctionBidController Loaded =====");
+    }
 }
