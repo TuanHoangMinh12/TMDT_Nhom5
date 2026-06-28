@@ -228,19 +228,56 @@ public class AuctionDAO implements IAuctionDAO {
     public void finishExpiredAuction() {
 
         String sql =
-                "UPDATE auction " +
-                        "SET status='FINISHED' " +
+                "SELECT id " +
+                        "FROM auction " +
                         "WHERE status='OPEN' " +
-                        "AND end_time <= NOW()";
+                        "AND end_time<=NOW()";
 
-        try (
+        try(
                 Connection conn = JDBCConnector.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
+        ){
 
-            ps.executeUpdate();
+            while(rs.next()){
 
-        } catch (Exception e) {
+                int auctionId = rs.getInt("id");
+
+                AuctionBidModel highest =
+                        new AuctionBidDAO().findHighestBid(auctionId);
+
+                if(highest!=null){
+
+                    String update =
+                            "UPDATE auction " +
+                                    "SET status='FINISHED'," +
+                                    "winner_id=?," +
+                                    "current_price=? " +
+                                    "WHERE id=?";
+
+                    PreparedStatement ps2 =
+                            conn.prepareStatement(update);
+
+                    ps2.setInt(1, highest.getUserId());
+                    ps2.setDouble(2, highest.getBidPrice());
+                    ps2.setInt(3, auctionId);
+
+                    ps2.executeUpdate();
+
+                }else{
+
+                    PreparedStatement ps2 =
+                            conn.prepareStatement(
+                                    "UPDATE auction SET status='FINISHED' WHERE id=?");
+
+                    ps2.setInt(1, auctionId);
+
+                    ps2.executeUpdate();
+                }
+
+            }
+
+        }catch(Exception e){
             e.printStackTrace();
         }
     }

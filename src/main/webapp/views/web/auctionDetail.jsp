@@ -72,7 +72,25 @@
                     <th>Trạng thái</th>
                     <td>${auction.status}</td>
                 </tr>
+                <c:if test="${auction.status=='FINISHED'}">
 
+                    <div class="alert alert-success mt-3">
+
+                        <h5>Phiên đấu giá đã kết thúc</h5>
+
+                        <p>
+                            Người thắng:
+                            <b>${auction.winnerName}</b>
+                        </p>
+
+                        <p>
+                            Giá thắng:
+                            <b>${auction.currentPrice} đ</b>
+                        </p>
+
+                    </div>
+
+                </c:if>
             </table>
 
             <c:if test="${not empty param.message}">
