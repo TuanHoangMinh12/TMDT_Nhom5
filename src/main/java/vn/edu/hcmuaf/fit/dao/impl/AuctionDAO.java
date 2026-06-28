@@ -193,6 +193,7 @@ public class AuctionDAO implements IAuctionDAO {
      * JOIN với book để lấy tên sách, JOIN với customer để lấy tên người thắng.
      * Admin dùng để xem toàn bộ danh sách.
      */
+    @Override
     public List<AuctionModel> getAllAuctions() {
         List<AuctionModel> list = new ArrayList<>();
         // Đếm tổng bid bằng subquery để tránh GROUP BY phức tạp
@@ -226,6 +227,7 @@ public class AuctionDAO implements IAuctionDAO {
      * Tìm một phiên đấu giá theo ID.
      * Dùng khi mở trang chi tiết phiên trong trang admin
      */
+    @Override
     public AuctionModel findById2(int id) {
         String sql =
                 "SELECT a.*, b.name AS book_name, " +
@@ -261,6 +263,7 @@ public class AuctionDAO implements IAuctionDAO {
      *
      * @return số dòng bị ảnh hưởng (1 = thành công, 0 = thất bại)
      */
+    @Override
     public int createAuction(int bookId, double startPrice, double minIncrement,
                              Timestamp startTime, Timestamp endTime) {
         String sql =
@@ -288,6 +291,7 @@ public class AuctionDAO implements IAuctionDAO {
      * CẬP NHẬT thông tin phiên đấu giá.
      * Chỉ cho phép sửa khi phiên vẫn đang ở trạng thái WAITING.
      */
+    @Override
     public int updateAuction(int id, double startPrice, double minIncrement,
                              Timestamp startTime, Timestamp endTime) {
         // Điều kiện AND status='WAITING' giúp tránh sửa phiên đang chạy
@@ -432,6 +436,61 @@ public class AuctionDAO implements IAuctionDAO {
         }
     }
 
+    // PHẦN 4 - THỐNG KÊ (Statistics)
+    /**
+     * Tổng doanh thu từ các phiên đã thanh toán (status = PAID).
+     */
+    @Override
+    public double getTotalRevenue() {
+        String sql = "SELECT COALESCE(SUM(current_price), 0) FROM auctions WHERE status='PAID'";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll(con, ps, rs);
+        }
+        return 0.0;
+    }
+
+    /**
+     * Đếm phiên theo từng trạng thái.
+     * Trả về mảng int[4]: [WAITING, ACTIVE, FINISHED, PAID]
+     */
+    @Override
+    public int[] countByStatus() {
+        int[] counts = {0, 0, 0, 0};
+        String sql = "SELECT status, COUNT(*) AS cnt FROM auctions GROUP BY status";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String status = rs.getString("status");
+                int cnt = rs.getInt("cnt");
+                if      ("WAITING" .equals(status)) counts[0] = cnt;
+                else if ("ACTIVE"  .equals(status)) counts[1] = cnt;
+                else if ("FINISHED".equals(status)) counts[2] = cnt;
+                else if ("PAID"    .equals(status)) counts[3] = cnt;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeAll(con, ps, rs);
+        }
+        return counts;
+    }
+
+
     // Các hàm bổ sung
     /** Đọc một dòng ResultSet -> AuctionModel */
     private AuctionModel mapRowToAuction(ResultSet rs) throws SQLException {
@@ -455,19 +514,6 @@ public class AuctionDAO implements IAuctionDAO {
         a.setWinnerEmail(rs.getString("winner_email"));
         a.setTotalBids(rs.getInt("total_bids"));
         return a;
-    }
-
-    /** Đọc một dòng ResultSet -> AuctionBidModel */
-    private AuctionBidModel mapRowToBid(ResultSet rs) throws SQLException {
-        AuctionBidModel b = new AuctionBidModel();
-        b.setId(rs.getInt("id"));
-        b.setAuctionId(rs.getInt("auction_id"));
-        b.setUserId(rs.getInt("user_id"));
-        b.setBidPrice(rs.getDouble("bid_p3bnkrice"));
-        b.setBidTime(rs.getTimestamp("bid_time"));
-        b.setUserName(rs.getString("user_name"));
-        b.setUserEmail(rs.getString("user_email"));
-        return b;
     }
 
     /** Đóng Connection, PreparedStatement, ResultSet an toàn */

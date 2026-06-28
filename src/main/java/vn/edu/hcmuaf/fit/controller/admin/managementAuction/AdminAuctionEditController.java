@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,7 @@ import java.text.SimpleDateFormat;
 @WebServlet(name = "admin-auction-edit", value = "/admin-auction-edit")
 public class AdminAuctionEditController extends HttpServlet {
 
-    private AuctionDAO auctionDAO = new AuctionDAO();
+    private AuctionService auctionService = new AuctionService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,7 +39,7 @@ public class AdminAuctionEditController extends HttpServlet {
         }
 
         int id = Integer.parseInt(idStr);
-        AuctionModel auction = auctionDAO.findById(id);
+        AuctionModel auction = auctionService.findById(id);
 
         if (auction == null) {
             response.sendRedirect(request.getContextPath() +
@@ -72,7 +73,7 @@ public class AdminAuctionEditController extends HttpServlet {
 
         if ("delete".equals(action)) {
             // ===== XÓA phiên =====
-            int result = auctionDAO.deleteAuction(id);
+            int result = auctionService.deleteAuction(id);
             if (result > 0) {
                 response.sendRedirect(request.getContextPath() +
                     "/admin-auction-list?message=Xóa phiên đấu giá thành công!&alert=success");
@@ -100,7 +101,7 @@ public class AdminAuctionEditController extends HttpServlet {
                     return;
                 }
 
-                int result = auctionDAO.updateAuction(id, startPrice, minIncrement, startTime, endTime);
+                int result = auctionService.updateAuction(id, startPrice, minIncrement, startTime, endTime);
                 if (result > 0) {
                     response.sendRedirect(request.getContextPath() +
                         "/admin-auction-list?message=Cập nhật phiên đấu giá thành công!&alert=success");

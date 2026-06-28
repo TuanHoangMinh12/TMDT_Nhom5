@@ -21,6 +21,10 @@ public class AuctionBidModel {
     // Hiển thị thông tin người đặt
     private CustomerModel customer;
 
+    // Tuấn làm
+    private String userName;
+    private String userEmail;   // Dùng để phát hiện spam
+
     public AuctionBidModel() {
     }
 
@@ -77,6 +81,13 @@ public class AuctionBidModel {
     public void setCustomer(CustomerModel customer) {
         this.customer = customer;
     }
+
+    // Tuấn làm
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
+
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
     @Override
     public String toString() {

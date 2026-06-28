@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ import java.util.List;
 @WebServlet(name = "admin-auction-list", value = "/admin-auction-list")
 public class AdminAuctionListController extends HttpServlet {
 
-    private AuctionDAO auctionDAO = new AuctionDAO();
+    private AuctionService auctionService = new AuctionService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,13 +32,13 @@ public class AdminAuctionListController extends HttpServlet {
         response.setCharacterEncoding("utf-8");
 
         // Bước 1: Đồng bộ status theo thời gian thực (WAITING->ACTIVE->FINISHED)
-        auctionDAO.syncAuctionStatus();
+        auctionService.syncAuctionStatus();
 
         // Bước 2: Lấy danh sách tất cả phiên
-        List<AuctionModel> listAuction = auctionDAO.getAllAuctions();
+        List<AuctionModel> listAuction = auctionService.getAllAuctions();
 
         // Bước 3: Đếm theo từng trạng thái để hiển thị thống kê nhanh
-        int[] counts = auctionDAO.countByStatus();
+        int[] counts = auctionService.countByStatus();
         // counts[0]=WAITING, [1]=ACTIVE, [2]=FINISHED, [3]=PAID
 
         // Bước 4: Đặt attribute và forward sang JSP

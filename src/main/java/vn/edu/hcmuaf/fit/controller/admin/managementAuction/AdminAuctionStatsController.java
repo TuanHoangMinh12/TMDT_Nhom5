@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ import java.util.List;
 @WebServlet(name = "admin-auction-stats", value = "/admin-auction-stats")
 public class AdminAuctionStatsController extends HttpServlet {
 
-    private AuctionDAO auctionDAO = new AuctionDAO();
+    private AuctionService auctionService = new AuctionService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,13 +32,13 @@ public class AdminAuctionStatsController extends HttpServlet {
         response.setCharacterEncoding("utf-8");
 
         // Sync status trước
-        auctionDAO.syncAuctionStatus();
+        auctionService.syncAuctionStatus();
 
         // Lấy dữ liệu thống kê
-        double totalRevenue   = auctionDAO.getTotalRevenue();
-        int[]  countByStatus  = auctionDAO.countByStatus();
+        double totalRevenue   = auctionService.getTotalRevenue();
+        int[]  countByStatus  = auctionService.countByStatus();
         // Danh sách phiên
-        List<AuctionModel> allAuctions = auctionDAO.getAllAuctions();
+        List<AuctionModel> allAuctions = auctionService.getAllAuctions();
 
         request.setAttribute("title",           "Thống Kê Đấu Giá");
         request.setAttribute("totalRevenue",    totalRevenue);

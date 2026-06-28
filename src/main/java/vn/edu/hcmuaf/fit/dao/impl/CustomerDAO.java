@@ -625,6 +625,7 @@ CustomerDAO implements ICustomerDAO {
     }
 
     // Chức năng cho phần đấu giá (Tuấn làm)
+    // PHẦN 5 - KHÓA / MỞ KHÓA TÀI KHOẢN
 
     // Khóa tài khoản
     public int lockUser(int userId) {

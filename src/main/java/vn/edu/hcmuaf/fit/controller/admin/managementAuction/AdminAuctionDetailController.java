@@ -1,8 +1,11 @@
 package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
+import vn.edu.hcmuaf.fit.dao.impl.AuctionBidDAO;
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
+import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;
 import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +27,9 @@ import java.util.List;
 public class AdminAuctionDetailController extends HttpServlet {
 
     private AuctionDAO auctionDAO = new AuctionDAO();
+    private AuctionBidDAO bidDAO = new AuctionBidDAO();
+    private CustomerDAO customerDAO = new CustomerDAO();
+    private AuctionService auctionService = new AuctionService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +58,7 @@ public class AdminAuctionDetailController extends HttpServlet {
         }
 
         // Lấy danh sách lịch sử bid của phiên này
-        List<AuctionBidModel> bidHistory = auctionDAO.getBidsByAuctionId(id);
+        List<AuctionBidModel> bidHistory = bidDAO.findByAuctionId(id);
 
         // Nhận message từ redirect
         String message = request.getParameter("message");
@@ -93,24 +99,13 @@ public class AdminAuctionDetailController extends HttpServlet {
                     return;
                 }
                 // Tìm người thắng và cập nhật DB
-                boolean ok = auctionDAO.finalizeAuction(auctionId);
+                boolean ok = auctionService.finalizeAndNotify(auctionId);
                 if (ok) {
-                    // Lấy lại thông tin auction sau khi chốt (để có winner_id, current_price)
-                    AuctionModel updated = auctionDAO.findById(auctionId);
-                    if (updated != null && updated.getWinnerId() != null) {
-                        // Gửi thông báo cho tất cả người tham gia
-                        auctionDAO.sendNotificationsAfterFinalize(
-                            auctionId,
-                            updated.getWinnerId(),
-                            updated.getBookName(),
-                            updated.getCurrentPrice()
-                        );
-                    }
                     response.sendRedirect(redirect +
-                        "&message=Chốt phiên thành công! Thông báo đã được gửi đến người tham gia.&alert=success");
+                            "&message=Chốt phiên thành công! Thông báo đã được gửi đến người tham gia.&alert=success");
                 } else {
                     response.sendRedirect(redirect +
-                        "&message=Chốt phiên thất bại!&alert=danger");
+                            "&message=Chốt phiên thất bại!&alert=danger");
                 }
                 break;
 
@@ -129,7 +124,7 @@ public class AdminAuctionDetailController extends HttpServlet {
             case "lockUser":
                 // ===== KHÓA TÀI KHOẢN =====
                 int userId = Integer.parseInt(request.getParameter("userId"));
-                int lockResult = auctionDAO.lockUser(userId);
+                int lockResult = customerDAO.lockUser(userId);
                 if (lockResult > 0) {
                     response.sendRedirect(redirect +
                         "&message=Đã khóa tài khoản người dùng #" + userId + "!&alert=success");
@@ -142,7 +137,7 @@ public class AdminAuctionDetailController extends HttpServlet {
             case "unlockUser":
                 // ===== MỞ KHÓA TÀI KHOẢN =====
                 int unlockId = Integer.parseInt(request.getParameter("userId"));
-                int unlockResult = auctionDAO.unlockUser(unlockId);
+                int unlockResult = customerDAO.unlockUser(unlockId);
                 if (unlockResult > 0) {
                     response.sendRedirect(redirect +
                         "&message=Đã mở khóa tài khoản người dùng #" + unlockId + "!&alert=success");

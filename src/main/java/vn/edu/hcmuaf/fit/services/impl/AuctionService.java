@@ -1,5 +1,8 @@
 package vn.edu.hcmuaf.fit.services.impl;
 
+import vn.edu.hcmuaf.fit.dao.IAuctionBidDAO;
+import vn.edu.hcmuaf.fit.dao.IAuctionDAO;
+import vn.edu.hcmuaf.fit.dao.IAuctionNotificationDAO;
 import vn.edu.hcmuaf.fit.dao.impl.AuctionBidDAO;
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.dao.impl.AuctionNotificationDAO;
@@ -12,9 +15,9 @@ import java.util.List;
 
 public class AuctionService implements IAuctionService {
 
-    private final AuctionDAO auctionDAO = new AuctionDAO();
-    private final AuctionBidDAO bidDAO = new AuctionBidDAO();
-    private final AuctionNotificationDAO notificationDAO = new AuctionNotificationDAO();
+    IAuctionDAO auctionDAO = new AuctionDAO();
+    IAuctionBidDAO bidDAO = new AuctionBidDAO();
+    IAuctionNotificationDAO notificationDAO = new AuctionNotificationDAO();
 
     @Override
     public List<AuctionModel> getAllAuction() {
@@ -66,6 +69,49 @@ public class AuctionService implements IAuctionService {
     }
 
     // Tuấn làm
+
+    @Override
+    public void syncAuctionStatus() {
+        auctionDAO.syncAuctionStatus();
+    }
+    @Override
+    public List<AuctionModel> getAllAuctions() {
+        return auctionDAO.getAllAuctions();
+    }
+    @Override
+    public int[] countByStatus() {
+        return auctionDAO.countByStatus();
+    }
+
+    @Override
+    public double getTotalRevenue() {
+        return auctionDAO.getTotalRevenue();
+    }
+
+    @Override
+    public int createAuction(int bookId, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime) {
+        return auctionDAO.createAuction(bookId, startPrice, minIncrement, startTime, endTime);
+    }
+    @Override
+    public int updateAuction(int id, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime) {
+        return auctionDAO.updateAuction(id, startPrice, minIncrement, startTime, endTime);
+    }
+
+    @Override
+    public int deleteAuction(int id) {
+        return auctionDAO.deleteAuction(id);
+    }
+
+    @Override
+    public int updateStatus(int id, String newStatus) {
+        return auctionDAO.updateStatus(id, newStatus);
+    }
+
+    // Bọc thêm hàm của BidDAO để Controller gọi được Lịch sử
+    @Override
+    public List<AuctionBidModel> getBidsByAuctionId(int auctionId) {
+        return bidDAO.findByAuctionId(auctionId);
+    }
 
     // Hàm chốt phiên và tự động gửi thông báo cho tất cả những người tham gia
     public boolean finalizeAndNotify(int auctionId) {
