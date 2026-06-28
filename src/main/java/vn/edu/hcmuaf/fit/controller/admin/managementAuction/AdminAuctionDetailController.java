@@ -5,8 +5,12 @@ import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;
 import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.IAuctionService;
+import vn.edu.hcmuaf.fit.services.ICustomerService;
 import vn.edu.hcmuaf.fit.services.impl.AuctionService;
+import vn.edu.hcmuaf.fit.services.impl.CustomerService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,11 +29,10 @@ import java.util.List;
  */
 @WebServlet(name = "admin-auction-detail", value = "/admin-auction-detail")
 public class AdminAuctionDetailController extends HttpServlet {
-
-    private AuctionDAO auctionDAO = new AuctionDAO();
-    private AuctionBidDAO bidDAO = new AuctionBidDAO();
-    private CustomerDAO customerDAO = new CustomerDAO();
-    private AuctionService auctionService = new AuctionService();
+    @Inject
+    IAuctionService auctionService;
+    @Inject
+    ICustomerService customerService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +42,7 @@ public class AdminAuctionDetailController extends HttpServlet {
         response.setCharacterEncoding("utf-8");
 
         // Sync trạng thái trước khi hiển thị
-        auctionDAO.syncAuctionStatus();
+        auctionService.syncAuctionStatus();
 
         String idStr = request.getParameter("id");
         if (idStr == null) {
@@ -47,10 +50,10 @@ public class AdminAuctionDetailController extends HttpServlet {
             return;
         }
 
-        int id = Integer.parseInt(idStr);
+        int auctionId = Integer.parseInt(idStr);
 
         // Lấy thông tin phiên đấu giá
-        AuctionModel auction = auctionDAO.findById(id);
+        AuctionModel auction = auctionService.findById2(auctionId);
         if (auction == null) {
             response.sendRedirect(request.getContextPath() +
                 "/admin-auction-list?message=Không tìm thấy phiên!&alert=danger");
@@ -58,7 +61,7 @@ public class AdminAuctionDetailController extends HttpServlet {
         }
 
         // Lấy danh sách lịch sử bid của phiên này
-        List<AuctionBidModel> bidHistory = bidDAO.findByAuctionId(id);
+        List<AuctionBidModel> bidHistory = auctionService.getBidsByAuctionId(auctionId);
 
         // Nhận message từ redirect
         String message = request.getParameter("message");
@@ -92,7 +95,7 @@ public class AdminAuctionDetailController extends HttpServlet {
             case "finalize":
                 // ===== CHỐT PHIÊN =====
                 // Chỉ chốt được phiên đã FINISHED
-                AuctionModel auction = auctionDAO.findById(auctionId);
+                AuctionModel auction = auctionService.findById2(auctionId);
                 if (auction == null || !"FINISHED".equals(auction.getStatus())) {
                     response.sendRedirect(redirect +
                         "&message=Chỉ chốt được phiên đã kết thúc!&alert=warning");
@@ -111,7 +114,7 @@ public class AdminAuctionDetailController extends HttpServlet {
 
             case "markPaid":
                 // ===== ĐÁNH DẤU ĐÃ THANH TOÁN (FINISHED -> PAID) =====
-                int r = auctionDAO.updateStatus(auctionId, "PAID");
+                int r = auctionService.updateStatus(auctionId, "PAID");
                 if (r > 0) {
                     response.sendRedirect(redirect +
                         "&message=Đã cập nhật trạng thái PAID thành công!&alert=success");
@@ -124,7 +127,7 @@ public class AdminAuctionDetailController extends HttpServlet {
             case "lockUser":
                 // ===== KHÓA TÀI KHOẢN =====
                 int userId = Integer.parseInt(request.getParameter("userId"));
-                int lockResult = customerDAO.lockUser(userId);
+                int lockResult = customerService.lockUser(userId);
                 if (lockResult > 0) {
                     response.sendRedirect(redirect +
                         "&message=Đã khóa tài khoản người dùng #" + userId + "!&alert=success");
@@ -137,7 +140,7 @@ public class AdminAuctionDetailController extends HttpServlet {
             case "unlockUser":
                 // ===== MỞ KHÓA TÀI KHOẢN =====
                 int unlockId = Integer.parseInt(request.getParameter("userId"));
-                int unlockResult = customerDAO.unlockUser(unlockId);
+                int unlockResult = customerService.unlockUser(unlockId);
                 if (unlockResult > 0) {
                     response.sendRedirect(redirect +
                         "&message=Đã mở khóa tài khoản người dùng #" + unlockId + "!&alert=success");

@@ -2,8 +2,10 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.IAuctionService;
 import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +25,8 @@ import java.text.SimpleDateFormat;
 @WebServlet(name = "admin-auction-edit", value = "/admin-auction-edit")
 public class AdminAuctionEditController extends HttpServlet {
 
-    private AuctionService auctionService = new AuctionService();
+    @Inject
+    IAuctionService auctionService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +42,7 @@ public class AdminAuctionEditController extends HttpServlet {
         }
 
         int id = Integer.parseInt(idStr);
-        AuctionModel auction = auctionService.findById(id);
+        AuctionModel auction = auctionService.findById2(id);
 
         if (auction == null) {
             response.sendRedirect(request.getContextPath() +

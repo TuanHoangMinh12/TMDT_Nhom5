@@ -22,7 +22,7 @@ public interface IAuctionDAO {
 
     // Tuấn làm
     List<AuctionModel> getAllAuctions();
-    public AuctionModel findById2(int id);
+    AuctionModel findById2(int id);
     int createAuction(int bookId, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime);
     int updateAuction(int id, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime);
     int deleteAuction(int id); // Xóa phiên đấu giá

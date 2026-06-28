@@ -99,7 +99,7 @@
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                         <tr>
-                            <th>#</th>
+                            <th>STT</th>
                             <th>Sách</th>
                             <th>Giá khởi điểm</th>
                             <th>Giá hiện tại</th>
@@ -117,7 +117,7 @@
                                 <td>${a.id}</td>
                                 <td>
                                     <c:if test="${not empty a.bookImage}">
-                                        <img src="${pageContext.request.contextPath}/templates/images/${a.bookImage}"
+                                        <img src="${pageContext.request.contextPath}${a.bookImage}"
                                              width="40" height="50"
                                              style="object-fit:cover; margin-right:6px; border-radius:3px;">
                                     </c:if>

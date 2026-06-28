@@ -16,21 +16,29 @@ public interface IAuctionService {
 
 
     // Tuấn làm
-     void syncAuctionStatus();
-
     List<AuctionModel> getAllAuctions();
 
-    int[] countByStatus();
-
-    double getTotalRevenue();
+    AuctionModel findById2(int id);
 
     int createAuction(int bookId, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime);
 
     int updateAuction(int id, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime);
 
-    int deleteAuction(int id);
+    int deleteAuction(int id); // Xóa phiên đấu giá
 
-    int updateStatus(int id, String newStatus);
+    int updateStatus(int id, String newStatus);  // Cập nhật STAđTUS của phiên ấu giá
+
+    boolean finalizeAuction(int auctionId); // Chốt phiên đấu giá
+
+    void syncAuctionStatus();     // TỰ độNG đồng bộ trạng thái phiên dựa theo thời gian thực
+
+    public double getTotalRevenue();
+
+    int[] countByStatus();
+
     List<AuctionBidModel> getBidsByAuctionId(int auctionId);
 
+    boolean finalizeAndNotify(int auctionId);
 }
+
+

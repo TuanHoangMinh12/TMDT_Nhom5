@@ -3,10 +3,13 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.dao.impl.BookManagementDAO;
 import vn.edu.hcmuaf.fit.model.BookManagementModel;
+import vn.edu.hcmuaf.fit.services.IAuctionService;
+import vn.edu.hcmuaf.fit.services.IBookManagementService;
 import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 import vn.edu.hcmuaf.fit.services.impl.BookManagementService;
 import vn.edu.hcmuaf.fit.utils.MessageParameterUntil;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +28,10 @@ import java.util.List;
 @WebServlet(name = "admin-auction-create", value = "/admin-auction-create")
 public class AdminAuctionCreateController extends HttpServlet {
 
-    private AuctionService auctionService = new AuctionService();
-    private BookManagementService bookManagementService = new BookManagementService();
+    @Inject
+    IAuctionService auctionService;
+    @Inject
+    IBookManagementService bookManagementService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,10 +41,9 @@ public class AdminAuctionCreateController extends HttpServlet {
         response.setCharacterEncoding("utf-8");
 
         // Lấy danh sách sách để đưa vào dropdown chọn sách
-        List<BookManagementModel> listBook = bookManagementService.findAll();
 
         request.setAttribute("title", "Quản Lý Đấu Giá");
-        request.setAttribute("listBook", listBook);
+        request.setAttribute("listBook", bookManagementService.findAll());
 
         request.getRequestDispatcher("views/admin/auction-form.jsp")
                .forward(request, response);
@@ -62,8 +66,7 @@ public class AdminAuctionCreateController extends HttpServlet {
 
             // Validate: giá khởi điểm phải > 0
             if (startPrice <= 0 || minIncrement <= 0) {
-                List<BookManagementModel> listBook = bookManagementService.findAll();
-                request.setAttribute("listBook", listBook);
+                request.setAttribute("listBook", bookManagementService.findAll());
                 new MessageParameterUntil(
                     "Giá khởi điểm và bước giá phải lớn hơn 0!", "danger",
                     "views/admin/auction-form.jsp", request, response
@@ -78,8 +81,7 @@ public class AdminAuctionCreateController extends HttpServlet {
 
             // Validate: thời gian kết thúc phải sau thời gian bắt đầu
             if (!endTime.after(startTime)) {
-                List<BookManagementModel> listBook = bookManagementService.findAll();
-                request.setAttribute("listBook", listBook);
+                request.setAttribute("listBook", bookManagementService.findAll());
                 new MessageParameterUntil(
                     "Thời gian kết thúc phải sau thời gian bắt đầu!", "danger",
                     "views/admin/auction-form.jsp", request, response
@@ -95,8 +97,7 @@ public class AdminAuctionCreateController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() +
                     "/admin-auction-list?message=Tạo phiên đấu giá thành công!&alert=success");
             } else {
-                List<BookManagementModel> listBook = bookManagementService.findAll();
-                request.setAttribute("listBook", listBook);
+                request.setAttribute("listBook", bookManagementService.findAll());
                 new MessageParameterUntil(
                     "Tạo phiên thất bại! Vui lòng thử lại.", "danger",
                     "views/admin/auction-form.jsp", request, response

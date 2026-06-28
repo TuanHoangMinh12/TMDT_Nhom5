@@ -351,7 +351,7 @@ CustomerDAO implements ICustomerDAO {
     @Override
     public List<CustomerModel> findAllCustomer() {
 
-        String sql = new String("SELECT c.id_user, CONCAT(c.first_name,' ',c.last_name) AS full_name, c.phone, c.address, IFNULL(COUNT(b.id_user), 0) AS total_bill, c.first_name, c.last_name, c.email, c.created_time\n" +
+        String sql = new String("SELECT c.id_user, CONCAT(c.first_name,' ',c.last_name) AS full_name, c.phone, c.address, IFNULL(COUNT(b.id_user), 0) AS total_bill, c.first_name, c.last_name, c.email, c.created_time, c.status\n" +
                 "FROM customer c\n" +
                 "LEFT JOIN bill b ON c.id_user = b.id_user\n" +
                 "WHERE c.role = 'user'\n" +
@@ -374,6 +374,8 @@ CustomerDAO implements ICustomerDAO {
                 customerModel.setLastName(resultSet.getString(7));
                 customerModel.setEmail(resultSet.getString(8));
                 customerModel.setCreatedTime(resultSet.getTimestamp(9));
+                customerModel.setStatus(resultSet.getInt(10));
+
                 users.add(customerModel);
             }
             return users;
@@ -628,8 +630,9 @@ CustomerDAO implements ICustomerDAO {
     // PHẦN 5 - KHÓA / MỞ KHÓA TÀI KHOẢN
 
     // Khóa tài khoản
+    @Override
     public int lockUser(int userId) {
-        String sql = "UPDATE customer SET status=0 WHERE id_user=?";
+        String sql = "UPDATE customer SET status=2 WHERE id_user=?";
         try (Connection con = JDBCConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -641,6 +644,7 @@ CustomerDAO implements ICustomerDAO {
     }
 
     // Mở khóa tài khoản
+    @Override
     public int unlockUser(int userId) {
         String sql = "UPDATE customer SET status=1 WHERE id_user=?";
         try (Connection con = JDBCConnector.getConnection();
@@ -650,6 +654,20 @@ CustomerDAO implements ICustomerDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    // Xóa khách hàng
+    @Override
+    public int deleteUser(int userId) {
+        String sql = "DELETE FROM customer WHERE id_user=?";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0; // Lỗi (Thường do dính khóa ngoại ở bảng Hóa đơn/Đấu giá)
         }
     }
 }

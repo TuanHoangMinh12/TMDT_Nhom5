@@ -57,7 +57,7 @@
             <div class="tile book-info-card">
                 <%-- Ảnh sách --%>
                 <c:if test="${not empty auction.bookImage}">
-                    <img src="${pageContext.request.contextPath}/templates/images/${auction.bookImage}"
+                    <img src="${pageContext.request.contextPath}${auction.bookImage}"
                          alt="${auction.bookName}">
                 </c:if>
                 <c:if test="${empty auction.bookImage}">

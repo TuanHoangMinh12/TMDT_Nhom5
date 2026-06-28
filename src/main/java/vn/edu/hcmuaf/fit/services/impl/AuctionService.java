@@ -78,6 +78,12 @@ public class AuctionService implements IAuctionService {
     public List<AuctionModel> getAllAuctions() {
         return auctionDAO.getAllAuctions();
     }
+
+    @Override
+    public AuctionModel findById2(int id) {
+        return auctionDAO.findById2(id);
+    }
+
     @Override
     public int[] countByStatus() {
         return auctionDAO.countByStatus();
@@ -107,6 +113,11 @@ public class AuctionService implements IAuctionService {
         return auctionDAO.updateStatus(id, newStatus);
     }
 
+    @Override
+    public boolean finalizeAuction(int auctionId) {
+        return false;
+    }
+
     // Bọc thêm hàm của BidDAO để Controller gọi được Lịch sử
     @Override
     public List<AuctionBidModel> getBidsByAuctionId(int auctionId) {
@@ -114,6 +125,7 @@ public class AuctionService implements IAuctionService {
     }
 
     // Hàm chốt phiên và tự động gửi thông báo cho tất cả những người tham gia
+    @Override
     public boolean finalizeAndNotify(int auctionId) {
         // 1. Chốt phiên (Hàm finalizeAuction bạn đã có sẵn bên trong AuctionDAO)
         boolean isFinalized = auctionDAO.finalizeAuction(auctionId);

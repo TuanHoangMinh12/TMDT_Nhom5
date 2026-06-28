@@ -14,4 +14,10 @@ public interface ICustomerService {
 
     CustomerModel findByUsername(String email);
     List<CustomerModel> getAllUserAdmin();
+
+    int lockUser(int userId);
+    int unlockUser(int userId);
+    int deleteUser(int userId);
+
+
 }

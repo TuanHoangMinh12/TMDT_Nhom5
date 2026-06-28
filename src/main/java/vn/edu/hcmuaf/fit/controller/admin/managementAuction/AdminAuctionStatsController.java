@@ -2,8 +2,10 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
+import vn.edu.hcmuaf.fit.services.IAuctionService;
 import vn.edu.hcmuaf.fit.services.impl.AuctionService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +24,8 @@ import java.util.List;
 @WebServlet(name = "admin-auction-stats", value = "/admin-auction-stats")
 public class AdminAuctionStatsController extends HttpServlet {
 
-    private AuctionService auctionService = new AuctionService();
+    @Inject
+    IAuctionService auctionService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
