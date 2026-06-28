@@ -47,4 +47,19 @@ public class CustomerService implements ICustomerService {
     public List<CustomerModel> getAllUserAdmin() {
         return customerDAO.getAllUserAdmin();
     }
+
+    @Override
+    public int lockUser(int userId) {
+        return customerDAO.lockUser(userId);
+    }
+
+    @Override
+    public int unlockUser(int userId) {
+        return customerDAO.unlockUser(userId);
+    }
+
+    @Override
+    public int deleteUser(int userId) { return customerDAO.deleteUser(userId);
+    }
+
 }

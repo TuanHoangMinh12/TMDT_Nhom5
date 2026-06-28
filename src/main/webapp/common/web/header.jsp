@@ -28,9 +28,9 @@
                             <c:set var="cart" value="${sessionScope[cartKey]}"/>
 
                             <c:if test="${cart != null && cart.map.size() != 0}">
-        <span class="top-header_cart-quantity">
-            (${cart.map.size()})
-        </span>
+                                <span class="top-header_cart-quantity">
+                                    (${cart.map.size()})
+                                </span>
                             </c:if>
                         </c:if>
 
@@ -52,8 +52,7 @@
                                     <i class="fa-brands fa-facebook-f"></i>
                                     <span style="font-size: 13px;">Tài khoản Facebook</span>
                                 </a>
-                                <a href="${pageContext.request.contextPath}/login?action=login"
-                                   class="account--item_center">
+                                <a href="${pageContext.request.contextPath}/login?action=login" class="account--item_center">
                                     <span>Đăng nhập</span>
                                 </a>
                                 <div class="account--item_bottom">
@@ -105,10 +104,10 @@
 
                             <!-- Nhóm nổi bật phù hợp với web bán sách cũ -->
                             <li class="type_products-item type_hots">
-        <span class="container_type-arrow">
-            <div>Nổi bật</div>
-            <i class="fa-solid fa-chevron-right"></i>
-        </span>
+                                <span class="container_type-arrow">
+                                    <div>Nổi bật</div>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
 
                                 <ul class="type_hot-child">
                                     <li>
@@ -122,12 +121,12 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/products?hot=1">
+                                        <a href="${pageContext.request.contextPath}/products?hot=3">
                                             <p>Sách cũ giá rẻ</p>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/products?hot=1">
+                                        <a href="${pageContext.request.contextPath}/products?hot=4">
                                             <p>Sách giáo khoa cũ</p>
                                         </a>
                                     </li>
@@ -148,13 +147,13 @@
                                 </li>
                             </c:forEach>
 
-                            <!-- Công ty phát hành / nhà xuất bản -->
+<%--                         <!-- Công ty phát hành / nhà xuất bản -->--%>
                             <li class="type_products-item type_companys">
                                 <a href="javascript:void(0)">
-            <span class="container_type-arrow">
-                <div>Nhà xuất bản</div>
-                <i class="fa-solid fa-chevron-right"></i>
-            </span>
+                                    <span class="container_type-arrow">
+                                        <div>Nhà xuất bản</div>
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </span>
                                 </a>
 
                                 <ul class="type_companys-child" style="font-size: 10px">
@@ -191,11 +190,8 @@
                         <span>0867 415 853</span>
                     </a>
                 </div>
-
-
             </div>
         </div>
-
     </div>
     <!-- open sidenav -->
     <div id="mySidenav" class="sidenav" style="overflow: hidden;">
@@ -211,10 +207,10 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#">Sách bán chạy</a>
-            <a href="#">Sách mới</a>
-            <a href="#">Sắp phát hành</a>
-            <a href="#">Sách giảm giá</a>
+            <a href="#">Sách cũ bán chạy</a>
+            <a href="#">Sách mới nhập</a>
+            <a href="#">Sắp cũ giá rẻ</a>
+            <a href="#">Sách giáo khoa cũ</a>
         </div>
         <a href="#">Sách Văn Học Nước Ngoài</a>
         <a href="#">Sách Văn Học Trong Nước</a>

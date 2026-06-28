@@ -30,6 +30,13 @@ public class AuctionModel {
     // Thông tin người thắng (tùy chọn)
     private CustomerModel winner;
 
+    // Tuấn làm
+    private String bookName;       // JOIN từ bảng book
+    private String bookImage;      // JOIN từ bảng image_book
+    private String winnerName;     // JOIN từ bảng customer
+    private String winnerEmail;    // JOIN từ bảng customer
+    private int totalBids;         // COUNT từ bảng auction_bids
+
     public AuctionModel() {
     }
 
@@ -144,4 +151,45 @@ public class AuctionModel {
     public void setWinner(CustomerModel winner) {
         this.winner = winner;
     }
+
+
+    // Tuấn làm
+
+    public String getBookName() { return bookName; }
+    public void setBookName(String bookName) { this.bookName = bookName; }
+
+    public String getBookImage() { return bookImage; }
+    public void setBookImage(String bookImage) { this.bookImage = bookImage; }
+
+    public String getWinnerName() { return winnerName; }
+    public void setWinnerName(String winnerName) { this.winnerName = winnerName; }
+
+    public String getWinnerEmail() { return winnerEmail; }
+    public void setWinnerEmail(String winnerEmail) { this.winnerEmail = winnerEmail; }
+
+    public int getTotalBids() { return totalBids; }
+    public void setTotalBids(int totalBids) { this.totalBids = totalBids; }
+
+    // Hiển thị trạng thái đấu giá
+    public String getStatusLabel() {
+        switch (status) {
+            case "WAITING":  return "Sắp diễn ra";
+            case "ACTIVE":   return "Đang diễn ra";
+            case "FINISHED": return "Đã kết thúc";
+            case "PAID":     return "Đã thanh toán";
+            default:         return status;
+        }
+    }
+
+    // Css cho từng trạng thái
+    public String getStatusBadge() {
+        switch (status) {
+            case "WAITING":  return "badge-warning";
+            case "ACTIVE":   return "badge-success";
+            case "FINISHED": return "badge-secondary";
+            case "PAID":     return "badge-primary";
+            default:         return "badge-light";
+        }
+    }
+
 }

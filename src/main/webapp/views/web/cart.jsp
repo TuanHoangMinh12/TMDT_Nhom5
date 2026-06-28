@@ -25,9 +25,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
         integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Cart.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Cart.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />--%>
+
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Header.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Cart.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
+
   <title>Cart</title>
 </head>
 

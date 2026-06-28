@@ -40,7 +40,6 @@
 <body>
 
 <%@include file="/common/web/header.jsp"%>
-
 <!-------------------------Product----------------------->
 <section class="product">
   <div class="container">
@@ -362,6 +361,8 @@
       </div>
     </div>
   </div>
+  </div>
+
 </section>
 
 <%@include file="/common/web/footer.jsp"%>

@@ -186,7 +186,7 @@
         <p><b>Copyright
             <script type="text/javascript">
                 document.write(new Date().getFullYear());
-            </script> Phần mềm quản lý bán hàng | Dev By Trường
+            </script> Phần mềm quản lý bán sách cũ | Hoàng Tiến
         </b></p>
     </div>
 </main>
