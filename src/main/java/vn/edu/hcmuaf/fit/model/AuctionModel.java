@@ -187,7 +187,7 @@ public class AuctionModel {
             case "WAITING":  return "badge-warning";
             case "ACTIVE":   return "badge-success";
             case "FINISHED": return "badge-secondary";
-            case "PAID":     return "badge-primary";
+            case "PAID":     return "badge-info";
             default:         return "badge-light";
         }
     }

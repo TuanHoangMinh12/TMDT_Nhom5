@@ -596,7 +596,8 @@ public class ProductDAO implements IProductDAO {
         Product product = new Product();
         Connection connection = JDBCConnector.getConnection();
         String sql = new String("SELECT b.id_book, b.name, b.price - b.price * b.discount_price  AS giagiam,b.price, b.quantity, bd.size,bd.weight\n" +
-                " FROM book b join book_details bd\n" +
+                " FROM book b \n" +
+                " LEFT JOIN book_details bd ON bd.id_book = b.id_book " +
                 " WHERE b.id_book = ? AND b.isActive = 1;");
 
         PreparedStatement statement = null;

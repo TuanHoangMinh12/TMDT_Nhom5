@@ -5,8 +5,10 @@ import vn.edu.hcmuaf.fit.dao.IBookDAO;
 import vn.edu.hcmuaf.fit.dao.ISlidePr;
 import vn.edu.hcmuaf.fit.dao.impl.BLockUserDAO;
 import vn.edu.hcmuaf.fit.dao.impl.BookDAO;
+import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import vn.edu.hcmuaf.fit.dao.impl.SlidePrDAO;
 import vn.edu.hcmuaf.fit.db.MessageProperties;
+import vn.edu.hcmuaf.fit.model.CartModel;
 import vn.edu.hcmuaf.fit.model.CustomerModel;
 import vn.edu.hcmuaf.fit.services.IAuthorService;
 import vn.edu.hcmuaf.fit.services.ICustomerService;
@@ -31,7 +33,7 @@ public class HomeController extends HttpServlet {
     private ICustomerService customerService;
     ISlidePr slidePr = new SlidePrDAO();
     IBookDAO iBookDAO = new BookDAO();
-
+    CartDao cartDao = new CartDao();
     private int index = 0;
 
     IAuthorService authorService = new AuthorService();
@@ -44,6 +46,7 @@ public class HomeController extends HttpServlet {
         if (action != null && action.equals("login")) {
 
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+
             // neu url :login?action=login thi toi trang logout
         } else if (action != null && action.equals("logout")) {
 
@@ -51,6 +54,14 @@ public class HomeController extends HttpServlet {
 //            SessionUtil.getInstance().removeValue(req, "PASSWORD_USER");
 //            SessionUtil.getInstance().removeValue(req, "ID_USER");
 //            SessionUtil.getInstance().removeValue(req, "MAIL");
+
+            // Lấy user và giỏ hàng hiện tại
+            CustomerModel user = (CustomerModel) SessionUtil.getInstance().getValue(req, "USERMODEL");
+            if (user != null) {
+                CartModel currentCart = (CartModel) req.getSession().getAttribute("cart_" + user.getIdUser());
+                cartDao.saveCart(user.getIdUser(), currentCart); // Cất vào DB
+            }
+
             req.getSession().invalidate();
             resp.sendRedirect(req.getContextPath() + "/home");
         }
@@ -78,6 +89,13 @@ public class HomeController extends HttpServlet {
                 if (customer != null) {
                     BLockUserDAO.resetAccount(email);
                     SessionUtil.getInstance().putValue(req, "USERMODEL", customer);
+
+                    CartModel savedCart = cartDao.loadCart(customer.getIdUser());
+                    if (!savedCart.getMap().isEmpty()) {
+                        SessionUtil.getInstance().putValue(req, "cart_" + customer.getIdUser(), savedCart);
+
+                    }
+
                     if (customer.getRole().equalsIgnoreCase("user")) {
                         SessionUtil.getInstance().putValue(req, "PASSWORD_USER",customer.getPassword());
                         SessionUtil.getInstance().putValue(req, "ID_USER",customer.getIdUser());

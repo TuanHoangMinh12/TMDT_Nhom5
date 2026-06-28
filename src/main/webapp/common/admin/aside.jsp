@@ -48,15 +48,21 @@
       <li><a class="app-menu__item" href="<c:url value="/admin-table-order" />"><i class='app-menu__icon bx bx-task'></i><span
               class="app-menu__label">Quản lý đơn hàng</span></a></li>
     </c:if>
+
       <c:if test="${title.equals('Quản Lý Đấu Giá') || title.equals('Thống Kê Đấu Giá')}">
-          <li><a class="app-menu__item active" href="<c:url value='/admin-auction-list' />"><i class='app-menu__icon bx bx-purchase-tag-alt'></i><span
-                  class="app-menu__label">Quản lý đấu giá</span>
+          <li>
+              <a class="app-menu__item active" href="<c:url value='/admin-auction-list' />">
+                  <i class='app-menu__icon fas fa-gavel'></i>
+                  <span class="app-menu__label">Quản lý đấu giá</span>
               </a>
           </li>
       </c:if>
+
       <c:if test="${!title.equals('Quản Lý Đấu Giá') && !title.equals('Thống Kê Đấu Giá')}">
-          <li><a class="app-menu__item" href="<c:url value='/admin-auction-list' />"><i class='app-menu__icon bx bx-purchase-tag-alt'></i><span
-                  class="app-menu__label">Quản lý đấu giá</span>
+          <li>
+              <a class="app-menu__item" href="<c:url value='/admin-auction-list' />">
+                  <i class='app-menu__icon fas fa-gavel'></i>
+                  <span class="app-menu__label">Quản lý đấu giá</span>
               </a>
           </li>
       </c:if>

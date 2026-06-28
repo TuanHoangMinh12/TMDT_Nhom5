@@ -135,7 +135,7 @@
                                     <i class="fa-brands fa-facebook-f"></i>
                                     <span style="font-size: 13px;">Tài khoản Facebook</span>
                                 </a>
-                                <a href="<c:url value="${pageContext.request.contextPath}/login?action=login"/> " class="account--item_center"><span>Đăng nhập</span></a>
+                                <a href="${pageContext.request.contextPath}/login?action=login" class="account--item_center"><span>Đăng nhập</span></a>
                                 <div class="account--item_bottom">
                                     <span>Khách hàng mới?</span>
                                     <a class="register" href="${pageContext.request.contextPath}/signup">Tạo tài khoản</a>
@@ -144,14 +144,14 @@
                         </div>
                     </c:if>
                     <c:if test="${not empty USERMODEL}">
-                        <a href="/account" style="display: flex">
+                        <a href="${pageContext.request.contextPath}/account" style="display: flex">
                             <i style="padding: 4px; border-radius: 50%; color: #fff;font-size: 13px" class="fa-solid fa-user"></i>
                             <p style="color: #FFFFFF; font-size: 13px">${USERMODEL.firstName}</p>
                         </a>
                     </c:if>
                 </div>
                 <div class="top-header-left_media">
-                    <a href="/cart">
+                    <a href="${pageContext.request.contextPath}/cart">
                         <div class="container-icon_cart">
                             <i class="fa-solid fa-cart-shopping"></i>
                             <div class="sticker">0</div>
@@ -224,7 +224,7 @@
                                             <p><c:out value ="${publisherCompany.name}"/></p>
                                         </a></li>
                                     </c:forEach>
-                                    <li><a class="type_company-all" href="/products?publisherCompanys?id=0">
+                                    <li><a class="type_company-all" href="${pageContext.request.contextPath}/products?publisherCompanys?id=0">
                                         <p style="font-width: 600;">Tất cả công ty phát hành</p>
                                     </a></li>
                                 </ul>

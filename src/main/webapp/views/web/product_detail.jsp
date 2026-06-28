@@ -393,7 +393,7 @@
     return false
   })
 
-  $('.buy-now').on('click', function () {
+  $('.muangay').on('click', function () {
     const remainQuantity = Number(${quantityRemain}), quantity = $('.quantity .input-quantity').val()
     if (remainQuantity === 0 || remainQuantity < quantity) {
       $.alert({
@@ -405,7 +405,7 @@
       })
     } else {
       window.location.href =
-              '${pageContext.request.contextPath}/orderBuyNowControlller?product_id=${bookModel.idBook}' + '&quantity=' + quantity
+              '${pageContext.request.contextPath}/orderBuyNowController?product_id=${bookModel.idBook}' + '&quantity=' + quantity
     }
     return false
   })

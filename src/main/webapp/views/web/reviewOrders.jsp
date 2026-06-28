@@ -115,7 +115,7 @@
           </div>
           <div class="paging">
             <div class="tab">
-              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>
+<%--              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>--%>
               <button class="tablinks" onclick="openCity(event, 'ChoLayHang')">Chờ lấy hàng</button>
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
               <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>

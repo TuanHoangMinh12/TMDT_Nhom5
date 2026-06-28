@@ -9,6 +9,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -62,7 +64,11 @@
       <table style="width: 100%; border: 1px solid #ccc;" class="table">
         <thead>
         <tr>
-          <th>#</th>
+          <th style="width: 5%; text-align: center;">
+            <label style="cursor: pointer; margin-bottom: 0;" title="Chọn tất cả sản phẩm">
+              <input type="checkbox" id="selectAllCheckbox" style="cursor: pointer;">
+            </label>
+          </th>
           <th style="width: 65%;" scope="col">Sản phẩm</th>
           <th style="width: 12%;" scope="col">Số lượng</th>
           <th style="width: 13%;" scope="col">Thành tiền</th>
@@ -170,7 +176,6 @@
 
   })
 </script>
-// chon san pham trong gio hang de mua hang
 <script>
   let checkboxes = $("input[type=checkbox][name=settings]");
 
@@ -194,6 +199,63 @@
             '${pageContext.request.contextPath}/orderAddVoucher?list_id='
             + enabledSettings.join(",");
   });
+</script>
+
+<script>
+  //  XỬ LÝ CHỌN TẤT CẢ SẢN PHẨM
+
+  // Hàm phụ: Kiểm tra và cập nhật lại trạng thái của ô "Chọn tất cả"
+  function checkSelectAllStatus() {
+    const totalItems = $('input[name="settings"]').length;
+    const checkedItems = $('input[name="settings"]:checked').length;
+
+    // Nếu tổng số ô = số ô được tích (và phải có ít nhất 1 sản phẩm) -> tích ô tổng
+    const isAllChecked = (totalItems > 0) && (totalItems === checkedItems);
+    $('#selectAllCheckbox').prop('checked', isAllChecked);
+  }
+
+  // 1. Khi click vào ô "Chọn tất cả" ở trên cùng
+  $('#selectAllCheckbox').on('change', function () {
+    const isChecked = $(this).prop('checked');
+    // Đồng bộ tất cả checkbox con theo trạng thái của ô tổng
+    $('input[name="settings"]').prop('checked', isChecked);
+  });
+
+  // 2. Khi click vào từng ô checkbox con -> gọi hàm kiểm tra lại ô tổng
+  // (Dùng event delegation 'tbody' để phòng trường hợp sau này ông dùng Ajax load lại bảng)
+  $('tbody').on('change', 'input[name="settings"]', function () {
+    checkSelectAllStatus();
+  });
+
+</script>
+
+<script>
+  <%-- Dùng ${param.xxx} để bắt tham số trên URL --%>
+  <c:if test="${param.buynow == 'true'}">
+  $(document).ready(function () {
+    var buyNowId = '${param.product_id}';
+
+    if (buyNowId) {
+      $('input[name="settings"]').prop('checked', false);
+
+      var targetCheckbox = $('input[name="settings"][value="' + buyNowId + '"]');
+      if (targetCheckbox.length > 0) {
+        targetCheckbox.prop('checked', true);
+
+        // THÊM DÒNG NÀY VÀO ĐÂY: Để tính toán lại ô "Chọn tất cả" lúc vừa nhảy từ Mua Ngay sang
+        checkSelectAllStatus();
+
+        var orderBtn = $('.order');
+        if (orderBtn.length) {
+          $('html, body').animate({
+            scrollTop: orderBtn.offset().top - 100
+          }, 500);
+        }
+      }
+    }
+
+  });
+  </c:if>
 </script>
 
 </body>
