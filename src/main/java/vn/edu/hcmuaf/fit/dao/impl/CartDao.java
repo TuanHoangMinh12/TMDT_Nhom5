@@ -1,16 +1,75 @@
 package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
-import vn.edu.hcmuaf.fit.model.BookModel;
-import vn.edu.hcmuaf.fit.model.CartDetailModel;
-import vn.edu.hcmuaf.fit.model.CartModel;
-import vn.edu.hcmuaf.fit.model.OrderReviewDetail;
+import vn.edu.hcmuaf.fit.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartDao {
+
+    // 1. CẤT GIỎ HÀNG XUỐNG DB (Gọi khi Logout)
+    public void saveCart(int userId, CartModel cart) {
+        if (cart == null || cart.getMap().isEmpty()) return;
+        try (Connection con = JDBCConnector.getConnection()) {
+            // Xóa giỏ hàng cũ rác (nếu có)
+            con.prepareStatement("DELETE FROM cart_user WHERE id_user = " + userId).executeUpdate();
+
+            // Lưu giỏ hàng mới nhất từ Session xuống
+            PreparedStatement ps = con.prepareStatement("INSERT INTO cart_user (id_user, id_book, quantity) VALUES (?, ?, ?)");
+            for (CartItem item : cart.getMap().values()) {
+                ps.setInt(1, userId);
+                ps.setInt(2, item.getProduct().getIdBook());
+                ps.setInt(3, item.getQuantity());
+                ps.executeUpdate();
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
+    // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
+    public CartModel loadCart(int userId) {
+        CartModel cart = new CartModel();
+        cart.setIdUser(userId);
+        BookDAO bookDAO = new BookDAO();
+
+        double totalMoney = 0; // Biến tạm để cộng dồn tiền
+        int totalCount = 0;    // Biến tạm để đếm tổng số lượng SP
+
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement("SELECT * FROM cart_user WHERE id_user = " + userId);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Product book = bookDAO.findById(rs.getInt("id_book"));
+
+                if (book != null) {
+                    CartItem item = new CartItem();
+                    item.setProduct(book);
+
+                    int qty = rs.getInt("quantity");
+                    item.setQuantity(qty);
+
+                    // 1. Bỏ sản phẩm vào Map
+                    cart.getMap().put(rs.getInt("id_book"), item);
+
+                    // 2. Cộng dồn tiền và số lượng (Giá khuyến mãi * Số lượng)
+                    totalMoney += (book.getPriceDiscount() * qty);
+                    totalCount += qty;
+                }
+            }
+
+            // 3. Cập nhật tổng tiền và tổng số lượng vào Model trước khi trả về
+            cart.setTotalPrice(totalMoney);
+            cart.setCount(totalCount);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cart;
+    }
+
     public void updateVerify(int idCart, String stringHash) {
         Connection connection = JDBCConnector.getConnection();
         PreparedStatement statement = null;

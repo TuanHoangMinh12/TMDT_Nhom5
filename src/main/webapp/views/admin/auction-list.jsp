@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="widget-small success coloured-icon">
+            <div class="widget-small primary coloured-icon">
                 <i class="icon bx bx-money fa-3x"></i>
                 <div class="info">
                     <h4>Đã thanh toán</h4>

@@ -159,8 +159,8 @@
                         <button type="button"><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
                     </a>
                 </div>
-
-                <button class="muangay buy-now"><p>MUA NGAY</p></button>
+                      <button class="muangay buy-now"><p>MUA NGAY</p></button>
+                </div>
             </div>
         </c:if>
 
@@ -407,7 +407,7 @@
     return false
   })
 
-  $('.buy-now').on('click', function () {
+  $('.muangay').on('click', function () {
     const remainQuantity = Number(${quantityRemain}), quantity = $('.quantity .input-quantity').val()
     if (remainQuantity === 0 || remainQuantity < quantity) {
       $.alert({
@@ -419,7 +419,7 @@
       })
     } else {
       window.location.href =
-              '${pageContext.request.contextPath}/orderBuyNowControlller?product_id=${bookModel.idBook}' + '&quantity=' + quantity
+              '${pageContext.request.contextPath}/orderBuyNowController?product_id=${bookModel.idBook}' + '&quantity=' + quantity
     }
 
     return false

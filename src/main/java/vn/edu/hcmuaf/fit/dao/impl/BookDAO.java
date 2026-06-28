@@ -3,6 +3,7 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.dao.IBookDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.BookModel;
+import vn.edu.hcmuaf.fit.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDAO implements IBookDAO {
-    @Override
+    public Product findById(int idBook) {
+        String sql = "SELECT b.*, " +
+                "(SELECT img.image FROM image_book img WHERE img.id_book = b.id_book LIMIT 1) AS images " +
+                "FROM book b WHERE b.id_book = ?";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idBook);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Product p = new Product();
+                    p.setIdBook(rs.getInt("id_book"));
+                    p.setName(rs.getString("name"));
+                    p.setImage(rs.getString("images"));
+                    p.setQuantity(rs.getInt("quantity"));
+
+                    // 1. Lấy giá gốc
+                    double price = rs.getDouble("price");
+                    p.setPrice(price);
+
+                    // 2. Lấy phần trăm giảm giá từ cột discount_price
+                    double discountPercent = 0;
+                    try {
+                        discountPercent = rs.getDouble("discount_price");
+                    } catch (Exception e) {
+                        // Nếu lỗi hoặc null thì mặc định không giảm giá
+                    }
+
+                    // 3. Quy đổi phần trăm (0. mấy) thành Giá tiền thực tế
+                    double finalPrice = price;
+                    if (discountPercent > 0 && discountPercent <= 1) {
+                        // Trường hợp DB lưu 0.2 (tức là giảm 20%)
+                        finalPrice = price - (price * discountPercent);
+                    } else if (discountPercent > 1) {
+                        // Trường hợp DB lưu 20 (cũng là giảm 20%)
+                        finalPrice = price - (price * discountPercent / 100);
+                    }
+
+                    // 4. Gán giá tiền CHUẨN vào hệ thống
+                    p.setPriceDiscount(finalPrice);
+
+                    return p;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }    @Override
     public List<BookModel> listBookPayTop() {
         List<BookModel> listBook = new ArrayList<>();
         Connection connection = JDBCConnector.getConnection();
