@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--<%@ include file="styles"%>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -137,8 +138,16 @@
                                     <c:if test="${bookPayTop.discount != 0}">
                                         <span class="card_sale active_sale">-${bookPayTop.discount}%</span>
                                     </c:if>
-                                    <img src="${pageContext.request.contextPath}/${bookPayTop.image}"
-                                         class="card-img-top" alt="...">
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(bookPayTop.image, 'http')}">
+                                            <img src="${bookPayTop.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/${bookPayTop.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="card-body">
                                         <h5 class="card-title title_book">${bookPayTop.name}</h5>
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookPayTop.nameAuthor}</small>
@@ -232,8 +241,16 @@
                                     <c:if test="${bookNew.discount != 0}">
                                         <span class="card_sale active_sale">-${bookNew.discount}%</span>
                                     </c:if>
-                                    <img src="${pageContext.request.contextPath}/${bookNew.image}"
-                                         class="card-img-top" alt="...">
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(bookNew.image, 'http')}">
+                                            <img src="${bookNew.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/${bookNew.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="card-body">
                                         <h5 class="card-title title_book">${bookNew.name}</h5>
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookNew.nameAuthor}</small>
@@ -326,8 +343,16 @@
                                         <span class="card_sale active_sale">-${bookSap.discount}%</span>
                                     </c:if>
 
-                                    <img src="${pageContext.request.contextPath}/${bookSap.image}"
-                                         class="card-img-top" alt="...">
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(bookSap.image, 'http')}">
+                                            <img src="${bookSap.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/${bookSap.image}"
+                                                 class="card-img-top" alt="...">
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="card-body">
                                         <h5 class="card-title title_book">${bookSap.name}</h5>
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookSap.nameAuthor}</small>
