@@ -4,186 +4,123 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-
     <meta charset="UTF-8">
-    <title>${auction.book.name}</title>
+    <title>Chi tiết đấu giá</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
 </head>
 
 <body>
 
-<%@include file="/common/web/header.jsp"%>
+<div class="container mt-5">
 
-<div class="container mt-5 mb-5">
+    <a href="${pageContext.request.contextPath}/auction"
+       class="btn btn-secondary mb-3">
+        ← Quay lại
+    </a>
+
+    <h2 class="mb-4">Chi tiết phiên đấu giá</h2>
 
     <div class="row">
 
-        <!-- Ảnh sách -->
-        <div class="col-md-5">
+        <div class="col-md-4">
 
-            <img class="img-fluid border rounded"
-                 src="${pageContext.request.contextPath}/${pageContext.request.contextPath}/${auction.product.image}">
+            <img
+                    src="${pageContext.request.contextPath}/${auction.product.image}"
+                    class="img-fluid border">
 
         </div>
 
-        <!-- Thông tin -->
-        <div class="col-md-7">
+        <div class="col-md-8">
 
-            <h2>${auction.product.name}</h2>
+            <h3>${auction.product.name}</h3>
 
-            <hr>
+            <table class="table table-bordered mt-3">
 
-            <h4 class="text-danger">
+                <tr>
+                    <th>Giá khởi điểm</th>
+                    <td>${auction.startPrice} đ</td>
+                </tr>
 
-                Giá hiện tại:
-                ${auction.currentPrice} đ
+                <tr>
+                    <th>Giá hiện tại</th>
+                    <td>${auction.currentPrice} đ</td>
+                </tr>
 
-            </h4>
-            <c:if test="${message!=null}">
+                <tr>
+                    <th>Bước giá</th>
+                    <td>${auction.minIncrement} đ</td>
+                </tr>
 
-                <div class="alert alert-danger">
+                <tr>
+                    <th>Bắt đầu</th>
+                    <td>${auction.startTime}</td>
+                </tr>
 
-                        ${message}
+                <tr>
+                    <th>Kết thúc</th>
+                    <td>${auction.endTime}</td>
+                </tr>
 
+                <tr>
+                    <th>Trạng thái</th>
+                    <td>${auction.status}</td>
+                </tr>
+
+            </table>
+
+            <c:if test="${not empty param.message}">
+                <div class="alert alert-info">
+                        ${param.message}
                 </div>
-
             </c:if>
+
             <c:if test="${auction.status=='OPEN'}">
 
-                <form action="${pageContext.request.contextPath}/auction/bid"
+                <form action="${pageContext.request.contextPath}/auction-bid"
                       method="post">
 
-                    <input
-                            type="hidden"
-                            name="auctionId"
-                            value="${auction.id}">
+                    <input type="hidden"
+                           name="auctionId"
+                           value="${auction.id}">
 
-                    <div class="form-group mt-3">
+                    <div class="form-group">
 
                         <label>Nhập giá đấu</label>
 
-                        <input
-                                type="number"
-                                name="price"
-                                class="form-control"
-                                step="1000"
-                                min="${auction.currentPrice + auction.minIncrement}"
-                                required>
+                        <input type="number"
+                               name="price"
+                               class="form-control"
+                               min="${auction.currentPrice + auction.minIncrement}"
+                               required>
 
                     </div>
 
-                    <button
-                            class="btn btn-danger mt-2">
-
-                        Đấu giá
-
+                    <button class="btn btn-primary">
+                        Đặt giá
                     </button>
 
                 </form>
 
             </c:if>
 
-            <p>
-                <b>Giá khởi điểm:</b>
-                ${auction.startPrice} đ
-            </p>
-
-            <p>
-                <b>Bước giá:</b>
-                ${auction.minIncrement} đ
-            </p>
-
-            <p>
-                <b>Bắt đầu:</b>
-                ${auction.startTime}
-            </p>
-
-            <p>
-                <b>Kết thúc:</b>
-                ${auction.endTime}
-            </p>
-
-            <c:choose>
-
-                <c:when test="${auction.status == 'RUNNING'}">
-
-                    <span class="badge badge-success p-2">
-                        Đang diễn ra
-                    </span>
-
-                </c:when>
-
-                <c:when test="${auction.status == 'WAITING'}">
-
-                    <span class="badge badge-warning p-2">
-                        Chưa bắt đầu
-                    </span>
-
-                </c:when>
-
-                <c:otherwise>
-
-                    <span class="badge badge-danger p-2">
-                        Đã kết thúc
-                    </span>
-
-                </c:otherwise>
-
-            </c:choose>
-
-            <hr>
-
-            <!-- Giai đoạn 7 sẽ submit vào đây -->
-            <form action="${pageContext.request.contextPath}/auction/bid"
-                  method="post">
-
-                <input type="hidden"
-                       name="auctionId"
-                       value="${auction.id}">
-
-                <div class="form-group">
-
-                    <label>Nhập giá đấu</label>
-
-                    <input
-                            type="number"
-                            class="form-control"
-                            name="price"
-                            min="${auction.currentPrice + auction.minIncrement}"
-                            required>
-
-                </div>
-
-                <button class="btn btn-danger">
-
-                    Đặt giá
-
-                </button>
-
-            </form>
-
         </div>
 
     </div>
 
-    <hr class="mt-5">
+    <hr>
 
-    <h3>Lịch sử đấu giá</h3>
+    <h4>Lịch sử đấu giá</h4>
 
-    <table class="table table-bordered table-hover mt-3">
+    <table class="table table-bordered">
 
-        <thead class="thead-dark">
+        <thead>
 
         <tr>
 
-            <th>Người đấu</th>
-
+            <th>Người đấu giá</th>
             <th>Giá</th>
-
             <th>Thời gian</th>
 
         </tr>
@@ -192,54 +129,45 @@
 
         <tbody>
 
-        <c:forEach items="${bidHistory}" var="bid">
+        <c:choose>
 
-            <tr>
+            <c:when test="${not empty bidHistory}">
 
-                <td>
+                <c:forEach items="${bidHistory}" var="bid">
 
-                        ${bid.customer.firstName}
-                        ${bid.customer.lastName}
+                    <tr>
 
-                </td>
+                        <td>${bid.customer.firstName} ${bid.customer.lastName}</td>
 
-                <td class="text-danger">
+                        <td>${bid.bidPrice} đ</td>
 
-                        ${bid.bidPrice} đ
+                        <td>${bid.bidTime}</td>
 
-                </td>
+                    </tr>
 
-                <td>
+                </c:forEach>
 
-                        ${bid.bidTime}
+            </c:when>
 
-                </td>
+            <c:otherwise>
 
-            </tr>
+                <tr>
 
-        </c:forEach>
+                    <td colspan="3" class="text-center">
+                        Chưa có lượt đấu giá nào
+                    </td>
 
-        <c:if test="${empty bidHistory}">
+                </tr>
 
-            <tr>
+            </c:otherwise>
 
-                <td colspan="3" class="text-center">
-
-                    Chưa có ai đấu giá
-
-                </td>
-
-            </tr>
-
-        </c:if>
+        </c:choose>
 
         </tbody>
 
     </table>
 
 </div>
-
-<%@include file="/common/web/footer.jsp"%>
 
 </body>
 </html>

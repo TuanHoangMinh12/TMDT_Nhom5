@@ -331,17 +331,10 @@ hr {
     border-top: none;
     top: 35px;
     left: -1px;
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s ease;
+    display: none;
 }
 
 .menu_products:hover .menu_item {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
     display: flex;
     cursor: pointer;
 }

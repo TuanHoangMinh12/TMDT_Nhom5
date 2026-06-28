@@ -43,16 +43,19 @@ public class AuctionController extends HttpServlet {
 
             case "/auction-detail":
 
-                int id =
-                        Integer.parseInt(request.getParameter("id"));
+                int id = Integer.parseInt(request.getParameter("id"));
 
-                AuctionModel auction =
-                        auctionService.getAuctionById(id);
+                AuctionModel auction = auctionService.getAuctionById(id);
 
-                request.setAttribute("auction",auction);
+                request.setAttribute("auction", auction);
+
+                request.setAttribute(
+                        "bidHistory",
+                        auctionService.getBidHistory(id)
+                );
 
                 request.getRequestDispatcher("/views/web/auctionDetail.jsp")
-                        .forward(request,response);
+                        .forward(request, response);
 
                 break;
         }
