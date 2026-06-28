@@ -5,7 +5,7 @@ import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.model.Product;
-
+import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -263,7 +263,13 @@ public class AuctionDAO implements IAuctionDAO {
                     ps2.setInt(3, auctionId);
 
                     ps2.executeUpdate();
+                    // Lấy thông tin phiên đấu giá
+                    AuctionModel auction = findById(auctionId);
 
+                    new CartDao().addAuctionBook(
+                            highest.getUserId(),
+                            auction.getBookId()
+                    );
                 }else{
 
                     PreparedStatement ps2 =
@@ -281,7 +287,39 @@ public class AuctionDAO implements IAuctionDAO {
             e.printStackTrace();
         }
     }
+    @Override
+    public List<AuctionModel> findWinnerAuctions(int userId) {
 
+        List<AuctionModel> list = new ArrayList<>();
+
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.price, ib.image " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id=b.id_book " +
+                        "LEFT JOIN image_book ib ON ib.id_book=b.id_book " +
+                        "WHERE a.winner_id=? " +
+                        "GROUP BY a.id " +
+                        "ORDER BY a.end_time DESC";
+
+        try(
+                Connection conn = JDBCConnector.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ){
+
+            ps.setInt(1,userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                list.add(mapAuction(rs));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
     // Tuấn làm
 
     // PHẦN 1 - CRUD PHIÊN ĐẤU GIÁ (bảng auctions)

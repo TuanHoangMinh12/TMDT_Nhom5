@@ -14,7 +14,8 @@ import java.util.List;
 @WebServlet(urlPatterns = {
         "/auction",
         "/auction-detail",
-        "/auction-bid"
+        "/auction-bid",
+        "/my-auction"
 })
 public class AuctionController extends HttpServlet {
 
@@ -56,6 +57,27 @@ public class AuctionController extends HttpServlet {
 
                 request.getRequestDispatcher("/views/web/auctionDetail.jsp")
                         .forward(request, response);
+
+                break;
+            case "/my-auction":
+
+                CustomerModel user =
+                        (CustomerModel) request.getSession()
+                                .getAttribute("USERMODEL");
+
+                if(user==null){
+                    response.sendRedirect(
+                            request.getContextPath()+"/login?action=login");
+                    return;
+                }
+
+                List<AuctionModel> myAuction =
+                        auctionService.getWinnerAuctions(user.getIdUser());
+
+                request.setAttribute("list",myAuction);
+
+                request.getRequestDispatcher("/views/web/myAuction.jsp")
+                        .forward(request,response);
 
                 break;
         }

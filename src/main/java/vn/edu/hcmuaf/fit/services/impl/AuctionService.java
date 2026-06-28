@@ -81,6 +81,10 @@ public class AuctionService implements IAuctionService {
     public void finishExpiredAuction() {
         auctionDAO.finishExpiredAuction();
     }
+    @Override
+    public List<AuctionModel> getWinnerAuctions(int userId) {
+        return auctionDAO.findWinnerAuctions(userId);
+    }
     // Tuấn làm
 
     @Override

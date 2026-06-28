@@ -111,7 +111,10 @@ public class CartModel implements Serializable {
             default: return "Đã hủy";
         }
     }
-
+    //Tien
+    public boolean containsProduct(int productId) {
+        return map.containsKey(productId);
+    }
     public double getTotalPriceShip() {
         return getTotalPrice() + ship;
     }

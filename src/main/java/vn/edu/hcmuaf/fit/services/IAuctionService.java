@@ -20,7 +20,7 @@ public interface IAuctionService {
     List<AuctionBidModel> getBidHistory(int auctionId);
 
     void finishExpiredAuction();
-
+    List<AuctionModel> getWinnerAuctions(int userId);
     // Tuấn làm
     List<AuctionModel> getAllAuctions();
 
