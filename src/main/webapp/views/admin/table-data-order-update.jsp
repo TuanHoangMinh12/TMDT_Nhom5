@@ -90,7 +90,7 @@
     <div class="modal-content">
 
       <div class="modal-body">
-        <form action="/update-bill" method="post">
+        <form action="${pageContext.request.contextPath}/update-bill" method="post">
           <div class="row">
             <div class="form-group  col-md-12">
                           <span class="thong-tin-thanh-toan">

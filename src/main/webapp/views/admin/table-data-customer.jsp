@@ -107,52 +107,52 @@
 <!--
   MODAL
 -->
-<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-     data-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+<%--<div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"--%>
+<%--     data-keyboard="false">--%>
+<%--  <div class="modal-dialog modal-dialog-centered" role="document">--%>
+<%--    <div class="modal-content">--%>
 
-      <div class="modal-body">
-        <div class="row">
-          <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Chỉnh sửa thông tin khách hàng cơ bản</h5>
-          </span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label class="control-label">Mã khách hàng </label>
-            <input class="form-control" type="number" value="71309005">
-          </div>
-          <div class="form-group col-md-6">
-            <label class="control-label">Tên khách hàng</label>
-            <input class="form-control" type="text" required value="Lâm Duẫn Nhi">
-          </div>
-          <div class="form-group  col-md-6">
-            <label class="control-label">Số điện thoại</label>
-            <input class="form-control" type="number" required value="0999383846">
-          </div>
-          <div class="form-group col-md-6">
-            <label class="control-label">Địa chỉ</label>
-            <input class="form-control" type="text" value="Nghi Lộc - Nghi Xuân - Hà Tĩnh">
-          </div>
-        </div>
-        <BR>
-        <a href="#" style="    float: right;
-    font-weight: 600;
-    color: #ea0000;">Chỉnh sửa thông tin khách hàng nâng cao</a>
-        <BR>
-        <BR>
-        <button href="/ad" class="btn btn-save" type="button">Lưu lại</button>
-        <a class="btn btn-cancel" data-dismiss="modal" href="${pageContext.request.contextPath}/admin-table-customer">Hủy bỏ</a>
-        <BR>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
+<%--      <div class="modal-body">--%>
+<%--        <div class="row">--%>
+<%--          <div class="form-group  col-md-12">--%>
+<%--          <span class="thong-tin-thanh-toan">--%>
+<%--            <h5>Chỉnh sửa thông tin khách hàng cơ bản</h5>--%>
+<%--          </span>--%>
+<%--          </div>--%>
+<%--        </div>--%>
+<%--        <div class="row">--%>
+<%--          <div class="form-group col-md-6">--%>
+<%--            <label class="control-label">Mã khách hàng </label>--%>
+<%--            <input class="form-control" type="number" value="71309005">--%>
+<%--          </div>--%>
+<%--          <div class="form-group col-md-6">--%>
+<%--            <label class="control-label">Tên khách hàng</label>--%>
+<%--            <input class="form-control" type="text" required value="Lâm Duẫn Nhi">--%>
+<%--          </div>--%>
+<%--          <div class="form-group  col-md-6">--%>
+<%--            <label class="control-label">Số điện thoại</label>--%>
+<%--            <input class="form-control" type="number" required value="0999383846">--%>
+<%--          </div>--%>
+<%--          <div class="form-group col-md-6">--%>
+<%--            <label class="control-label">Địa chỉ</label>--%>
+<%--            <input class="form-control" type="text" value="Nghi Lộc - Nghi Xuân - Hà Tĩnh">--%>
+<%--          </div>--%>
+<%--        </div>--%>
+<%--        <BR>--%>
+<%--        <a href="#" style="    float: right;--%>
+<%--    font-weight: 600;--%>
+<%--    color: #ea0000;">Chỉnh sửa thông tin khách hàng nâng cao</a>--%>
+<%--        <BR>--%>
+<%--        <BR>--%>
+<%--        <button href="/ad" class="btn btn-save" type="button">Lưu lại</button>--%>
+<%--        <a class="btn btn-cancel" data-dismiss="modal" href="${pageContext.request.contextPath}/admin-table-customer">Hủy bỏ</a>--%>
+<%--        <BR>--%>
+<%--      </div>--%>
+<%--      <div class="modal-footer">--%>
+<%--      </div>--%>
+<%--    </div>--%>
+<%--  </div>--%>
+<%--</div>--%>
 <!--
 MODAL
 -->

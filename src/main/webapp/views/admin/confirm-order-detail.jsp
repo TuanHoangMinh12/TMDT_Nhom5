@@ -394,28 +394,41 @@ MODAL
 
             $btn.prop('disabled', true).addClass('disabled').text('Đang xử lý...');
 
+            swal({
+                title: "Đang xử lý...",
+                text: "Hệ thống đang tiến hành đăng ký vận đơn ngầm với GHN, vui lòng đợi.",
+                icon: "info",
+                buttons: false,
+                closeOnClickOutside: false,
+                closeOnEsc: false
+            });
+
             $.ajax({
                 url: '${pageContext.request.contextPath}/admin-register-order',
                 type: 'POST',
                 data: {id: orderId, variable: cusId},
                 success: function (response) {
                     if (response.trim() === "processing") {
-                        swal("Thành công!", "Đơn hàng đã được chuyển sang vận chuyển!", "success");
+                        swal({
+                            title: "Thành công!",
+                            text: "Đơn hàng đã được chuyển sang vận chuyển!",
+                            icon: "success",
+                            button: "Đóng"
+                        }).then(() => {
+                            $('td:contains("Tình trạng:")').next().html('<span class="text-warning" style="font-weight:500;">Đang vận chuyển</span>');
 
-                        // Cập nhật trạng thái hiển thị
-                        $('td:contains("Đăng ký giao hàng:")').prev().text('Tình trạng:').next().html('<span class="text-warning" style="font-weight:500;">Đang vận chuyển</span>');
+                            var newButtons =
+                                '<button type="button" class="btn btn-success btn-sm btn-confirm-delivered" data-id="' + orderId + '" data-cus="' + cusId + '" style="margin-right: 5px;">' +
+                                '   Xác nhận Đã giao' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-warning btn-sm btn-cancel-order" data-id="' + orderId + '">' +
+                                '   Hủy đơn' +
+                                '</button>';
 
-                        // Cập nhật nút bấm thành: Đã giao + Hủy đơn
-                        var newButtons =
-                            '<button type="button" class="btn btn-success btn-sm btn-confirm-delivered" data-id="' + orderId + '" data-cus="' + cusId + '" style="margin-right: 5px;">' +
-                            '   Xác nhận Đã giao' +
-                            '</button>' +
-                            '<button type="button" class="btn btn-warning btn-sm btn-cancel-order" data-id="' + orderId + '">' +
-                            '   Hủy đơn' +
-                            '</button>';
-                        $tdContainer.html(newButtons);
+                            $tdContainer.html(newButtons);
+                        });
                     } else {
-                        swal("Lỗi", "Không thể đăng ký vận chuyển.", "error");
+                        swal("Lỗi", "Không thể xử lý yêu cầu giao hàng.", "error");
                         $btn.prop('disabled', false).removeClass('disabled').text('Đăng ký đơn hàng');
                     }
                 },
