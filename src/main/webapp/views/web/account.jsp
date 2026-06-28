@@ -64,7 +64,7 @@
           <h2>
             Cập nhật thông tin tài khoản
           </h2>
-          <form id="form">
+          <form id="form" action="${pageContext.request.contextPath}/account" method="POST">
             <div class="input ">
               <label>
                 <span class="req">*</span>Email của bạn:
@@ -98,17 +98,17 @@
             <div>
               <label>
                 Tỉnh/Thành phố:</label>
-              <select class="form-select form-select-sm" id="city" aria-label=".form-select-sm">
+              <select class="form-select form-select-sm" id="city" aria-label=".form-select-sm" name="city">
                 <option value="" selected>Chọn tỉnh thành</option>
               </select>
               <label>
                 Quận/Huyện:</label>
-              <select class="form-select form-select-sm" id="district" aria-label=".form-select-sm">
+              <select class="form-select form-select-sm" id="district" aria-label=".form-select-sm" name="district">
                 <option value="" selected>Chọn quận huyện</option>
               </select>
               <label>
                 Phường/Xã:</label>
-              <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+              <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm" name="ward">
                 <option value="" selected>Chọn phường xã</option>
               </select>
             </div>
@@ -135,7 +135,7 @@
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-<script src="/templates/scripts/account.js"></script>
-<script src="/templates/scripts/header.js"></script>
+<script src="${pageContext.request.contextPath}/templates/scripts/account.js"></script>
+<script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
 </body>
 </html>

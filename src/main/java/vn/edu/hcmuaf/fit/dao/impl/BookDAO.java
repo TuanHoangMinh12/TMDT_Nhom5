@@ -26,10 +26,34 @@ public class BookDAO implements IBookDAO {
                     Product p = new Product();
                     p.setIdBook(rs.getInt("id_book"));
                     p.setName(rs.getString("name"));
-                    p.setPriceDiscount(rs.getDouble("discount_price"));
-                    p.setPrice(rs.getDouble("price"));
                     p.setImage(rs.getString("images"));
                     p.setQuantity(rs.getInt("quantity"));
+
+                    // 1. Lấy giá gốc
+                    double price = rs.getDouble("price");
+                    p.setPrice(price);
+
+                    // 2. Lấy phần trăm giảm giá từ cột discount_price
+                    double discountPercent = 0;
+                    try {
+                        discountPercent = rs.getDouble("discount_price");
+                    } catch (Exception e) {
+                        // Nếu lỗi hoặc null thì mặc định không giảm giá
+                    }
+
+                    // 3. Quy đổi phần trăm (0. mấy) thành Giá tiền thực tế
+                    double finalPrice = price;
+                    if (discountPercent > 0 && discountPercent <= 1) {
+                        // Trường hợp DB lưu 0.2 (tức là giảm 20%)
+                        finalPrice = price - (price * discountPercent);
+                    } else if (discountPercent > 1) {
+                        // Trường hợp DB lưu 20 (cũng là giảm 20%)
+                        finalPrice = price - (price * discountPercent / 100);
+                    }
+
+                    // 4. Gán giá tiền CHUẨN vào hệ thống
+                    p.setPriceDiscount(finalPrice);
+
                     return p;
                 }
             }
@@ -37,8 +61,7 @@ public class BookDAO implements IBookDAO {
             e.printStackTrace();
         }
         return null;
-    }
-    @Override
+    }    @Override
     public List<BookModel> listBookPayTop() {
         List<BookModel> listBook = new ArrayList<>();
         Connection connection = JDBCConnector.getConnection();

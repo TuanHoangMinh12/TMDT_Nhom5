@@ -131,7 +131,7 @@
         <div class="container_price">
           <span class="provisional">Tạm tính</span>
           <span class="sum_money">
-              <fmt:formatNumber value=" ${cart.totalPrice}" type="number" groupingUsed="true"/> đ
+              <fmt:formatNumber value="${cart.totalPrice}" type="number" groupingUsed="true"/> đ
           </span>
         </div>
         <div class="order">ĐẶT HÀNG</div>
