@@ -56,19 +56,21 @@ public class UpdateProductController extends HttpServlet {
         try {
             int i = iBookManagementService.update(idInt, name, quantity, price, discount);
             //add image
-            if(part1 != null) iBookManagementService.addImage(request, response, part1, idInt);
-            if(part2 != null) iBookManagementService.addImage(request, response, part2, idInt);
-            if(part3 != null) iBookManagementService.addImage(request, response, part3, idInt);
-            if(part4 != null) iBookManagementService.addImage(request, response, part4, idInt);
+            if(part1 != null && part1.getSize() > 0) iBookManagementService.addImage(request, response, part1, idInt);
+            if(part2 != null && part2.getSize() > 0) iBookManagementService.addImage(request, response, part2, idInt);
+            if(part3 != null && part3.getSize() > 0) iBookManagementService.addImage(request, response, part3, idInt);
+            if(part4 != null && part4.getSize() > 0 ) iBookManagementService.addImage(request, response, part4, idInt);
             if(i >= 1) {
                 Log log = new Log(Log.WARNING,ip,"Quản lý sản phẩm",cus.getIdUser(),"Thay đổi thông tin sản phẩm",1);
                 log.insert();
-                response.sendRedirect("/admin-table-product?message=Upload success&alert=success");
+                response.sendRedirect(request.getContextPath() + "/admin-table-product?message=Upload success&alert=success");
             }else {
-                response.sendRedirect("/admin-table-product?message=Upload success&alert=success");
+                response.sendRedirect(request.getContextPath() + "/admin-table-product?message=Upload success&alert=success");
             }
         }catch (Exception e) {
-            request.getRequestDispatcher("/views/admin/table-data-product.jsp").forward(request, response);
+//            request.getRequestDispatcher("/views/admin/table-data-product.jsp").forward(request, response);
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/admin-table-product?message=Update failed&alert=danger");
         }
 
     }

@@ -354,8 +354,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Dumping data for table web_ban_sach.customer: ~22 rows (approximately)
 INSERT INTO `customer` (`id_user`, `first_name`, `last_name`, `email`, `password`, `address`, `phone`, `created_time`, `role`, `status`, `attempts`, `lock_time`, `typeLogin`) VALUES
                                                                                                                                                                                    (1, 'Nguyễn', 'Uyên Thư', 'admin@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Tịnh Sơn - Sơn Tịnh - Quảng Ngãi', '0932766789', '2023-06-14 14:58:43', 'admin', 1, 3, -1, 1),
-                                                                                                                                                                                   (2, 'Hoàng', 'Minh An', 'minan@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Hòa Ninh - Hoà Vang - Đà Nẵng', '0927378788', '2023-11-28 00:53:40', 'mod', 1, 1, -1, 1),
-                                                                                                                                                                                   (3, 'Lâm', 'Tố Mỹ', 'tomy@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Yên Hòa - Quận Cầu Giấy - Hà Nội', '0127856567', '2023-11-28 00:53:40', 'mod', 1, 3, -1, 1),
+                                                                                                                                                                                   (2, 'Hoàng', 'Minh An', 'minan@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Hòa Ninh - Hoà Vang - Đà Nẵng', '0927378788', '2023-11-28 00:53:40', 'user', 1, 1, -1, 1),
+                                                                                                                                                                                   (3, 'Lâm', 'Tố Mỹ', 'tomy@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Yên Hòa - Quận Cầu Giấy - Hà Nội', '0127856567', '2023-11-28 00:53:40', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (4, 'Đoàn', 'Phong', 'phong@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Mai Dịch - Quận Cầu Giấy - Hà Nội', '0234678179', '2023-11-28 00:53:39', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (5, 'Hà', 'Minh Minh', 'minh@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Nghĩa Tân - Cầu Giấy - Hà Nội', '0909887766', '2023-11-28 00:53:38', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (6, 'Vương', 'Tuấn Khải', 'karrywang@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Linh Xuân - TP Thủ Đức - TPHCM', '0329476587', '2023-11-28 00:53:37', 'user', 1, 3, -1, 1),
@@ -369,11 +369,12 @@ INSERT INTO `customer` (`id_user`, `first_name`, `last_name`, `email`, `password
                                                                                                                                                                                    (14, 'Đỗ ', 'Hoàng Phú', 'hoangphu@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Quận Bình Thạnh - TP Hồ Chí Minh', '0866025036', '2023-11-28 00:53:32', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (15, 'Hương', 'Mỹ', 'nguyenthiquynhhuong2002@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', NULL, '0867415853', '2023-11-28 00:53:31', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (16, 'Nguyễn', 'Thư', 'minhthu08111208@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', '', '0365200110', '2023-11-28 00:53:31', 'user', 1, 3, -1, 1),
-                                                                                                                                                                                   (28, 'A', 'B', 'sosinhsv1a@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', '', '0987', '2023-11-28 00:53:30', 'mod', 1, 1, -1, 1),
+                                                                                                                                                                                   (28, 'A', 'B', 'sosinhsv1a@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', '', '0987', '2023-11-28 00:53:30', 'user', 1, 1, -1, 1),
                                                                                                                                                                                    (38, 'Nguyễn Dư', 'Lập', 'ndl22012002@gmail.com', 'brd4e8c59ed0bb1a0ca5f46667c5115a49', 'Phường Mai Dịch - Quận Cầ Giấy - Hà Nội', '0867415853', '2023-11-29 06:55:06', 'user', 1, 3, -1, 1),
                                                                                                                                                                                    (39, 'A', 'Kim', 'sosinhsv1b@gmail.com', '', '', '', '2023-05-02 10:27:50', 'user', 1, 3, -1, 1),
-                                                                                                                                                                                   (40, 'tiến', 'trần đình minh', '4tiensau@gmail.com', '', '', '', '2023-06-01 04:19:24', 'mod', 1, 3, -1, 1),
-                                                                                                                                                                                   (43, 'A', 'A', '123@gmail.com', 'ewc65ded5885fe80672bd2979c9f14f182', 'A', '12345678', '2023-06-12 14:15:41', 'mod', 1, 3, -1, 1);
+                                                                                                                                                                                   (40, 'tiến', 'trần đình minh', '4tiensau@gmail.com', '', '', '', '2023-06-01 04:19:24', 'user', 1, 3, -1, 1),
+                                                                                                                                                                                   (43, 'A', 'A', '123@gmail.com', '2cz5d55ad283aa400af464c76d713c07ad', 'A', '12345678', '2023-06-12 14:15:41', 'user', 1, 3, -1, 1),
+                                                                                                                                                                                   (44, 'Tuấn', 'Hoàng', 'tuan4869@gmail.com', '2cz5d55ad283aa400af464c76d713c07ad', '', '', '2023-06-01 04:19:24', 'admin', 1, 3, -1, 1);
 
 -- Dumping structure for table web_ban_sach.discount
 CREATE TABLE IF NOT EXISTS `discount` (
@@ -724,20 +725,6 @@ CREATE TABLE IF NOT EXISTS `owner` (
 INSERT INTO `owner` (`id_company`, `name_website`, `name_company`, `time_start_proprietary`, `time_finish_proprietary`, `information_company`) VALUES
     (1, 'DORAEMON', 'Doraemon', '2022-11-11 20:41:21', NULL, 'Doraemon gồm 3 thành viên.');
 
--- Dumping structure for table web_ban_sach.public_key
-CREATE TABLE IF NOT EXISTS `public_key` (
-    `id_key` int(11) NOT NULL AUTO_INCREMENT,
-    `id_user` int(11) NOT NULL,
-    `public_Key` text DEFAULT NULL,
-    `status` int(11) DEFAULT NULL,
-    `create_date` timestamp NOT NULL DEFAULT current_timestamp(),
-    `expire`  timestamp NULL,
-    PRIMARY KEY (`id_key`),
-    KEY `id_user` (`id_user`),
-    CONSTRAINT `public_key_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `customer` (`id_user`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table web_ban_sach.public_key: ~0 rows (approximately)
 
 -- Dumping structure for table web_ban_sach.publisher
 CREATE TABLE IF NOT EXISTS `publisher` (
@@ -909,32 +896,4 @@ CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_sl_pay_top` AS SELECT `b
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-CREATE PROCEDURE getSelectPublicKey(IN user_id INT, IN cart_id INT)
-BEGIN
-    -- Check if there is a record with a non-null expire date that satisfies the conditions
-    IF EXISTS (SELECT 1 FROM carts
-               JOIN public_key ON carts.idUser = public_key.id_user
-               WHERE carts.id = cart_id
-                 AND carts.idUser = user_id
-                 AND public_key.expire IS NOT NULL
-                 AND carts.create_time <= public_key.expire) THEN
 
-SELECT pk.public_Key
-FROM customer c
-         JOIN public_key pk ON c.id_user = pk.id_user
-         JOIN carts ct ON c.id_user = ct.idUser
-WHERE ct.id = cart_id
-  AND ct.idUser = user_id
-  AND ct.create_time > pk.create_date
-  AND ct.create_time <= pk.expire;
-ELSE
-SELECT pk.public_Key
-FROM customer c
-         JOIN public_key pk ON c.id_user = pk.id_user
-         JOIN carts ct ON c.id_user = ct.idUser
-WHERE ct.id = cart_id
-  AND ct.idUser = user_id
-  AND ct.create_time > pk.create_date
-  AND pk.expire IS NULL;
-END IF;
-END

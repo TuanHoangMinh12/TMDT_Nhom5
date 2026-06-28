@@ -50,12 +50,41 @@ public class BookManagementService implements IBookManagementService {
         if (status.equalsIgnoreCase("Mở bán")) {
             isActiveAfter = 1;
         }
-        int insertBook = iBookManagementDAO.insertBook(name, idCatalog, quantityInt, primeCostDouble, priceDouble
-                , isNewAfter, isActiveAfter, id_pc, id_p, year);
-        int id = iBookManagementDAO.findIdByName(name);
 
-        int inserBookDetail = iBookManagementDAO.insertBookDetail(id, isbn, year, weight, size, page, language, description);
-        return insertBook + inserBookDetail >= 2 ;
+        System.out.println("idCatalog = " + idCatalog);
+        System.out.println("id_pc = " + id_pc);
+        System.out.println("id_p = " + id_p);
+
+        int id = iBookManagementDAO.insertBook(
+                name,
+                idCatalog,
+                quantityInt,
+                primeCostDouble,
+                priceDouble,
+                isNewAfter,
+                isActiveAfter,
+                id_pc,
+                id_p,
+                year
+        );
+
+        if(id <= 0){
+            return false;
+        }
+
+        int insertBookDetail =
+                iBookManagementDAO.insertBookDetail(
+                        id,
+                        isbn,
+                        year,
+                        weight,
+                        size,
+                        page,
+                        language,
+                        description
+                );
+
+        return insertBookDetail > 0;
     }
 
     @Override

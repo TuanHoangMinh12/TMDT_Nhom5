@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -41,7 +40,6 @@
 <body>
 
 <%@include file="/common/web/header.jsp"%>
-
 <!-------------------------Product----------------------->
 <section class="product">
   <div class="container">
@@ -55,25 +53,11 @@
     <div class="product-content row">
       <div class="product-content-left">
         <div class="product-content-left-big-img">
-          <c:choose>
-            <c:when test="${fn:startsWith(bookModel.image, 'http')}">
-              <img src="${bookModel.image}" alt="">
-            </c:when>
-            <c:otherwise>
-              <img src="${pageContext.request.contextPath}/${bookModel.image}" alt="">
-            </c:otherwise>
-          </c:choose>
+          <img src="${pageContext.request.contextPath}/${bookModel.image}" alt="">
         </div>
         <div class="product-content-left-small-img d-flex">
           <c:forEach var="img" items="${listImage}">
-            <c:choose>
-              <c:when test="${fn:startsWith(img, 'http')}">
-                <img src="${img}" alt="" style="margin-top: 10px">
-              </c:when>
-              <c:otherwise>
-                <img src="${pageContext.request.contextPath}/${img}" alt="" style="margin-top: 10px">
-              </c:otherwise>
-            </c:choose>
+            <img src="${pageContext.request.contextPath}/${img}" alt="" style="margin-top: 10px">
           </c:forEach>
         </div>
       </div>
@@ -135,248 +119,250 @@
           <div class="giaban">Giá bán tại Doraemon: <span class="giamoi font-weight-bold">${bookModel.price} đ</span></div>
           <div class="tietkiem">Tiết kiệm: <b>20.000 ₫</b>
           </div>
-          <c:if test="${quantityRemain != 0}">
-          <div class="tietkiem">Số lượng còn lại: <b>${quantityRemain}</b>
+            <c:if test="${quantityRemain != 0}">
+              <div class="tietkiem">Số lượng còn lại: <b>${quantityRemain}</b>
             </c:if>
-          </div>
-          <div class="product-content-right-uudai">
-            <h6 class="header font-weight-bold">Khuyến mãi & Ưu đãi tại Doraemon:</h6>
-            <ul>
-              <li><b>Miễn phí giao hàng </b>cho đơn hàng từ 150.000đ ở TP.HCM và 300.000đ ở
-                Tỉnh/Thành khác <a href="${pageContext.request.contextPath}/home">>> Chi tiết</a></li>
-              <li><b>Combo sách hot - CHÁY HÀNG </b><a href="home.html">>>Xem ngay</a></li>
-              <li>Tặng kèm bìa bao sách</li>
-              <li>Miễn phí 5 stickers</li>
-              <li>Miễn phí đổi trả nếu sách bị lỗi hoặc hỏng</li>
-            </ul>
-          </div>
+        </div>
+        <div class="product-content-right-uudai">
+          <h6 class="header font-weight-bold">Khuyến mãi & Ưu đãi tại Doraemon:</h6>
+          <ul>
+            <li><b>Miễn phí giao hàng </b>cho đơn hàng từ 150.000đ ở TP.HCM và 300.000đ ở
+              Tỉnh/Thành khác <a href="${pageContext.request.contextPath}/home">>> Chi tiết</a></li>
+            <li><b>Combo sách hot - CHÁY HÀNG </b><a href="home.html">>>Xem ngay</a></li>
+            <li>Tặng kèm bìa bao sách</li>
+            <li>Miễn phí 5 stickers</li>
+            <li>Miễn phí đổi trả nếu sách bị lỗi hoặc hỏng</li>
+          </ul>
+        </div>
 
-          <c:if test="${quantityRemain == 0}">
+        <c:if test="${quantityRemain == 0}">
 
-            <div class="h2">Đã Hết Hàng</div>
-          </c:if>
-          <c:if test="${quantityRemain != 0}">
-            <div class="product-content-right-soluong d-flex">
-              <label class="font-weight-bold">Số lượng: </label>
-              <div class="input-number input-group md-3 quantity">
-                <div class="input-group-prepend">
-                  <span class="input-group-text btn-spin btn-dec" onclick="changeQuantity(-1)">-</span>
-                </div>
-                <input id="soluongsp" type="text" value="1" class="soluongsp text-center input-quantity">
-                <div class="input-group-append">
-                  <span class="input-group-text btn-spin btn-inc" onclick="changeQuantity(+1)">+</span>
-                </div>
+           <div class="h2">Đã Hết Hàng</div>
+        </c:if>
+        <c:if test="${quantityRemain != 0}">
+          <div class="product-content-right-soluong d-flex">
+            <label class="font-weight-bold">Số lượng: </label>
+            <div class="input-number input-group md-3 quantity">
+              <div class="input-group-prepend">
+                <span class="input-group-text btn-spin btn-dec" onclick="changeQuantity(-1)">-</span>
+              </div>
+              <input id="soluongsp" type="text" value="1" class="soluongsp text-center input-quantity">
+              <div class="input-group-append">
+                <span class="input-group-text btn-spin btn-inc" onclick="changeQuantity(+1)">+</span>
               </div>
             </div>
-            <div class="product-content-right-product-button row">
-                <%--          <button><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>--%>
-              <div class="add-to-cart">
-                <a href="#">
-                  <button type="button"><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
-                </a>
-              </div>
-
-              <button class="muangay buy-now"><p>MUA NGAY</p></button>
-            </div>
-          </c:if>
-
-
-          <div class="product-content-right-product-icon d-flex">
-            <div class="product-content-right-product-icon-item">
-              <i class="fas fa-phone-alt"></i><p>Hotline</p>
-            </div>
-            <div class="product-content-right-product-icon-item">
-              <i class="far fa-comment"></i> <p>Chat</p>
-            </div>
-            <div class="product-content-right-product-icon-item">
-              <i class="far fa-envelope"></i> <p>Mail</p>
-
-            </div>
           </div>
-          <div class="product-content-right-product-bottom">
-            <div class="product-content-right-product-bottom-top">
-              &#8744;
-            </div>
-            <div class="product-content-right-product-bottom-content-big">
-              <div class="product-content-right-product-bottom-content-title row">
-                <div class="product-content-right-product-bottom-content-title-item mota">
-                  <p>Mô tả</p>
+          <div class="product-content-right-product-button row">
+                    <%--          <button><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>--%>
+                <div class="add-to-cart">
+                    <a href="#">
+                        <button type="button"><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
+                    </a>
                 </div>
-                <div class="product-content-right-product-bottom-content-title-item danhgia">
-                  <p>Đánh giá, bình luận</p>
+
+                <button class="muangay buy-now"><p>MUA NGAY</p></button>
+            </div>
+        </c:if>
+
+
+        <div class="product-content-right-product-icon d-flex">
+          <div class="product-content-right-product-icon-item">
+            <i class="fas fa-phone-alt"></i><p>Hotline</p>
+          </div>
+          <div class="product-content-right-product-icon-item">
+            <i class="far fa-comment"></i> <p>Chat</p>
+          </div>
+          <div class="product-content-right-product-icon-item">
+            <i class="far fa-envelope"></i> <p>Mail</p>
+
+          </div>
+        </div>
+        <div class="product-content-right-product-bottom">
+          <div class="product-content-right-product-bottom-top">
+            &#8744;
+          </div>
+          <div class="product-content-right-product-bottom-content-big">
+            <div class="product-content-right-product-bottom-content-title row">
+              <div class="product-content-right-product-bottom-content-title-item mota">
+                <p>Mô tả</p>
+              </div>
+              <div class="product-content-right-product-bottom-content-title-item danhgia">
+                <p>Đánh giá, bình luận</p>
+              </div>
+            </div>
+            <div class="product-content-right-product-bottom-content">
+              <div class="product-content-right-bottom-content-mota">
+                <div class="product-content-right-product-bottom-content-thongtinsp">
+                  <table>
+                    <thead>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td class="themmau">Mã hàng</td>
+                      <td>${bookDetail.id}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Mã ISBN</td>
+                      <td>${bookDetail.isbn}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Ngôn ngữ</td>
+                      <td>${bookDetail.language}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Tác giả</td>
+                      <td>${bookDetail.nameAuthor}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">NXB</td>
+                      <td>${bookDetail.name}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Năm XB</td>
+                      <td>${bookDetail.year}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Trọng Lượng (gr)</td>
+                      <td>${bookDetail.weight}</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Kích Thước Bao Bì</td>
+                      <td>${bookDetail.size} cm</td>
+                    </tr>
+                    <tr>
+                      <td class="themmau">Số trang</td>
+                      <td>${bookDetail.page}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="product-content-right-product-bottom-content-chitiet">
+                  ${bookDetail.description}
                 </div>
               </div>
-              <div class="product-content-right-product-bottom-content">
-                <div class="product-content-right-bottom-content-mota">
-                  <div class="product-content-right-product-bottom-content-thongtinsp">
-                    <table>
-                      <thead>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td class="themmau">Mã hàng</td>
-                        <td>${bookDetail.id}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Mã ISBN</td>
-                        <td>${bookDetail.isbn}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Ngôn ngữ</td>
-                        <td>${bookDetail.language}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Tác giả</td>
-                        <td>${bookDetail.nameAuthor}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">NXB</td>
-                        <td>${bookDetail.name}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Năm XB</td>
-                        <td>${bookDetail.year}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Trọng Lượng (gr)</td>
-                        <td>${bookDetail.weight}</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Kích Thước Bao Bì</td>
-                        <td>${bookDetail.size} cm</td>
-                      </tr>
-                      <tr>
-                        <td class="themmau">Số trang</td>
-                        <td>${bookDetail.page}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div class="product-content-right-product-bottom-content-chitiet">
-                    ${bookDetail.description}
-                  </div>
-                </div>
 
-                <div class="product-content-right-product-bottom-content-danhgia">
-                  <div class="product-content-right-product-bottom-content-rate d-fex">
-                    <div class="text-center danhgia">
-                      <p class="tieude">Đánh giá trung bình</p>
-                      <div class="diem">${bookModel.quantityStart}/5</div>
-                      <div class="sao">
-                        <c:if test="${bookModel.quantityStart == 5}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                        </c:if>
-                        <c:if test="${bookModel.quantityStart == 4}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
+              <div class="product-content-right-product-bottom-content-danhgia">
+                <div class="product-content-right-product-bottom-content-rate d-fex">
+                  <div class="text-center danhgia">
+                    <p class="tieude">Đánh giá trung bình</p>
+                    <div class="diem">${bookModel.quantityStart}/5</div>
+                    <div class="sao">
+                      <c:if test="${bookModel.quantityStart == 5}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                      </c:if>
+                      <c:if test="${bookModel.quantityStart == 4}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
 
-                        <c:if test="${bookModel.quantityStart == 3}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
+                      <c:if test="${bookModel.quantityStart == 3}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
 
-                        <c:if test="${bookModel.quantityStart == 2}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
+                      <c:if test="${bookModel.quantityStart == 2}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
 
-                        <c:if test="${bookModel.quantityStart == 1}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-                        <c:if test="${bookModel.quantityStart == 0}">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-                      </div>
-                      <p class="sonhanxet text-muted">(${bookModel.quantityComment} nhận xét)</p>
+                      <c:if test="${bookModel.quantityStart == 1}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
+                      <c:if test="${bookModel.quantityStart == 0}">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
                     </div>
-                  </div>
-                  <div class="content_danhgia">
-                    <c:forEach var="rateDG" items="${rates}">
-                      <div style="font-weight: 600">${rateDG.nameUser}</div>
-                      <div class="product-content-right-product-rate">
-                        <c:if test="${rateDG.startRate == 5}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                        </c:if>
-                        <c:if test="${rateDG.startRate == 4}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-
-                        <c:if test="${rateDG.startRate == 3}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-
-                        <c:if test="${rateDG.startRate == 2}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-
-                        <c:if test="${rateDG.startRate == 1}">
-                          <i class="fa fa-star active"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-                        <c:if test="${rateDG.startRate == 0}">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </c:if>
-                      </div>
-                      <span style="margin-bottom: 8px">${rateDG.rate_time}</span>
-                      <br/>
-                      <span style="margin-bottom: 24px">${rateDG.comment}</span>
-                      <hr/>
-                    </c:forEach>
-
+                    <p class="sonhanxet text-muted">(${bookModel.quantityComment} nhận xét)</p>
                   </div>
                 </div>
-              </div>
+                <div class="content_danhgia">
+                  <c:forEach var="rateDG" items="${rates}">
+                    <div style="font-weight: 600">${rateDG.nameUser}</div>
+                    <div class="product-content-right-product-rate">
+                      <c:if test="${rateDG.startRate == 5}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                      </c:if>
+                      <c:if test="${rateDG.startRate == 4}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
 
+                      <c:if test="${rateDG.startRate == 3}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
+
+                      <c:if test="${rateDG.startRate == 2}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
+
+                      <c:if test="${rateDG.startRate == 1}">
+                        <i class="fa fa-star active"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
+                      <c:if test="${rateDG.startRate == 0}">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                      </c:if>
+                    </div>
+                    <span style="margin-bottom: 8px">${rateDG.rate_time}</span>
+                    <br/>
+                    <span style="margin-bottom: 24px">${rateDG.comment}</span>
+                    <hr/>
+                  </c:forEach>
+
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
+
 </section>
 
 <%@include file="/common/web/footer.jsp"%>

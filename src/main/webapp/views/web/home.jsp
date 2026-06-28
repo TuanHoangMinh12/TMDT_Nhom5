@@ -41,17 +41,17 @@
                         <i class="fa-solid fa-chevron-right"></i>
                     </span>
                 <ul class="type_hot-child">
-                    <li><a href="">
-                        <p>Sách </p>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=1">
+                        <p>Sách cũ bán chạy</p>
                     </a></li>
-                    <li><a href="">
-                        <p>Sách </p>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=2">
+                        <p>Sách cũ mới</p>
                     </a></li>
-                    <li><a href="">
-                        <p>Sắp phát hành</p>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=3">
+                        <p>Sắp cũ giá rẻ</p>
                     </a></li>
-                    <li><a href="">
-                        <p>Sách giảm giá</p>
+                    <li><a href="${pageContext.request.contextPath}/products?hot=4">
+                        <p>Sách giáo khoa cũ</p>
                     </a></li>
                 </ul>
             </li>

@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -26,9 +25,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
         integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Cart.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Cart.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />--%>
+
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Header.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Cart.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
+
   <title>Cart</title>
 </head>
 
@@ -45,14 +49,14 @@
           ${message}
       </div>
     </c:if>
-    <c:if test="${!sessionScope.containsKey('cart') || sessionScope.cart.map.size() == 0}">
+    <c:if test="${cart == null || cart.map.size() == 0}">
       <div class="no-data text-center my-5 in-cart">
         <img src="${pageContext.request.contextPath}/templates/images/empty_cart.jpg" alt="No data">
         <a style="font-size: 24px; font-weight: 600;" href="${pageContext.request.contextPath}/home" id="btn-cart-buy">Mua ngay</a>
       </div>
     </c:if>
 
-    <c:if test="${sessionScope.cart.map.size() > 0}">
+    <c:if test="${cart != null && cart.map.size() > 0}">
       <table style="width: 100%; border: 1px solid #ccc;" class="table">
         <thead>
         <tr>
@@ -64,60 +68,50 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="item" items="${sessionScope.cart.map}">
-          <tr data-product-id="${item.key}">
-            <td>
-              <label>
-                <input type="checkbox" name="settings" value="${item.key}">
-              </label>
-            </td>
-            <td class="container_img">
-              <div class="col_img">
-                <c:choose>
-                  <c:when test="${fn:startsWith(item.value.product.image, 'http')}">
-                    <img src="${item.value.product.image}" alt="">
-                  </c:when>
-                  <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/${item.value.product.image}" alt="">
-                  </c:otherwise>
-                </c:choose>
-              </div>
-              <div class="col-container_content">
-                <a data-product-name="${item.value.product.name}"></a>
-                <h2 class="title">${item.value.product.name}</h2>
-                <div class="wrap_id">
-                  <span class="id">Mã SP</span>
-                  <div id="id">${item.key}</div>
+        <c:forEach var="item" items="${cart.map}">
+          <tr data-product-id="${item.value.product.idBook}">
+              <td>
+                <label>
+                  <input type="checkbox" name="settings" value="${item.value.product.idBook}"></label>
+              </td>
+              <td class="container_img">
+                <div class="col_img"><img src="${pageContext.request.contextPath}/${item.value.product.image}" alt=""></div>
+                <div class="col-container_content">
+                  <a data-product-name="${item.value.product.name}"></a>
+                  <h2 class="title">${item.value.product.name}</h2>
+                  <div class="wrap_id">
+                    <span class="id">Mã SP</span>
+                    <div id="id">${item.key}</div>
+                  </div>
+                  <div class="wrap_price">
+                      <div class="price active">${item.value.product.priceDiscount} đ</div>
+                      <div class="price_sale">${item.value.product.price} đ</div>
+                  </div>
                 </div>
-                <div class="wrap_price">
-                  <div class="price active">${item.value.product.priceDiscount} đ</div>
-                  <div class="price_sale">${item.value.product.price} đ</div>
+              </td>
+              <td>
+                <div class="d-flex quantity">
+                  <div class="input-group-prepend minus">
+                    <span class="input-group-text btn-spin btn-dec btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">-</span>
+                  </div>
+                  <input type="text" value="${item.value.quantity}" style="width: 60px; background-color: #FFFFFF; border: 1px solid #cacaca" class="soluongsp text-center input-quantity" />
+                  <div class="input-group-append plus">
+                    <span class="input-group-text btn-spin btn-inc btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">+</span>
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex quantity">
-                <div class="input-group-prepend minus">
-                  <span class="input-group-text btn-spin btn-dec btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">-</span>
-                </div>
-                <input type="text" value="${item.value.quantity}" style="width: 60px; background-color: #FFFFFF; border: 1px solid #cacaca" class="soluongsp text-center input-quantity" />
-                <div class="input-group-append plus">
-                  <span class="input-group-text btn-spin btn-inc btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">+</span>
-                </div>
-              </div>
-            </td>
-            <td><span class="col-sum_price">${item.value.product.priceDiscount * item.value.quantity}đ</span></td>
-            <td class="action text-center" data-title="Remove">
-              <a href="#"><i class="col_delete fa-solid fa-trash-can"></i></a>
-            </td>
-          </tr>
+              </td>
+              <td><span class="col-sum_price">${item.value.product.priceDiscount * item.value.quantity}đ</span></td>
+              <td class="action text-center" data-title="Remove">
+                <a href="#"><i class="col_delete fa-solid fa-trash-can"></i></a>
+              </td>
+            </tr>
         </c:forEach>
         </tbody>
       </table>
       <div class="container_right">
         <div class="container_price">
           <span class="provisional">Tạm tính</span>
-          <span class="sum_money">${sessionScope.cart.totalPrice}đ</span>
+          <span class="sum_money">${cart.totalPrice}đ</span>
         </div>
         <div class="order">ĐẶT HÀNG</div>
         <a href="${pageContext.request.contextPath}/home"><div class="add_product">CHỌN THÊM SẢN PHẨM</div></a>
@@ -176,26 +170,28 @@
 </script>
 // chon san pham trong gio hang de mua hang
 <script>
-  let checkboxes = $("input[type=checkbox][name=settings]")
-  let enabledSettings = [];
+  let checkboxes = $("input[type=checkbox][name=settings]");
 
-  // Attach a change event handler to the checkboxes.
-  checkboxes.change(function () {
-    enabledSettings = checkboxes
-            .filter(":checked") // Filter out unchecked boxes.
-            .map(function () { // Extract values using jQuery map.
+  $('.order').on('click', function () {
+
+    let enabledSettings = checkboxes
+            .filter(":checked")
+            .map(function () {
               return this.value;
             })
-            .get() // Get array.
+            .get();
 
+    // kiểm tra chưa chọn sản phẩm
+    if (enabledSettings.length === 0) {
+      alert("Vui lòng chọn sản phẩm!");
+      return;
+    }
+
+    // chuyển sang trang đặt hàng
+    window.location.href =
+            '${pageContext.request.contextPath}/orderAddVoucher?list_id='
+            + enabledSettings.join(",");
   });
-
-  <%--$('.order').on('click', function () {--%>
-  <%--  window.location.href = '${pageContext.request.contextPath}/orderAddVoucher?list_id=' + enabledSettings--%>
-  <%--})--%>
-  $('.order').on('click', function () {
-    window.location.href = '${pageContext.request.contextPath}/privateKey?list_id=' + enabledSettings
-  })
 </script>
 
 </body>

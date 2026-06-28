@@ -4,10 +4,7 @@ import vn.edu.hcmuaf.fit.dao.IBookManagementDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.BookManagementModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -408,42 +405,67 @@ public class BookManagementDAO implements IBookManagementDAO {
     }
 
     @Override
-    public int insertBook(String name, int idCatalog, int quantityInt, double primeCostDouble, double priceDouble
-            , int isNewAfter, int isActiveAfter, int id_pc, int id_p, int year) {
+    public int insertBook(String name,
+                          int idCatalog,
+                          int quantityInt,
+                          double primeCostDouble,
+                          double priceDouble,
+                          int isNewAfter,
+                          int isActiveAfter,
+                          int id_pc,
+                          int id_p,
+                          int year) {
+
         Connection connection = JDBCConnector.getConnection();
-        String sql = new String("INSERT INTO book(name, id_author, id_catalog, quantity, prime_cost, " +
-                "price, isNew, isActive, id_pc, id_p, published_time) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+
+        String sql =
+                "INSERT INTO book(name, id_author, id_catalog, quantity, prime_cost," +
+                        " price, isNew, isActive, id_pc, id_p, published_time)" +
+                        " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         PreparedStatement statement = null;
-        if(connection != null) {
-            try {
-                statement = connection.prepareStatement(sql.toString());
-                statement.setString(1, name);
-                statement.setInt(2, 1);
-                statement.setInt(3, idCatalog);
-                statement.setInt(4, quantityInt);
-                statement.setDouble(5, primeCostDouble);
-                statement.setDouble(6, priceDouble);
-                statement.setInt(7, isNewAfter);
-                statement.setInt(8, isActiveAfter);
-                statement.setInt(9, id_pc);
-                statement.setInt(10, id_p);
-                statement.setInt(11, year);
-                return statement.executeUpdate();
-            } catch (SQLException e) {
-                return 0;
-            } finally {
-                try {
-                    if(connection != null) connection.close();
-                    if(statement != null) statement.close();
-                } catch (SQLException e) {
-                    return 0;
+
+        try {
+
+            statement = connection.prepareStatement(
+                    sql,
+                    Statement.RETURN_GENERATED_KEYS
+            );
+
+            statement.setString(1, name);
+            statement.setInt(2, 1);
+            statement.setInt(3, idCatalog);
+            statement.setInt(4, quantityInt);
+            statement.setDouble(5, primeCostDouble);
+            statement.setDouble(6, priceDouble);
+            statement.setInt(7, isNewAfter);
+            statement.setInt(8, isActiveAfter);
+            statement.setInt(9, id_pc);
+            statement.setInt(10, id_p);
+            statement.setInt(11, year);
+
+            int result = statement.executeUpdate();
+
+            if(result > 0){
+                ResultSet rs = statement.getGeneratedKeys();
+
+                if(rs.next()){
+                    return rs.getInt(1);
                 }
             }
-        }
-        return 0;
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(statement != null) statement.close();
+                if(connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return 0;
     }
 
     @Override
@@ -467,12 +489,14 @@ public class BookManagementDAO implements IBookManagementDAO {
                 statement.setString(8, description);
                 return statement.executeUpdate();
             } catch (SQLException e) {
+                e.printStackTrace();
                 return 0;
             } finally {
                 try {
-                    if(connection != null) connection.close();
                     if(statement != null) statement.close();
+                    if(connection != null) connection.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     return 0;
                 }
             }

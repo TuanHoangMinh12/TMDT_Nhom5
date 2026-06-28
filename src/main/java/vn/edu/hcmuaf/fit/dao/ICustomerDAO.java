@@ -22,6 +22,14 @@ public interface ICustomerDAO {
     CustomerModel findByUsername(String email);
 
     void changePassWord(String email, String password);
+
     List<CustomerModel> getAllUserAdmin();
 
+    int lockUser(int userId);
+
+    int unlockUser(int userId);
+
+    int deleteUser(int userId);
 }
+
+

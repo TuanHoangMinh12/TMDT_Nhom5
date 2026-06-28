@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,23 +96,35 @@
                   <td colspan="2">Không có dữ liệu</td>
                 </c:if>
 
-                <td>${cart.getTotalPriceFromCart() != null ? cart.getTotalPriceFromCart() : "0"}</td>
+                <td>
+                  <fmt:formatNumber value="${cart.getTotalPriceFromCart()}" type="number" groupingUsed="true" maxFractionDigits="0"/> VNĐ
+                </td>
 
-                <c:if test="${cart.inShip == 1}">
-                  <td><span class="badge bg-danger">Chờ xử lí</span></td>
-                </c:if>
-                <c:if test="${cart.inShip == 2}">
-                  <td><span class="badge bg-warning">Đang giao</span></td>
-                </c:if>
-                <c:if test="${cart.inShip == 3}">
-                  <td><span class="badge bg-success">Đã giao</span></td>
-                </c:if>
-                <c:if test="${cart.inShip == 4}">
-                  <td><span class="badge bg-primary">Đã hủy</span></td>
-                </c:if>
+                <td>
+                  <c:choose>
+                    <c:when test="${cart.inShip == 1}">
+                      <span class="badge badge-secondary">Chờ xử lý</span>
+                    </c:when>
+                    <c:when test="${cart.inShip == 2}">
+                      <span class="badge badge-warning">Đang giao</span>
+                    </c:when>
+                    <c:when test="${cart.inShip == 3}">
+                      <span class="badge badge-success">Đã giao</span>
+                    </c:when>
+                    <c:when test="${cart.inShip == 4}">
+                      <span class="badge badge-danger">Đã hủy</span>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="badge badge-light">Không xác định</span>
+                    </c:otherwise>
+                  </c:choose>
+                </td>
+
                 <td>
                   <a href="${pageContext.request.contextPath}/admin-order-detail?id=${cart.id}">
-                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm" title="Xem chi tiết & Verify">
+                      <i class="fa fa-eye"></i> Chi tiết
+                    </button>
                   </a>
                 </td>
               </tr>
