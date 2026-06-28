@@ -624,6 +624,32 @@ CustomerDAO implements ICustomerDAO {
         }
     }
 
+    // Chức năng cho phần đấu giá (Tuấn làm)
 
+    // Khóa tài khoản
+    public int lockUser(int userId) {
+        String sql = "UPDATE customer SET status=0 WHERE id_user=?";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // Mở khóa tài khoản
+    public int unlockUser(int userId) {
+        String sql = "UPDATE customer SET status=1 WHERE id_user=?";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
 

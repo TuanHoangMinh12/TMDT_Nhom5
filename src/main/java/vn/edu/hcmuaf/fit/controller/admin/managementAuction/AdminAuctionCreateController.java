@@ -17,8 +17,6 @@ import java.util.List;
 
 /**
  * Servlet xử lý THÊM MỚI phiên đấu giá.
- * URL: /admin-auction-create
- *
  * GET  -> Hiển thị form tạo mới (kèm danh sách sách để chọn)
  * POST -> Nhận dữ liệu form, lưu vào DB, redirect về danh sách
  */

@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.dao.impl;
 
 import vn.edu.hcmuaf.fit.dao.IAuctionDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
+import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.model.Product;
 
@@ -184,8 +185,133 @@ public class AuctionDAO implements IAuctionDAO {
     }
 
 
-
     // Tuấn làm
+
+    // PHẦN 1 - CRUD PHIÊN ĐẤU GIÁ (bảng auctions)
+    /**
+     * Lấy DANH SÁCH TẤT CẢ phiên đấu giá.
+     * JOIN với book để lấy tên sách, JOIN với customer để lấy tên người thắng.
+     * Admin dùng để xem toàn bộ danh sách.
+     */
+    public List<AuctionModel> getAllAuctions() {
+        List<AuctionModel> list = new ArrayList<>();
+        // Đếm tổng bid bằng subquery để tránh GROUP BY phức tạp
+        String sql =
+                "SELECT a.*, b.name AS book_name, " +
+                        "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
+                        "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
+                        "       c.email AS winner_email, " +
+                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "FROM auctions a " +
+                        "JOIN book b ON a.book_id = b.id_book " +
+                        "LEFT JOIN customer c ON a.winner_id = c.id_user " +
+                        "ORDER BY a.created_at DESC";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapRowToAuction(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Tìm một phiên đấu giá theo ID.
+     * Dùng khi mở trang chi tiết phiên trong trang admin
+     */
+    public AuctionModel findById2(int id) {
+        String sql =
+                "SELECT a.*, b.name AS book_name, " +
+                        "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
+                        "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
+                        "       c.email AS winner_email, " +
+                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "FROM auctions a " +
+                        "JOIN book b ON a.book_id = b.id_book " +
+                        "LEFT JOIN customer c ON a.winner_id = c.id_user " +
+                        "WHERE a.id = ?";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return mapRowToAuction(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * THÊM MỚI phiên đấu giá
+     * Admin điền form -> gọi hàm này.
+     * current_price ban đầu bằng start_price.
+     *
+     * @return số dòng bị ảnh hưởng (1 = thành công, 0 = thất bại)
+     */
+    public int createAuction(int bookId, double startPrice, double minIncrement,
+                             Timestamp startTime, Timestamp endTime) {
+        String sql =
+                "INSERT INTO auctions (book_id, start_price, current_price, min_increment, start_time, end_time, status) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, 'WAITING')";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, bookId);
+            ps.setDouble(2, startPrice);
+            ps.setDouble(3, startPrice);    // current_price = start_price lúc đầu
+            ps.setDouble(4, minIncrement);
+            ps.setTimestamp(5, startTime);
+            ps.setTimestamp(6, endTime);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * CẬP NHẬT thông tin phiên đấu giá.
+     * Chỉ cho phép sửa khi phiên vẫn đang ở trạng thái WAITING.
+     */
+    public int updateAuction(int id, double startPrice, double minIncrement,
+                             Timestamp startTime, Timestamp endTime) {
+        // Điều kiện AND status='WAITING' giúp tránh sửa phiên đang chạy
+        String sql =
+                "UPDATE auctions " +
+                        "SET start_price=?, current_price=?, min_increment=?, start_time=?, end_time=? " +
+                        "WHERE id=? AND status='WAITING'";
+
+        Connection con = JDBCConnector.getConnection();
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setDouble(1, startPrice);
+            ps.setDouble(2, startPrice);   // Reset current_price về start_price khi sửa
+            ps.setDouble(3, minIncrement);
+            ps.setTimestamp(4, startTime);
+            ps.setTimestamp(5, endTime);
+            ps.setInt(6, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     // Xóa phiên đấu giá
     @Override
@@ -222,9 +348,13 @@ public class AuctionDAO implements IAuctionDAO {
         }
     }
 
-     // Chốt phiên đấu giá (Resolution).
-     // Tìm bid cao nhất -> cập nhật winner_id + current_price + status = FINISHED.
-     // Admin gọi sau khi phiên hết giờ = > trả về true nếu chốt thành công
+    /**
+     * CHỐT PHIÊN ĐẤU GIÁ (Resolution).
+     * Tìm bid cao nhất -> cập nhật winner_id + current_price + status = FINISHED.
+     * Admin gọi sau khi phiên hết giờ.
+     *
+     * @return true nếu chốt thành công
+     */
     @Override
     public boolean finalizeAuction(int auctionId) {
         // Bước 1: Tìm người bid cao nhất
@@ -272,10 +402,13 @@ public class AuctionDAO implements IAuctionDAO {
         }
     }
 
-    // TỰ ĐộNG đồng bộ trạng thái phiên dựa theo thời gian thực.
-    // Gọi hàm này ở đầu mỗi request admin để status luôn đúng.
-    //     *   - WAITING + đến giờ bắt đầu  -> ACTIVE
-    //     *   - ACTIVE  + quá giờ kết thúc -> FINISHED
+    /**
+     * TỰ ĐỘNG đồng bộ trạng thái phiên dựa theo thời gian thực.
+     * Gọi hàm này ở đầu mỗi request admin để status luôn đúng.
+     *   - WAITING + đến giờ bắt đầu  -> ACTIVE
+     *   - ACTIVE  + quá giờ kết thúc -> FINISHED
+     */
+
     @Override
     public void syncAuctionStatus() {
         String sqlToActive =
@@ -299,12 +432,52 @@ public class AuctionDAO implements IAuctionDAO {
         }
     }
 
-    /*
-          LỊCH SỬ ĐẶT GIÁ (bảng auction_bids)
-     */
+    // Các hàm bổ sung
+    /** Đọc một dòng ResultSet -> AuctionModel */
+    private AuctionModel mapRowToAuction(ResultSet rs) throws SQLException {
+        AuctionModel a = new AuctionModel();
+        a.setId(rs.getInt("id"));
+        a.setBookId(rs.getInt("book_id"));
+        a.setStartPrice(rs.getDouble("start_price"));
+        a.setCurrentPrice(rs.getDouble("current_price"));
+        a.setMinIncrement(rs.getDouble("min_increment"));
+        a.setStartTime(rs.getTimestamp("start_time"));
+        a.setEndTime(rs.getTimestamp("end_time"));
+        a.setStatus(rs.getString("status"));
+        a.setCreatedAt(rs.getTimestamp("created_at"));
+        // winner_id có thể NULL
+        Object winnerObj = rs.getObject("winner_id");
+        if (winnerObj != null) a.setWinnerId((Integer) winnerObj);
+        // JOIN fields
+        a.setBookName(rs.getString("book_name"));
+        a.setBookImage(rs.getString("book_image"));
+        a.setWinnerName(rs.getString("winner_name"));
+        a.setWinnerEmail(rs.getString("winner_email"));
+        a.setTotalBids(rs.getInt("total_bids"));
+        return a;
+    }
 
-    // Lấy TOÀN BỘ lịch sử bid của một phiên.
-    //  Admin dùng để xem chi tiết từng lượt đặt, kiểm tra spam.
+    /** Đọc một dòng ResultSet -> AuctionBidModel */
+    private AuctionBidModel mapRowToBid(ResultSet rs) throws SQLException {
+        AuctionBidModel b = new AuctionBidModel();
+        b.setId(rs.getInt("id"));
+        b.setAuctionId(rs.getInt("auction_id"));
+        b.setUserId(rs.getInt("user_id"));
+        b.setBidPrice(rs.getDouble("bid_p3bnkrice"));
+        b.setBidTime(rs.getTimestamp("bid_time"));
+        b.setUserName(rs.getString("user_name"));
+        b.setUserEmail(rs.getString("user_email"));
+        return b;
+    }
 
-
+    /** Đóng Connection, PreparedStatement, ResultSet an toàn */
+    private void closeAll(Connection con, PreparedStatement ps, ResultSet rs) {
+        try {
+            if (rs  != null) rs.close();
+            if (ps  != null) ps.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * Servlet hiển thị DANH SÁCH TẤT CẢ phiên đấu giá.
- * URL: /admin-auction-list
- *
  * Luồng xử lý:
  *   1. Tự động sync trạng thái phiên theo giờ hiện tại
  *   2. Lấy danh sách tất cả phiên

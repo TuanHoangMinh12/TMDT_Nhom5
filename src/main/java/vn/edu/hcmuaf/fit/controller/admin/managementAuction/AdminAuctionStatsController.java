@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * Servlet hiển thị THỐNG KÊ DOANH THU đấu giá.
- * URL: /admin-auction-stats
- *
  * Bao gồm:
  *  - Tổng doanh thu từ phiên PAID
  *  - Đếm phiên theo trạng thái

@@ -14,8 +14,6 @@ import java.util.List;
 
 /**
  * Servlet xử lý trang CHI TIẾT phiên đấu giá.
- * URL: /admin-auction-detail
- *
  * GET  ?id=X          -> Hiển thị chi tiết + lịch sử bid của phiên
  * POST ?action=finalize  -> Chốt phiên (tìm người thắng, gửi thông báo)
  * POST ?action=markPaid  -> Chuyển trạng thái FINISHED -> PAID

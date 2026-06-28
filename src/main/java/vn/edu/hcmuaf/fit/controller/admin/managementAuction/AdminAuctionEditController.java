@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 
 /**
  * Servlet xử lý SỬA và XÓA phiên đấu giá.
- * URL: /admin-auction-edit
  *
  * GET  ?id=X           -> Hiển thị form sửa (điền sẵn dữ liệu hiện tại)
  * POST ?action=update  -> Cập nhật phiên
