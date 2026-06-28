@@ -1,13 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: ndl22
-  Date: 12/5/2022
-  Time: 10:14 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<c:set var="context" value="${pageContext.request.contextPath}"/>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,9 +20,9 @@
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/ProductDetail.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Header.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/ProductDetail.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
 
   <style>
     .sao .active {
@@ -53,11 +46,27 @@
     <div class="product-content row">
       <div class="product-content-left">
         <div class="product-content-left-big-img">
-          <img src="${pageContext.request.contextPath}/${bookModel.image}" alt="">
+          <%-- Ảnh lớn: check http hay local --%>
+          <c:choose>
+            <c:when test="${fn:startsWith(bookModel.image, 'http')}">
+              <img src="${bookModel.image}" alt="${bookModel.name}">
+            </c:when>
+            <c:otherwise>
+              <img src="${pageContext.request.contextPath}/${bookModel.image}" alt="${bookModel.name}">
+            </c:otherwise>
+          </c:choose>
         </div>
         <div class="product-content-left-small-img d-flex">
+          <%-- Ảnh nhỏ: check http hay local --%>
           <c:forEach var="img" items="${listImage}">
-            <img src="${pageContext.request.contextPath}/${img}" alt="" style="margin-top: 10px">
+            <c:choose>
+              <c:when test="${fn:startsWith(img, 'http')}">
+                <img src="${img}" alt="" style="margin-top: 10px">
+              </c:when>
+              <c:otherwise>
+                <img src="${pageContext.request.contextPath}/${img}" alt="" style="margin-top: 10px">
+              </c:otherwise>
+            </c:choose>
           </c:forEach>
         </div>
       </div>
@@ -81,7 +90,6 @@
             <i class="fa fa-star active"></i>
             <i class="fa fa-star"></i>
           </c:if>
-
           <c:if test="${bookModel.quantityStart == 3}">
             <i class="fa fa-star active"></i>
             <i class="fa fa-star active"></i>
@@ -89,7 +97,6 @@
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
           </c:if>
-
           <c:if test="${bookModel.quantityStart == 2}">
             <i class="fa fa-star active"></i>
             <i class="fa fa-star active"></i>
@@ -97,7 +104,6 @@
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
           </c:if>
-
           <c:if test="${bookModel.quantityStart == 1}">
             <i class="fa fa-star active"></i>
             <i class="fa fa-star"></i>
@@ -117,11 +123,10 @@
         <div class="product-content-right-product-price">
           <div class="giabia">Giá:<span class="giacu ml-2">${bookModel.priceDiscount} ₫</span></div>
           <div class="giaban">Giá bán tại Doraemon: <span class="giamoi font-weight-bold">${bookModel.price} đ</span></div>
-          <div class="tietkiem">Tiết kiệm: <b>20.000 ₫</b>
-          </div>
-            <c:if test="${quantityRemain != 0}">
-              <div class="tietkiem">Số lượng còn lại: <b>${quantityRemain}</b>
-            </c:if>
+          <div class="tietkiem">Tiết kiệm: <b>20.000 ₫</b></div>
+          <c:if test="${quantityRemain != 0}">
+            <div class="tietkiem">Số lượng còn lại: <b>${quantityRemain}</b></div>
+          </c:if>
         </div>
         <div class="product-content-right-uudai">
           <h6 class="header font-weight-bold">Khuyến mãi & Ưu đãi tại Doraemon:</h6>
@@ -136,8 +141,7 @@
         </div>
 
         <c:if test="${quantityRemain == 0}">
-
-           <div class="h2">Đã Hết Hàng</div>
+          <div class="h2">Đã Hết Hàng</div>
         </c:if>
         <c:if test="${quantityRemain != 0}">
           <div class="product-content-right-soluong d-flex">
@@ -153,17 +157,14 @@
             </div>
           </div>
           <div class="product-content-right-product-button row">
-                    <%--          <button><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>--%>
-                <div class="add-to-cart">
-                    <a href="#">
-                        <button type="button"><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
-                    </a>
-                </div>
-                      <button class="muangay buy-now"><p>MUA NGAY</p></button>
-                </div>
+            <div class="add-to-cart">
+              <a href="#">
+                <button type="button"><i class="fas fa-shopping-cart"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
+              </a>
             </div>
+            <button class="muangay buy-now"><p>MUA NGAY</p></button>
+          </div>
         </c:if>
-
 
         <div class="product-content-right-product-icon d-flex">
           <div class="product-content-right-product-icon-item">
@@ -174,7 +175,6 @@
           </div>
           <div class="product-content-right-product-icon-item">
             <i class="far fa-envelope"></i> <p>Mail</p>
-
           </div>
         </div>
         <div class="product-content-right-product-bottom">
@@ -194,8 +194,7 @@
               <div class="product-content-right-bottom-content-mota">
                 <div class="product-content-right-product-bottom-content-thongtinsp">
                   <table>
-                    <thead>
-                    </thead>
+                    <thead></thead>
                     <tbody>
                     <tr>
                       <td class="themmau">Mã hàng</td>
@@ -261,7 +260,6 @@
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${bookModel.quantityStart == 3}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star active"></i>
@@ -269,7 +267,6 @@
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${bookModel.quantityStart == 2}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star active"></i>
@@ -277,7 +274,6 @@
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${bookModel.quantityStart == 1}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star"></i>
@@ -314,7 +310,6 @@
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${rateDG.startRate == 3}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star active"></i>
@@ -322,7 +317,6 @@
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${rateDG.startRate == 2}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star active"></i>
@@ -330,7 +324,6 @@
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                       </c:if>
-
                       <c:if test="${rateDG.startRate == 1}">
                         <i class="fa fa-star active"></i>
                         <i class="fa fa-star"></i>
@@ -351,26 +344,21 @@
                     <span style="margin-bottom: 24px">${rateDG.comment}</span>
                     <hr/>
                   </c:forEach>
-
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
-
 </section>
 
 <%@include file="/common/web/footer.jsp"%>
 
-<!--    footer-->
-
-<!-- ----js phần header -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+        integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -383,11 +371,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
-<script src="js/bootstrap.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/templates/scripts/product_type.js"></script>
-
 <script src="${pageContext.request.contextPath}/templates/scripts/product.js"></script>
+
 <script>
   $('.add-to-cart a').on('click', function () {
     const remainQuantity = Number(${quantityRemain}), quantity = $('.quantity .input-quantity').val()
@@ -403,7 +390,6 @@
       window.location.href =
               '${pageContext.request.contextPath}/add-to-cart?product_id=${bookModel.idBook}' + '&action=add' + '&quantity=' + quantity
     }
-
     return false
   })
 
@@ -421,7 +407,6 @@
       window.location.href =
               '${pageContext.request.contextPath}/orderBuyNowController?product_id=${bookModel.idBook}' + '&quantity=' + quantity
     }
-
     return false
   })
 </script>

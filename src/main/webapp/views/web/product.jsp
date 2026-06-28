@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="vn.edu.hcmuaf.fit.model.CatalogModel" %>
 <%@ page import="vn.edu.hcmuaf.fit.dao.ICatalogDAO" %>
 <%@ page import="vn.edu.hcmuaf.fit.dao.impl.CatalogDAO" %>
@@ -25,14 +26,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
 
-<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/Product.css'/> "/>--%>
-<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/HeaderProduct.css'/> "/>--%>
-<%--    <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> "/>--%>
-
     <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Product.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/HeaderProduct.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
-
     <style>
         .paginationA {
             display: flex;
@@ -108,7 +104,7 @@
     <div id="header">
         <div class="top-header">
             <div class="container top-header-content">
-                <a class="logo" href="${pageContext.request.contextPath}/home">Hoàng Tiến</a>
+                <a class="logo" href="${pageContext.request.contextPath}/home">DORAEMON</a>
                 <form action="${pageContext.request.contextPath}/products/search" method="post">
                     <div class="top-header_search">
                         <input type="text" name="key" placeholder="Tìm kiếm">
@@ -189,16 +185,16 @@
                                     </span>
                                 <ul class="type_hot-child">
                                     <li><a href="${pageContext.request.contextPath}/products?hot=1">
-                                        <p>Sách cũ bán chạy</p>
+                                        <p>Sách bán chạy</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=2">
-                                        <p>Sách cũ mới</p>
+                                        <p>Sách mới</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=3">
-                                        <p>Sắp cũ giá rẻ</p>
+                                        <p>Sắp phát hành</p>
                                     </a></li>
                                     <li><a href="${pageContext.request.contextPath}/products?hot=4">
-                                        <p>Sách giáo khoa cũ</p>
+                                        <p>Sách giảm giá</p>
                                     </a></li>
                                 </ul>
                             </li>
@@ -244,8 +240,6 @@
                         <span>0867 415 853</span>
                     </a>
                 </div>
-
-
             </div>
         </div>
 
@@ -293,7 +287,6 @@
             <c:if test="${title == null}">
                 <li class="breadcrumb-item active"><a>Sản phẩm</a></li>
             </c:if>
-
         </ul>
     </div>
 </nav>
@@ -336,6 +329,54 @@
                         <label><input name="phatHanh" type="checkbox" class="phathanh" value="3">AZ VietNam</label>
                         <label><input name="phatHanh" type="checkbox" class="phathanh" value="4">Việt Thư</label>
                     </div>
+
+                    <%-- SÁCH THEO GIÁO TRÌNH: chỉ hiện khi controller set universityList --%>
+                    <c:if test="${not empty universityList}">
+                        <div class="cap">Sách Theo Giáo Trình</div>
+                        <div class="ct">
+
+                                <%-- ===== Sub-block: Theo Trường ===== --%>
+                            <div class="cap" style="font-size:13px; background-color:#5ba7e8; margin-bottom:5px; padding:4px 10px;">
+                                Theo Trường
+                            </div>
+                            <c:forEach var="univ" items="${universityList}">
+                                <label>
+                                    <input type="radio" name="giaoTrinh"
+                                           onclick="window.location='${pageContext.request.contextPath}/products/giao-trinh?university=${univ.idUniversity}'"
+                                        ${selectedUniversity == univ.idUniversity ? 'checked' : ''}>
+                                        ${univ.shortName} — ${univ.name}
+                                </label>
+                            </c:forEach>
+
+                                <%-- ===== Sub-block: Theo Khoa (bỏ tên trường, chỉ hiện danh sách khoa) ===== --%>
+                            <div class="cap" style="font-size:13px; background-color:#5ba7e8; margin-top:8px; margin-bottom:5px; padding:4px 10px;">
+                                Theo Khoa
+                            </div>
+
+                            <c:forEach var="univ" items="${universityList}">
+                                <c:forEach var="dept" items="${departmentList}">
+                                    <c:if test="${dept.idUniversity == univ.idUniversity}">
+                                        <label style="display:block;">
+                                            <input type="radio" name="giaoTrinh"
+                                                   onclick="window.location='${pageContext.request.contextPath}/products/giao-trinh?university=${univ.idUniversity}&amp;department=${dept.idDepartment}'"
+                                                ${selectedDepartment == dept.idDepartment ? 'checked' : ''}>
+                                                ${dept.name}
+                                        </label>
+                                    </c:if>
+                                </c:forEach>
+                            </c:forEach>
+
+                                <%-- Nút xem tất cả sách giáo trình --%>
+                            <div style="margin-top:10px;">
+                                <a href="${pageContext.request.contextPath}/products/giao-trinh"
+                                   style="font-size:12px; color:#3992e5;">
+                                    ↩ Tất cả sách giáo trình
+                                </a>
+                            </div>
+
+                        </div>
+                    </c:if>
+
                 </div>
             </div>
         </section>
@@ -351,7 +392,6 @@
                             <c:if test="${title == null}">
                                 <h3>SẢN PHẨM</h3>
                             </c:if>
-
                         </div>
                         <div class="products_right_order_left">
                             <i class="fa fa-th-large" aria-hidden="true"></i>
@@ -373,15 +413,23 @@
                         <div id="data-content" class="row">
                             <c:if test="${not empty list12Book }">
                                 <c:forEach  var="book" items="${list12Book}">
-
                                     <div class="col-lg-3 col-md-4 col-xs-6 item victo-hugo  ${book.nameAuthor} ${book.price} c${book.getIdCP()} ${book.getIdP()}">
                                         <div class="card" >
                                             <a href="${pageContext.request.contextPath}/products/product-detail?id=${book.idBook}" class="motsanpham"
                                                data-toggle="tooltip" data-placement="bottom"
                                                title="${book.name}">
-                                                <img class="card-img-top anh"
-                                                     src="${pageContext.request.contextPath}/${book.image}"
-                                                     alt="${book.name}">
+                                                <c:choose>
+                                                    <c:when test="${fn:startsWith(book.image, 'http')}">
+                                                        <img class="card-img-top anh"
+                                                             src="${book.image}"
+                                                             alt="${book.name}">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <img class="card-img-top anh"
+                                                             src="${pageContext.request.contextPath}/${book.image}"
+                                                             alt="${book.name}">
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <div class="card-body noidungsp mt-3">
                                                     <h6 class="card-title ten">${book.name} </h6>
                                                     <small class="tacgia text-muted"
@@ -407,7 +455,6 @@
                                                             <li class="active"><i class="fa fa-star"></i></li>
                                                             <li class=""><i class="fa fa-star"></i></li>
                                                         </c:if>
-
                                                         <c:if test="${book.quantityStart == 3}">
                                                             <li class="active"><i class="fa fa-star"></i></li>
                                                             <li class="active"><i class="fa fa-star"></i></li>
@@ -415,7 +462,6 @@
                                                             <li class=""><i class="fa fa-star"></i></li>
                                                             <li class=""><i class="fa fa-star"></i></li>
                                                         </c:if>
-
                                                         <c:if test="${book.quantityStart == 2}">
                                                             <li class="active"><i class="fa fa-star"></i></li>
                                                             <li class="active"><i class="fa fa-star"></i></li>
@@ -423,7 +469,6 @@
                                                             <li class=""><i class="fa fa-star"></i></li>
                                                             <li class=""><i class="fa fa-star"></i></li>
                                                         </c:if>
-
                                                         <c:if test="${book.quantityStart == 1}">
                                                             <li class="active"><i class="fa fa-star"></i></li>
                                                             <li class=""><i class="fa fa-star"></i></li>
@@ -444,27 +489,15 @@
                                             </a>
                                         </div>
                                     </div>
-
                                 </c:forEach>
                             </c:if>
-
                         </div>
 
                         <div class="paginationA">
                             <button class="btn">
-                                <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="btn--icon"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                >
-                                    <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M15 19l-7-7 7-7"
-                                    />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn--icon" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                                 </svg>
                             </button>
                             <div class="pages">
@@ -477,22 +510,11 @@
                                     </c:if>
                                 </c:forEach>
                                 <p>${test} </p>
-
                             </div>
                             <button class="btn">
-                                <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="btn--icon"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                >
-                                    <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M9 5l7 7-7 7"
-                                    />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="btn--icon" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                 </svg>
                             </button>
                         </div>
@@ -503,14 +525,11 @@
         </section>
     </div>
 </section>
-<!--</div>-->
 
 <%@include file="/common/web/footer.jsp" %>
 
-<!--    footer-->
 <script>
     function check() {
-        // author
         const checkboxesAuthor = document.querySelectorAll('input[type="checkbox"][name="auth"]');
         const  authors = [];
         checkboxesAuthor.forEach(checkbox => {
@@ -518,97 +537,54 @@
                 authors.push(checkbox.value);
             }
         });
-        // price
         const checkboxesPrice = document.querySelector('input[type="radio"][name="price"]:checked');
-        let prices =checkboxesPrice.value;
-        // NXB
-        // const checkboxesNXB = document.querySelectorAll('input[type="checkbox"][name="NXB"]');
-        // const  NXBs = [];
-        // checkboxesNXB.forEach(checkbox => {
-        //     if (checkbox.checked) {
-        //         NXBs.push(checkbox.value);
-        //     }
-        // });
-        // // phatHanh
-        // const checkboxesPhatHanh = document.querySelectorAll('input[type="checkbox"][name="phatHanh"]');
-        // const  phatHanhs = [];
-        // checkboxesPhatHanh.forEach(checkbox => {
-        //     if (checkbox.checked) {
-        //         phatHanhs.push(checkbox.value);
-        //     }
-        // });
+        let prices = checkboxesPrice.value;
+
         const elements = document.querySelectorAll("div.item");
-        for(let i =0; i< elements.length;i++) {
+        for(let i = 0; i < elements.length; i++) {
             elements[i].classList.remove("disblay")
         }
         for (let i = 0; i < elements.length; i++) {
             let index = 0;
             const classes = elements[i].classList;
-            let a ='';
-            let b =classes[classes.length-3];
-            // let c = classes[classes.length-2].replace('c','');
-            // let d = classes[classes.length-1];
+            let a = '';
+            let b = classes[classes.length-3];
 
-            for(let j =5 ; j < classes.length-3; j++) {
+            for(let j = 5; j < classes.length-3; j++) {
                 a += classes[j]+" ";
             }
-            if(authors.length == 0 && prices == 5 ) {
+            if(authors.length == 0 && prices == 5) {
                 elements[i].classList.remove("disblay");
                 break;
             }
-            if(authors.length !=0 && prices == 5) {
-                for (let j =0; j<authors.length;j++) {
+            if(authors.length != 0 && prices == 5) {
+                for (let j = 0; j < authors.length; j++) {
                     if(a.trim() == authors[j].trim()) {
                         index++
                     }
                 }
             }
-            if(authors.length ==0 && prices != 5 ) {
-                if(prices ==1 && b <= 100000) {
-                    index++
-                }
-                if(prices ==2 && b >= 100000 && b <=200000) {
-                    index++
-                }
-                if(prices ==3 && b >= 200000 && b <= 300000) {
-                    index++
-                }
-                if(prices ==4 && b >= 300000) {
-                    index++
+            if(authors.length == 0 && prices != 5) {
+                if(prices == 1 && b <= 100000) { index++ }
+                if(prices == 2 && b >= 100000 && b <= 200000) { index++ }
+                if(prices == 3 && b >= 200000 && b <= 300000) { index++ }
+                if(prices == 4 && b >= 300000) { index++ }
+            }
+            if(authors.length != 0 && prices != 5) {
+                for (let j = 0; j < authors.length; j++) {
+                    if (prices == 1 && b <= 100000 && a.trim() == authors[j]) { index++ }
+                    if (prices == 2 && b >= 100000 && b <= 200000 && a.trim() == authors[j]) { index++ }
+                    if (prices == 3 && b >= 200000 && b <= 300000 && a.trim() == authors[j]) { index++ }
+                    if (prices == 4 && b >= 300000 && a.trim() == authors[j]) { index++ }
                 }
             }
-            if(authors.length !=0 && prices !=5 ) {
-                for (let j =0; j<authors.length;j++) {
-                    if (prices == 1 && b <= 100000 && a.trim() == authors[j]) {
-                        index++
-                    }
-                    if (prices == 2 && b >= 100000 && b <= 200000 && a.trim() == authors[j]) {
-                        index++
-                    }
-                    if (prices == 3 && b >= 200000 && b <= 300000 && a.trim() == authors[j]) {
-                        index++
-                    }
-                    if (prices == 4 && b >= 300000 && a.trim() == authors[j]) {
-                        index++
-                    }
-                }
-
-
-            }
-
-
-
             if(index == 0) {
                 elements[i].classList.add("disblay");
             }
         }
     }
-
-
-
 </script>
 
-<!-- ----js phần header -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -621,7 +597,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
