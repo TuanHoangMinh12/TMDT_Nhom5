@@ -26,7 +26,45 @@
 </head>
 
 <body>
-<%@include file="/common/web/header.jsp"%>
+<header>
+    <div id="header">
+        <div class="top-header">
+            <div class="container top-header-content">
+                <a class="logo" href="${pageContext.request.contextPath}/home">Hoàng Tiến</a>
+                <div class="top-header-left">
+                    <c:if test="${empty USERMODEL}">
+                        <div class="top-header_account">Tài khoản của bạn
+                            <i class="fa-solid fa-caret-down"></i>
+                            <div class="top-header_account--item">
+                                <a href="" class="account--item_top">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                    <span style="font-size: 13px;">Tài khoản Facebook</span>
+                                </a>
+                                <a href="<c:url value="${pageContext.request.contextPath}/login?action=login"/> " class="account--item_center"><span>Đăng nhập</span></a>
+                                <div class="account--item_bottom">
+                                    <span>Khách hàng mới?</span>
+                                    <a class="register" href="${pageContext.request.contextPath}/signup">Tạo tài khoản</a>
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+        <div class="center-header">
+            <div class="center-header_div container">
+                <div class="f_right" style="float: right; display: flex">
+                    <a href="" class="hotline d-flex">
+                        <i class="fa-solid fa-phone"></i>
+                        <h4>Hotline: </h4>
+                        <span>0867 415 853</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
 
 <!--------- end header---------- -->
 <!--------- login form---------- -->
@@ -54,18 +92,16 @@
             <i class="fa-solid fa-circle-xmark"></i>
             <small>Error</small>
         </div>
-        <a href="/forgotPassword" class="forgotPassword-link">Quên mật khẩu?</a>
-        <input type="hidden" name="action" value="login" >
+        <a href="${pageContext.request.contextPath}/forgotPassword"w class="forgotPassord-link">Quên mật khẩu?</a>        <input type="hidden" name="action" value="login" >
         <button type="submit" class="btn-login">Đăng nhập</button>
-        <%--    <fb:login-button class="social-button" id="facebook-login"  scope="public_profile,email" onlogin="checkLoginState();">--%>
-        <%--      <div>--%>
-        <%--        <span>Đăng nhập bằng Facebook</span>--%>
-        <%--        <i class="fa-brands fa-facebook-f" style="margin-left: 5px;"></i>--%>
-        <%--      </div>--%>
-        <%--    </fb:login-button>--%>
+<%--            <fb:login-button class="social-button" id="facebook-login"  scope="public_profile,email" onlogin="checkLoginState();">--%>
+<%--              <div>--%>
+<%--                <span>Đăng nhập bằng Facebook</span>--%>
+<%--                <i class="fa-brands fa-facebook-f" style="margin-left: 5px;"></i>--%>
+<%--              </div>--%>
+<%--            </fb:login-button>--%>
 
-        <a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid &redirect_uri=http://localhost:8080/Website_book_war/login-google&response_type=code
-    &client_id=550486427451-rkh0g0s9bg6cr6c5l8hr3g73h0eer9so.apps.googleusercontent.com&approval_prompt=force" class="social-button" id="google-login">
+        <a href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid &redirect_uri=http://localhost:8080/Website_book_war/login-google&response_type=code&client_id=550486427451-rkh0g0s9bg6cr6c5l8hr3g73h0eer9so.apps.googleusercontent.com&approval_prompt=force" class="social-button" id="google-login">
             <span>Đăng nhập bằng Google</span>
             <i class="fa-brands fa-google-plus-g" style="margin-left: 5px;"></i>
         </a>

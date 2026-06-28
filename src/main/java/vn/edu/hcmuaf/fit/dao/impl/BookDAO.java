@@ -3,6 +3,7 @@ package vn.edu.hcmuaf.fit.dao.impl;
 import vn.edu.hcmuaf.fit.dao.IBookDAO;
 import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.BookModel;
+import vn.edu.hcmuaf.fit.model.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookDAO implements IBookDAO {
+    public Product findById(int idBook) {
+        String sql = "SELECT b.*, " +
+                "(SELECT img.image FROM image_book img WHERE img.id_book = b.id_book LIMIT 1) AS images " +
+                "FROM book b WHERE b.id_book = ?";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idBook);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Product p = new Product();
+                    p.setIdBook(rs.getInt("id_book"));
+                    p.setName(rs.getString("name"));
+                    p.setPriceDiscount(rs.getDouble("discount_price"));
+                    p.setPrice(rs.getDouble("price"));
+                    p.setImage(rs.getString("images"));
+                    p.setQuantity(rs.getInt("quantity"));
+                    return p;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public List<BookModel> listBookPayTop() {
         List<BookModel> listBook = new ArrayList<>();
