@@ -24,7 +24,7 @@ public class AuctionController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
-
+        auctionService.finishExpiredAuction();
         String uri = request.getServletPath();
 
         switch (uri){

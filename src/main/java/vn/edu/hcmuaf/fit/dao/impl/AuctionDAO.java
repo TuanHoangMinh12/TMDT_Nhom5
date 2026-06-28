@@ -224,7 +224,26 @@ public class AuctionDAO implements IAuctionDAO {
 
         return false;
     }
+    @Override
+    public void finishExpiredAuction() {
 
+        String sql =
+                "UPDATE auction " +
+                        "SET status='FINISHED' " +
+                        "WHERE status='OPEN' " +
+                        "AND end_time <= NOW()";
+
+        try (
+                Connection conn = JDBCConnector.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ) {
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Tuấn làm
 

@@ -77,6 +77,10 @@ public class AuctionService implements IAuctionService {
     public List<AuctionBidModel> getBidHistory(int auctionId) {
         return bidDAO.findByAuctionId(auctionId);
     }
+    @Override
+    public void finishExpiredAuction() {
+        auctionDAO.finishExpiredAuction();
+    }
     // Tuấn làm
 
     @Override

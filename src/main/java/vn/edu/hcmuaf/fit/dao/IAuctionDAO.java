@@ -22,6 +22,7 @@ public interface IAuctionDAO {
 
     boolean updateCurrentPrice(int auctionId, double currentPrice, int winnerId);
 
+    void finishExpiredAuction();
     // Tuấn làm
     List<AuctionModel> getAllAuctions();
     AuctionModel findById2(int id);
