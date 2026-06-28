@@ -62,7 +62,12 @@
                     <th>Kết thúc</th>
                     <td>${auction.endTime}</td>
                 </tr>
-
+                <tr>
+                    <th>Thời gian còn lại</th>
+                    <td>
+                        <span id="countdown" class="text-danger font-weight-bold"></span>
+                    </td>
+                </tr>
                 <tr>
                     <th>Trạng thái</th>
                     <td>${auction.status}</td>
@@ -171,3 +176,54 @@
 
 </body>
 </html>
+<script>
+
+    // Thời gian kết thúc lấy từ JSP
+    const endTime = new Date("${auction.endTime}".replace(" ", "T")).getTime();
+
+    function updateCountdown() {
+
+        const now = new Date().getTime();
+
+        const distance = endTime - now;
+
+        if (distance <= 0) {
+
+            document.getElementById("countdown").innerHTML = "Đã kết thúc";
+
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+        const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24))
+            / (1000 * 60 * 60)
+        );
+
+        const minutes = Math.floor(
+            (distance % (1000 * 60 * 60))
+            / (1000 * 60)
+        );
+
+        const seconds = Math.floor(
+            (distance % (1000 * 60))
+            / 1000
+        );
+
+        document.getElementById("countdown").innerHTML =
+            days + " ngày "
+            + hours + " giờ "
+            + minutes + " phút "
+            + seconds + " giây";
+    }
+
+    updateCountdown();
+
+    setInterval(updateCountdown,1000);
+
+</script>
