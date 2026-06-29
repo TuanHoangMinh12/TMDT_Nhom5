@@ -14,12 +14,16 @@ public interface IAuctionDAO {
 
     AuctionModel findByBookId(int bookId);
 
+
+
     boolean insert(AuctionModel auction);
 
     boolean update(AuctionModel auction);
 
     boolean updateCurrentPrice(int auctionId, double currentPrice, int winnerId);
 
+    void finishExpiredAuction();
+    List<AuctionModel> findWinnerAuctions(int userId);
     // Tuấn làm
     List<AuctionModel> getAllAuctions();
     AuctionModel findById2(int id);

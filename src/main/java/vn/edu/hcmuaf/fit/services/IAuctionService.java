@@ -15,6 +15,12 @@ public interface IAuctionService {
     String bid(int auctionId, int userId, double price);
 
 
+    AuctionModel findAuctionById(int id);
+
+    List<AuctionBidModel> getBidHistory(int auctionId);
+
+    void finishExpiredAuction();
+    List<AuctionModel> getWinnerAuctions(int userId);
     // Tuấn làm
     List<AuctionModel> getAllAuctions();
 
@@ -40,5 +46,6 @@ public interface IAuctionService {
 
     boolean finalizeAndNotify(int auctionId);
 }
+
 
 
