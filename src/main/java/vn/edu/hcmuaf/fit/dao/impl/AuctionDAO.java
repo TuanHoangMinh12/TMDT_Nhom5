@@ -227,17 +227,34 @@ public class AuctionDAO implements IAuctionDAO {
     @Override
     public void finishExpiredAuction() {
 
-        String sql =
-                "SELECT id " +
-                        "FROM auction " +
-                        "WHERE status='ACTIVE' " +
-                        "AND end_time<=NOW()";
-
         try(
-                Connection conn = JDBCConnector.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
+                Connection conn = JDBCConnector.getConnection()
         ){
+
+            // ==========================
+            // WAITING -> ACTIVE
+            // ==========================
+            String activeSql =
+                    "UPDATE auction " +
+                            "SET status='ACTIVE' " +
+                            "WHERE status='WAITING' " +
+                            "AND start_time<=NOW()";
+
+            PreparedStatement psActive = conn.prepareStatement(activeSql);
+            psActive.executeUpdate();
+            psActive.close();
+
+            // ==========================
+            // ACTIVE -> FINISHED
+            // ==========================
+            String sql =
+                    "SELECT id " +
+                            "FROM auction " +
+                            "WHERE status='ACTIVE' " +
+                            "AND end_time<=NOW()";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
 
@@ -246,7 +263,7 @@ public class AuctionDAO implements IAuctionDAO {
                 AuctionBidModel highest =
                         new AuctionBidDAO().findHighestBid(auctionId);
 
-                if(highest!=null){
+                if(highest != null){
 
                     String update =
                             "UPDATE auction " +
@@ -263,13 +280,44 @@ public class AuctionDAO implements IAuctionDAO {
                     ps2.setInt(3, auctionId);
 
                     ps2.executeUpdate();
-                    // Lấy thông tin phiên đấu giá
+                    ps2.close();
+
+                    // Thêm sách vào giỏ hàng người thắng
                     AuctionModel auction = findById(auctionId);
 
                     new CartDao().addAuctionBook(
                             highest.getUserId(),
                             auction.getBookId()
                     );
+                    AuctionNotificationDAO notificationDAO = new AuctionNotificationDAO();
+
+                    notificationDAO.sendNotification(
+                            highest.getUserId(),
+                            auctionId,
+                            "🎉 Chúc mừng bạn đã thắng đấu giá!",
+                            "Sách \"" + auction.getProduct().getName()
+                                    + "\" đã được thêm vào giỏ hàng với giá "
+                                    + highest.getBidPrice() + " đ."
+                    );
+                    AuctionBidDAO bidDAO = new AuctionBidDAO();
+
+                    List<Integer> participants =
+                            bidDAO.getParticipantIds(auctionId);
+
+                    for(Integer userId : participants){
+
+                        if(userId == highest.getUserId()){
+                            continue;
+                        }
+
+                        notificationDAO.sendNotification(
+                                userId,
+                                auctionId,
+                                "Phiên đấu giá đã kết thúc",
+                                "Rất tiếc, bạn không phải là người chiến thắng trong phiên đấu giá \""
+                                        + auction.getProduct().getName() + "\"."
+                        );
+                    }
                 }else{
 
                     PreparedStatement ps2 =
@@ -277,11 +325,13 @@ public class AuctionDAO implements IAuctionDAO {
                                     "UPDATE auction SET status='FINISHED' WHERE id=?");
 
                     ps2.setInt(1, auctionId);
-
                     ps2.executeUpdate();
+                    ps2.close();
                 }
-
             }
+
+            rs.close();
+            ps.close();
 
         }catch(Exception e){
             e.printStackTrace();

@@ -64,6 +64,90 @@
                         </div>
                     </c:if>
                     <c:if test="${not empty USERMODEL}">
+
+                        <div class="dropdown mr-3">
+
+                            <a class="position-relative text-white"
+                               href="#"
+                               id="notificationDropdown"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+
+                                <i class="fa-solid fa-bell"
+                                   style="font-size:20px"></i>
+
+                                <c:if test="${unreadCount > 0}">
+                <span class="badge badge-danger"
+                      style="
+                        position:absolute;
+                        top:-8px;
+                        right:-8px;
+                        border-radius:50%;">
+                        ${unreadCount}
+                </span>
+                                </c:if>
+
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right"
+                                 aria-labelledby="notificationDropdown"
+                                 style="width:360px; max-height:450px; overflow-y:auto;">
+
+                                <h6 class="dropdown-header">
+                                    Thông báo đấu giá
+                                </h6>
+
+                                <c:choose>
+
+                                    <c:when test="${not empty latestNotifications}">
+
+                                        <c:forEach items="${latestNotifications}" var="n">
+
+                                            <a class="dropdown-item"
+                                               href="${pageContext.request.contextPath}/notification/read?id=${n.id}">
+
+                                                <strong>${n.title}</strong>
+
+                                                <br>
+
+                                                <small>${n.content}</small>
+
+                                                <br>
+
+                                                <small class="text-muted">
+                                                        ${n.createdAt}
+                                                </small>
+
+                                            </a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                        </c:forEach>
+
+                                    </c:when>
+
+                                    <c:otherwise>
+
+                                        <div class="dropdown-item text-center text-muted">
+                                            Chưa có thông báo
+                                        </div>
+
+                                    </c:otherwise>
+
+                                </c:choose>
+
+                                <a class="dropdown-item text-center font-weight-bold"
+                                   href="${pageContext.request.contextPath}/notifications">
+                                    Xem tất cả thông báo
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </c:if>
+                    <c:if test="${not empty USERMODEL}">
                         <a href="${pageContext.request.contextPath}/account" style="display: flex">
                             <i style="padding: 4px; border-radius: 50%; color: #fff;font-size: 13px"
                                class="fa-solid fa-user"></i>
@@ -223,4 +307,7 @@
         <a href="#">Tập Chí - Báo</a>
     </div>
 </header>
+request.setAttribute("unreadCount", unread);
+
+request.setAttribute("latestNotifications", latest);
 <!--------- end header---------- -->
