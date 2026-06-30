@@ -28,7 +28,6 @@ public class CartDao {
     }
 
     // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
-    // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
     public CartModel loadCart(int userId) {
         CartModel cart = new CartModel();
         cart.setIdUser(userId);
@@ -686,7 +685,7 @@ public class CartDao {
         try (Connection conn = JDBCConnector.getConnection()) {
 
             // tìm cart của user
-            String sqlCart = "SELECT id FROM cart WHERE idUser=?";
+            String sqlCart = "SELECT id FROM carts WHERE idUser=?";
 
             PreparedStatement ps = conn.prepareStatement(sqlCart);
             ps.setInt(1, userId);

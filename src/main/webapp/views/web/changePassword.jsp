@@ -24,8 +24,48 @@
 <body>
 <!-- -----------phần header----------------  -->
 
-<%@include file="/common/web/header.jsp"%>
+<%--<%@include file="/common/web/header.jsp"%>--%>
+<header>
+  <div id="header">
+    <div class="top-header">
+      <div class="container top-header-content">
+        <a class="logo" href="${pageContext.request.contextPath}/home">Hoàng Tiến</a>
+        <div class="top-header-left">
+          <c:if test="${empty USERMODEL}">
+            <div class="top-header_account">Tài khoản của bạn
+              <i class="fa-solid fa-caret-down"></i>
+              <div class="top-header_account--item">
+                <a href="" class="account--item_top">
+                  <i class="fa-brands fa-facebook-f"></i>
+                  <span style="font-size: 13px;">Tài khoản Facebook</span>
+                </a>
+                <a href="${pageContext.request.contextPath}/login?action=login" class="account--item_center">
+                  <span>Đăng nhập</span>
+                </a>
+                <div class="account--item_bottom">
+                  <span>Khách hàng mới?</span>
+                  <a class="register" href="${pageContext.request.contextPath}/signup">Tạo tài khoản</a>
+                </div>
+              </div>
+            </div>
+          </c:if>
+        </div>
+      </div>
+    </div>
+    <div class="center-header">
+      <div class="center-header_div container">
+        <div class="f_right" style="float: right; display: flex">
+          <a href="" class="hotline d-flex">
+            <i class="fa-solid fa-phone"></i>
+            <h4>Hotline: </h4>
+            <span>0867 415 853</span>
+          </a>
+        </div>
+      </div>
+    </div>
 
+  </div>
+</header>
 <!--------- end header---------- -->
 <div id="content">
   <div class="wrapper">

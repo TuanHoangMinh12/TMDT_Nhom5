@@ -188,7 +188,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         List<AuctionBidModel> list = new ArrayList<>();
         String sql =
                 "SELECT ab.*, CONCAT(c.first_name,' ',c.last_name) AS user_name, c.email AS user_email " +
-                        "FROM auction_bids ab " +
+                        "FROM auction_bid ab " +
                         "JOIN customer c ON ab.user_id = c.id_user " +
                         "WHERE ab.auction_id = ? " +
                         "ORDER BY ab.bid_time DESC";    // Mới nhất lên đầu
@@ -220,7 +220,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         List<AuctionBidModel> list = new ArrayList<>();
         String sql =
                 "SELECT ab.*, CONCAT(c.first_name,' ',c.last_name) AS user_name, c.email AS user_email " +
-                        "FROM auction_bids ab " +
+                        "FROM auction_bid ab " +
                         "JOIN customer c ON ab.user_id = c.id_user " +
                         "WHERE ab.user_id = ? " +
                         "ORDER BY ab.bid_time DESC";
@@ -249,7 +249,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
      */
     @Override
     public int countBidByUserInAuction(int userId, int auctionId) {
-        String sql = "SELECT COUNT(*) FROM auction_bids WHERE user_id=? AND auction_id=?";
+        String sql = "SELECT COUNT(*) FROM auction_bid WHERE user_id=? AND auction_id=?";
 
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;
@@ -272,7 +272,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
     @Override
     public List<Integer> getParticipantIds(int auctionId) {
         List<Integer> list = new ArrayList<>();
-        String sql = "SELECT DISTINCT user_id FROM auction_bids WHERE auction_id=?";
+        String sql = "SELECT DISTINCT user_id FROM auction_bid WHERE auction_id=?";
         try (Connection con = JDBCConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, auctionId);
