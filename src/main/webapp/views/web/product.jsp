@@ -435,8 +435,8 @@
                                                     <small class="tacgia text-muted"
                                                            style="font-weight: bold">${book.nameAuthor}</small>
                                                     <div class="card-price d-flex align-items-baseline">
-                                                        <div class="giamoi">${book.price}đ <br></div>
-                                                        <div class="giacu text-muted">${book.priceDiscount}đ</div>
+                                                        <div class="giamoi">${book.priceDiscount}đ <br></div>
+                                                        <div class="giacu text-muted">${book.price}đ</div>
                                                     </div>
                                                 </div>
                                                 <div class="danhgia">
