@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -43,9 +44,18 @@
         <c:forEach items="${listAuction}" var="auction">
             <div class="col-md-3">
                 <div class="card">
-                    <img class="card-img-top"
-                         src="${pageContext.request.contextPath}/${auction.product.image}"
-                         alt="Book">
+                    <c:choose>
+                        <c:when test="${fn:startsWith(auction.product.image, 'http')}">
+                            <img class="card-img-top"
+                                 src="${auction.product.image}"
+                                 alt="${auction.product.name}">
+                        </c:when>
+                        <c:otherwise>
+                            <img class="card-img-top"
+                                 src="${pageContext.request.contextPath}/${auction.product.image}"
+                                 alt="${auction.product.name}">
+                        </c:otherwise>
+                    </c:choose>
 
                     <div class="card-body">
                         <h5 class="card-title">${auction.product.name}</h5>
