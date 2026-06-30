@@ -7,138 +7,186 @@
     <meta charset="UTF-8">
     <title>Chi tiết đấu giá</title>
 
+    <!-- Bootstrap -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- Header & Footer CSS -->
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Header.css'/>">
+
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Footer.css'/>">
+
+    <style>
+        body{
+            background:#f5f5f5;
+        }
+
+        .product-img{
+            width:100%;
+            border:1px solid #ddd;
+            border-radius:5px;
+        }
+
+        .card{
+            border:none;
+            box-shadow:0 2px 8px rgba(0,0,0,.1);
+        }
+
+        #countdown{
+            font-size:18px;
+        }
+    </style>
+
 </head>
 
 <body>
 
-<div class="container mt-5">
+<%@include file="/common/web/header.jsp"%>
+
+<div class="container" style="padding-top:120px; padding-bottom:50px;">
 
     <a href="${pageContext.request.contextPath}/auction"
-       class="btn btn-secondary mb-3">
+       class="btn btn-secondary mb-4">
         ← Quay lại
     </a>
 
-    <h2 class="mb-4">Chi tiết phiên đấu giá</h2>
+    <div class="card p-4">
 
-    <div class="row">
+        <h2 class="mb-4 text-center">
+            Chi tiết phiên đấu giá
+        </h2>
 
-        <div class="col-md-4">
+        <div class="row">
 
-            <img
-                    src="${pageContext.request.contextPath}/${auction.product.image}"
-                    class="img-fluid border">
+            <div class="col-md-4">
 
-        </div>
+                <img
+                        src="${pageContext.request.contextPath}/${auction.product.image}"
+                        class="product-img"
+                        alt="${auction.product.name}">
 
-        <div class="col-md-8">
+            </div>
 
-            <h3>${auction.product.name}</h3>
+            <div class="col-md-8">
 
-            <table class="table table-bordered mt-3">
+                <h3>${auction.product.name}</h3>
 
-                <tr>
-                    <th>Giá khởi điểm</th>
-                    <td>${auction.startPrice} đ</td>
-                </tr>
+                <table class="table table-bordered mt-3">
 
-                <tr>
-                    <th>Giá hiện tại</th>
-                    <td>${auction.currentPrice} đ</td>
-                </tr>
+                    <tr>
+                        <th width="30%">Giá khởi điểm</th>
+                        <td>${auction.startPrice} đ</td>
+                    </tr>
 
-                <tr>
-                    <th>Bước giá</th>
-                    <td>${auction.minIncrement} đ</td>
-                </tr>
+                    <tr>
+                        <th>Giá hiện tại</th>
+                        <td class="text-danger font-weight-bold">
+                            ${auction.currentPrice} đ
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th>Bắt đầu</th>
-                    <td>${auction.startTime}</td>
-                </tr>
+                    <tr>
+                        <th>Bước giá</th>
+                        <td>${auction.minIncrement} đ</td>
+                    </tr>
 
-                <tr>
-                    <th>Kết thúc</th>
-                    <td>${auction.endTime}</td>
-                </tr>
-                <tr>
-                    <th>Thời gian còn lại</th>
-                    <td>
-                        <span id="countdown" class="text-danger font-weight-bold"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Trạng thái</th>
-                    <td>${auction.status}</td>
-                </tr>
+                    <tr>
+                        <th>Bắt đầu</th>
+                        <td>${auction.startTime}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Kết thúc</th>
+                        <td>${auction.endTime}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Thời gian còn lại</th>
+                        <td>
+                            <span id="countdown"
+                                  class="text-danger font-weight-bold"></span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Trạng thái</th>
+                        <td>${auction.status}</td>
+                    </tr>
+
+                </table>
+
                 <c:if test="${auction.status=='FINISHED'}">
 
-                    <div class="alert alert-success mt-3">
+                    <div class="alert alert-success">
 
                         <h5>Phiên đấu giá đã kết thúc</h5>
 
                         <p>
                             Người thắng:
-                            <b>${auction.winnerName}</b>
+                            <strong>${auction.winnerName}</strong>
                         </p>
 
                         <p>
                             Giá thắng:
-                            <b>${auction.currentPrice} đ</b>
+                            <strong>${auction.currentPrice} đ</strong>
                         </p>
 
                     </div>
 
                 </c:if>
-            </table>
 
-            <c:if test="${not empty param.message}">
-                <div class="alert alert-info">
-                        ${param.message}
-                </div>
-            </c:if>
-
-            <c:if test="${auction.status=='ACTIVE'}">
-
-                <form action="${pageContext.request.contextPath}/auction-bid"
-                      method="post">
-
-                    <input type="hidden"
-                           name="auctionId"
-                           value="${auction.id}">
-
-                    <div class="form-group">
-
-                        <label>Nhập giá đấu</label>
-
-                        <input type="number"
-                               name="price"
-                               class="form-control"
-                               min="${auction.currentPrice + auction.minIncrement}"
-                               required>
-
+                <c:if test="${not empty param.message}">
+                    <div class="alert alert-info">
+                            ${param.message}
                     </div>
+                </c:if>
 
-                    <button class="btn btn-primary">
-                        Đặt giá
-                    </button>
+                <c:if test="${auction.status=='ACTIVE'}">
 
-                </form>
+                    <form action="${pageContext.request.contextPath}/auction-bid"
+                          method="post">
 
-            </c:if>
+                        <input type="hidden"
+                               name="auctionId"
+                               value="${auction.id}">
+
+                        <div class="form-group">
+
+                            <label>Nhập giá đấu</label>
+
+                            <input type="number"
+                                   name="price"
+                                   class="form-control"
+                                   min="${auction.currentPrice + auction.minIncrement}"
+                                   required>
+
+                        </div>
+
+                        <button class="btn btn-primary btn-block">
+                            Đặt giá
+                        </button>
+
+                    </form>
+
+                </c:if>
+
+            </div>
 
         </div>
 
     </div>
 
-    <hr>
+    <hr class="my-5">
 
-    <h4>Lịch sử đấu giá</h4>
+    <h4 class="mb-3">
+        Lịch sử đấu giá
+    </h4>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover bg-white">
 
-        <thead>
+        <thead class="thead-dark">
 
         <tr>
 
@@ -160,11 +208,18 @@
 
                     <tr>
 
-                        <td>${bid.customer.firstName} ${bid.customer.lastName}</td>
+                        <td>
+                                ${bid.customer.firstName}
+                                ${bid.customer.lastName}
+                        </td>
 
-                        <td>${bid.bidPrice} đ</td>
+                        <td class="text-danger">
+                                ${bid.bidPrice} đ
+                        </td>
 
-                        <td>${bid.bidTime}</td>
+                        <td>
+                                ${bid.bidTime}
+                        </td>
 
                     </tr>
 
@@ -192,11 +247,18 @@
 
 </div>
 
-</body>
-</html>
+<%@include file="/common/web/footer.jsp"%>
+
+<!-- JS -->
+
+<script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 
-    // Thời gian kết thúc lấy từ JSP
     const endTime = new Date("${auction.endTime}".replace(" ", "T")).getTime();
 
     function updateCountdown() {
@@ -209,7 +271,7 @@
 
             document.getElementById("countdown").innerHTML = "Đã kết thúc";
 
-            setTimeout(() => {
+            setTimeout(function () {
                 location.reload();
             }, 1000);
 
@@ -234,14 +296,17 @@
         );
 
         document.getElementById("countdown").innerHTML =
-            days + " ngày "
-            + hours + " giờ "
-            + minutes + " phút "
-            + seconds + " giây";
+            days + " ngày " +
+            hours + " giờ " +
+            minutes + " phút " +
+            seconds + " giây";
     }
 
     updateCountdown();
 
-    setInterval(updateCountdown,1000);
+    setInterval(updateCountdown, 1000);
 
 </script>
+
+</body>
+</html>
