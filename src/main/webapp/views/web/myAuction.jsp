@@ -2,111 +2,168 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
-
-<html>
+<html lang="vi">
 
 <head>
 
+    <meta charset="UTF-8">
+
     <title>Đấu giá của tôi</title>
 
+    <!-- Bootstrap -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- Header -->
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Header.css'/>">
+
+    <!-- Footer -->
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Footer.css'/>">
+
+    <style>
+
+        body{
+            background:#f5f5f5;
+        }
+
+        .card{
+            border:none;
+            box-shadow:0 2px 8px rgba(0,0,0,.1);
+        }
+
+        .table img{
+            width:90px;
+            height:120px;
+            object-fit:cover;
+            border-radius:5px;
+        }
+
+        h2{
+            font-weight:bold;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<div class="container mt-5">
+<%@include file="/common/web/header.jsp"%>
 
-    <h2>Đấu giá của tôi</h2>
+<div class="container" style="padding-top:120px;padding-bottom:50px;">
 
-    <table class="table table-bordered mt-4">
+    <div class="card p-4">
 
-        <thead>
+        <h2 class="text-center mb-4">
+            ĐẤU GIÁ CỦA TÔI
+        </h2>
 
-        <tr>
+        <table class="table table-bordered table-hover">
 
-            <th>Ảnh</th>
-
-            <th>Sách</th>
-
-            <th>Giá thắng</th>
-
-            <th>Trạng thái</th>
-
-            <th></th>
-
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        <c:forEach items="${list}" var="a">
+            <thead class="thead-dark">
 
             <tr>
 
-                <td width="120">
+                <th width="120">Ảnh</th>
 
-                    <img
-                            src="${pageContext.request.contextPath}/${a.product.image}"
-                            width="90">
+                <th>Tên sách</th>
 
-                </td>
+                <th width="180">Giá thắng</th>
 
-                <td>
+                <th width="150">Trạng thái</th>
 
-                        ${a.product.name}
-
-                </td>
-
-                <td>
-
-                        ${a.currentPrice} đ
-
-                </td>
-
-                <td>
-
-                        ${a.status}
-
-                </td>
-
-                <td>
-
-                    <a
-                            class="btn btn-success"
-                            href="${pageContext.request.contextPath}/auction-add-cart?id=${a.id}">
-
-                        Thêm vào giỏ hàng
-
-                    </a>
-
-                </td>
+                <th width="220">Thao tác</th>
 
             </tr>
 
-        </c:forEach>
+            </thead>
 
-        <c:if test="${empty list}">
+            <tbody>
 
-            <tr>
+            <c:choose>
 
-                <td colspan="5" align="center">
+                <c:when test="${not empty list}">
 
-                    Bạn chưa thắng phiên đấu giá nào.
+                    <c:forEach items="${list}" var="a">
 
-                </td>
+                        <tr>
 
-            </tr>
+                            <td>
 
-        </c:if>
+                                <img
+                                        src="${pageContext.request.contextPath}/${a.product.image}"
+                                        alt="${a.product.name}">
 
-        </tbody>
+                            </td>
 
-    </table>
+                            <td>
+
+                                    ${a.product.name}
+
+                            </td>
+
+                            <td class="text-danger font-weight-bold">
+
+                                    ${a.currentPrice} đ
+
+                            </td>
+
+                            <td>
+
+                                    ${a.status}
+
+                            </td>
+
+                            <td>
+
+                                <a class="btn btn-success btn-block"
+                                   href="${pageContext.request.contextPath}/auction-add-cart?id=${a.id}">
+
+                                    Thêm vào giỏ hàng
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    </c:forEach>
+
+                </c:when>
+
+                <c:otherwise>
+
+                    <tr>
+
+                        <td colspan="5" class="text-center">
+
+                            Bạn chưa thắng phiên đấu giá nào.
+
+                        </td>
+
+                    </tr>
+
+                </c:otherwise>
+
+            </c:choose>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
+
+<%@include file="/common/web/footer.jsp"%>
+
+<script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
