@@ -9,6 +9,7 @@ public class Product {
     private String size;
     private int quantity;
     private double weight;
+    private boolean auctionBook;
 
     public Product() {
     }
@@ -94,6 +95,13 @@ public class Product {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+    public boolean isAuctionBook() {
+        return auctionBook;
+    }
+
+    public void setAuctionBook(boolean auctionBook) {
+        this.auctionBook = auctionBook;
     }
 
     @Override
