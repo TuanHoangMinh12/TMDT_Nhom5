@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -92,9 +93,18 @@
 
                             <td>
 
-                                <img
-                                        src="${pageContext.request.contextPath}/${a.product.image}"
-                                        alt="${a.product.name}">
+                                <c:choose>
+                                    <c:when test="${fn:startsWith(a.product.image, 'http')}">
+                                        <img
+                                                src="${a.product.image}"
+                                                alt="${a.product.name}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img
+                                                src="${pageContext.request.contextPath}/${a.product.image}"
+                                                alt="${a.product.name}">
+                                    </c:otherwise>
+                                </c:choose>
 
                             </td>
 

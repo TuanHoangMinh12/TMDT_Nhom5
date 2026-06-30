@@ -90,14 +90,14 @@
                 <c:forEach var="slide" items="${listSlide}">
                     <c:if test="${slide.idPr == 1}">
                         <div class="carousel-item active">
-                            <a href="${slide.link}">
+                            <a href="${pageContext.request.contextPath}/productList?type=allBookTop">
                                 <img src="${pageContext.request.contextPath}/${slide.img}" class="d-block w-100" alt="${slide.namePr}">
                             </a>
                         </div>
                     </c:if>
                     <c:if test="${slide.idPr != 1}">
                         <div class="carousel-item">
-                            <a href="${slide.link}">
+                            <a href="${pageContext.request.contextPath}/productList?type=allBookTop">
                                 <img src="${pageContext.request.contextPath}/${slide.img}" class="d-block w-100" alt="${slide.namePr}">
                             </a>
                         </div>

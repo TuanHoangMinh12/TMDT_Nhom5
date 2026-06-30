@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -63,10 +64,20 @@
 
             <div class="col-md-4">
 
-                <img
-                        src="${pageContext.request.contextPath}/${auction.product.image}"
-                        class="product-img"
-                        alt="${auction.product.name}">
+                <c:choose>
+                    <c:when test="${fn:startsWith(auction.product.image, 'http')}">
+                        <img
+                                src="${auction.product.image}"
+                                class="product-img"
+                                alt="${auction.product.name}">
+                    </c:when>
+                    <c:otherwise>
+                        <img
+                                src="${pageContext.request.contextPath}/${auction.product.image}"
+                                class="product-img"
+                                alt="${auction.product.name}">
+                    </c:otherwise>
+                </c:choose>
 
             </div>
 

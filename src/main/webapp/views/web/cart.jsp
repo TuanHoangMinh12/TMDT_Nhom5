@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="vi_VN"/>
 <%--
   Created by IntelliJ IDEA.
@@ -82,7 +83,16 @@
                 <input type="checkbox" name="settings" value="${item.value.product.idBook}"></label>
             </td>
             <td class="container_img">
-              <div class="col_img"><img src="${pageContext.request.contextPath}/${item.value.product.image}" alt=""></div>
+              <div class="col_img">
+                <c:choose>
+                  <c:when test="${fn:startsWith(item.value.product.image, 'http')}">
+                    <img src="${item.value.product.image}" alt="${item.value.product.name}">
+                  </c:when>
+                  <c:otherwise>
+                    <img src="${pageContext.request.contextPath}/${item.value.product.image}" alt="${item.value.product.name}">
+                  </c:otherwise>
+                </c:choose>
+              </div>
               <div class="col-container_content">
                 <a data-product-name="${item.value.product.name}"></a>
                 <h2 class="title">${item.value.product.name}</h2>
