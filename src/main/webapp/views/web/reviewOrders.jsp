@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -119,7 +120,7 @@
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
               <button class="tablinks" onclick="openCity(event, 'DonHangDaMua')">Đơn hàng đã mua</button>
               <button class="tablinks" onclick="openCity(event, 'DonDaHuy')">Đơn đã hủy</button>
-                <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
+              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
             </div>
 
             <c:if test="${not empty message}">
@@ -164,7 +165,14 @@
                     </td>
                     <td>
                       <c:forEach var="billD" items="${cartD.getBills()}">
-                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billD.image}"><br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billD.image, 'http')}">
+                            <img style="height: 50px" src="${billD.image}"><br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height: 50px" src="${pageContext.request.contextPath}/${billD.image}"><br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
                     <td><a class="btn_blue" href="${pageContext.request.contextPath}/cancelOrder?id=${cartD.id}">Hủy đơn</a></td>
@@ -201,7 +209,14 @@
                     </td>
                     <td>
                       <c:forEach var="billW" items="${cartW.getBills()}">
-                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billW.image}"><br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billW.image, 'http')}">
+                            <img style="height: 50px" src="${billW.image}"><br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height: 50px" src="${pageContext.request.contextPath}/${billW.image}"><br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
                     <td><a class="btn_blue" href="${pageContext.request.contextPath}/cancelOrder?id=${cartW.id}">Hủy đơn</a></td>
@@ -235,7 +250,14 @@
                     </td>
                     <td>
                       <c:forEach var="billL" items="${cartL.getBills()}">
-                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billL.image}"><br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billL.image, 'http')}">
+                            <img style="height: 50px" src="${billL.image}"><br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height: 50px" src="${pageContext.request.contextPath}/${billL.image}"><br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
                     <td><a class="btn_blue" href="${pageContext.request.contextPath}/orderDetail?id=${cartL.id}">Chi tiết</a></td>
@@ -267,7 +289,14 @@
                     </td>
                     <td>
                       <c:forEach var="billR" items="${cartR.getBills()}">
-                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billR.image}"><br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billR.image, 'http')}">
+                            <img style="height: 50px" src="${billR.image}"><br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height: 50px" src="${pageContext.request.contextPath}/${billR.image}"><br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
                     <td>
@@ -305,7 +334,14 @@
                     </td>
                     <td>
                       <c:forEach var="billH" items="${cartH.getBills()}">
-                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billH.image}"><br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billH.image, 'http')}">
+                            <img style="height: 50px" src="${billH.image}"><br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height: 50px" src="${pageContext.request.contextPath}/${billH.image}"><br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
                     <td>
@@ -352,9 +388,16 @@
 
                     <td>
                       <c:forEach var="billC" items="${cartC.bills}">
-                        <img style="height:50px"
-                             src="${pageContext.request.contextPath}/${billC.image}">
-                        <br><br>
+                        <c:choose>
+                          <c:when test="${fn:startsWith(billC.image, 'http')}">
+                            <img style="height:50px" src="${billC.image}">
+                            <br><br>
+                          </c:when>
+                          <c:otherwise>
+                            <img style="height:50px" src="${pageContext.request.contextPath}/${billC.image}">
+                            <br><br>
+                          </c:otherwise>
+                        </c:choose>
                       </c:forEach>
                     </td>
 
