@@ -14,7 +14,7 @@ public interface IAuctionDAO {
 
     AuctionModel findByBookId(int bookId);
 
-
+    int countActiveAuction();
 
     boolean insert(AuctionModel auction);
 

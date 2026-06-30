@@ -597,7 +597,30 @@ public class AuctionDAO implements IAuctionDAO {
      *   - WAITING + đến giờ bắt đầu  -> ACTIVE
      *   - ACTIVE  + quá giờ kết thúc -> FINISHED
      */
+    @Override
+    public int countActiveAuction() {
 
+        String sql =
+                "SELECT COUNT(*) " +
+                        "FROM auction " +
+                        "WHERE status='ACTIVE'";
+
+        try (
+                Connection conn = JDBCConnector.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
+        ) {
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
     @Override
     public void syncAuctionStatus() {
         String sqlToActive =

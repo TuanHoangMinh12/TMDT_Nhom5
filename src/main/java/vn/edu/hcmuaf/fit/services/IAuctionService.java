@@ -14,7 +14,7 @@ public interface IAuctionService {
 
     String bid(int auctionId, int userId, double price);
 
-
+    int countActiveAuction();
     AuctionModel findAuctionById(int id);
 
     List<AuctionBidModel> getBidHistory(int auctionId);

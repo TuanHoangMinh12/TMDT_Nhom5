@@ -265,14 +265,41 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="f_right" style="display: flex">
-                    <a style="background-color: #ed4d2b; padding: 5px; color: #FFFFFF;border-radius: 5px"
-                       href="${pageContext.request.contextPath}/voucher">Săn mã giảm giá</a>
-                    <a href="" class="hotline d-flex">
+                <div class="f_right" style="display:flex;align-items:center;gap:10px;">
+
+                    <a href="${pageContext.request.contextPath}/auction"
+                       style="background:#ff9800;
+              padding:6px 14px;
+              border-radius:5px;
+              color:#fff;
+              text-decoration:none;
+              font-weight:bold;">
+
+                        <i class="fa-solid fa-gavel"></i>
+
+                        Đấu giá
+
+                        <c:if test="${activeAuctionCount > 0}">
+                            (${activeAuctionCount})
+                        </c:if>
+
+                    </a>
+
+                    <a href="${pageContext.request.contextPath}/voucher"
+                       style="background:#ed4d2b;
+              padding:6px 14px;
+              border-radius:5px;
+              color:#fff;
+              text-decoration:none;">
+                        Săn mã giảm giá
+                    </a>
+
+                    <a href="#" class="hotline d-flex">
                         <i class="fa-solid fa-phone"></i>
-                        <h4>Hotline: </h4>
+                        <h4>Hotline:</h4>
                         <span>0867 415 853</span>
                     </a>
+
                 </div>
             </div>
         </div>
@@ -310,4 +337,22 @@
 request.setAttribute("unreadCount", unread);
 
 request.setAttribute("latestNotifications", latest);
+<a href="${pageContext.request.contextPath}/auction"
+   style="
+        background:#ff9800;
+        padding:6px 14px;
+        border-radius:5px;
+        color:#fff;
+        font-weight:600;
+        text-decoration:none;">
+
+    <i class="fa-solid fa-gavel"></i>
+
+    Đấu giá
+
+    <c:if test="${activeAuctionCount > 0}">
+        (${activeAuctionCount})
+    </c:if>
+
+</a>
 <!--------- end header---------- -->

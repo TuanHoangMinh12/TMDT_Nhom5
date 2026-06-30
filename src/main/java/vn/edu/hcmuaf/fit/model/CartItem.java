@@ -6,6 +6,7 @@ public class CartItem implements Serializable {
     private Product product;
     private int quantity = 0;
 
+    private boolean auctionItem;
     public CartItem() {}
 
     public CartItem(Product product) {
