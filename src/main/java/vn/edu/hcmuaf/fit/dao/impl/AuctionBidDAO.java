@@ -14,11 +14,14 @@ import java.util.List;
 
 public class AuctionBidDAO implements IAuctionBidDAO {
 
+    // ===========================
     // Thêm lượt đấu giá
+    // ===========================
     @Override
     public boolean insertBid(AuctionBidModel bid) {
 
-        String sql = "INSERT INTO auction_bid(auction_id,user_id,bid_price) VALUES(?,?,?)";
+        String sql =
+                "INSERT INTO auction_bid(auction_id,user_id,bid_price) VALUES(?,?,?)";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -37,7 +40,6 @@ public class AuctionBidDAO implements IAuctionBidDAO {
 
         return false;
     }
-
     // Lịch sử đấu giá
     @Override
     public List<AuctionBidModel> findByAuctionId(int auctionId) {
@@ -45,11 +47,14 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         List<AuctionBidModel> list = new ArrayList<>();
 
         String sql =
-                "SELECT ab.*, c.first_name, c.last_name " +
+                "SELECT ab.id,ab.auction_id,ab.user_id," +
+                        "ab.bid_price,ab.bid_time," +
+                        "c.first_name,c.last_name " +
                         "FROM auction_bid ab " +
-                        "JOIN customer c ON ab.user_id = c.id_user " +
-                        "WHERE auction_id=? " +
-                        "ORDER BY bid_price DESC";
+                        "INNER JOIN customer c " +
+                        "ON ab.user_id=c.id_user " +
+                        "WHERE ab.auction_id=? " +
+                        "ORDER BY ab.bid_time DESC";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -87,6 +92,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         return list;
     }
 
+
     // Giá cao nhất
     @Override
     public AuctionBidModel findHighestBid(int auctionId) {
@@ -94,7 +100,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         String sql =
                 "SELECT * FROM auction_bid " +
                         "WHERE auction_id=? " +
-                        "ORDER BY bid_price DESC " +
+                        "ORDER BY bid_price DESC, bid_time ASC " +
                         "LIMIT 1";
 
         try (
@@ -126,8 +132,12 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         return null;
     }
 
+    // ===========================
+    // Danh sách đấu giá của user
+    // ===========================
     // Lấy các lượt đấu giá của một user
     @Override
+
     public List<AuctionBidModel> findByUserId(int userId) {
 
         List<AuctionBidModel> list = new ArrayList<>();
@@ -178,7 +188,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         List<AuctionBidModel> list = new ArrayList<>();
         String sql =
                 "SELECT ab.*, CONCAT(c.first_name,' ',c.last_name) AS user_name, c.email AS user_email " +
-                        "FROM auction_bids ab " +
+                        "FROM auction_bid ab " +
                         "JOIN customer c ON ab.user_id = c.id_user " +
                         "WHERE ab.auction_id = ? " +
                         "ORDER BY ab.bid_time DESC";    // Mới nhất lên đầu
@@ -210,7 +220,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         List<AuctionBidModel> list = new ArrayList<>();
         String sql =
                 "SELECT ab.*, CONCAT(c.first_name,' ',c.last_name) AS user_name, c.email AS user_email " +
-                        "FROM auction_bids ab " +
+                        "FROM auction_bid ab " +
                         "JOIN customer c ON ab.user_id = c.id_user " +
                         "WHERE ab.user_id = ? " +
                         "ORDER BY ab.bid_time DESC";
@@ -239,7 +249,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
      */
     @Override
     public int countBidByUserInAuction(int userId, int auctionId) {
-        String sql = "SELECT COUNT(*) FROM auction_bids WHERE user_id=? AND auction_id=?";
+        String sql = "SELECT COUNT(*) FROM auction_bid WHERE user_id=? AND auction_id=?";
 
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;
@@ -262,7 +272,7 @@ public class AuctionBidDAO implements IAuctionBidDAO {
     @Override
     public List<Integer> getParticipantIds(int auctionId) {
         List<Integer> list = new ArrayList<>();
-        String sql = "SELECT DISTINCT user_id FROM auction_bids WHERE auction_id=?";
+        String sql = "SELECT DISTINCT user_id FROM auction_bid WHERE auction_id=?";
         try (Connection con = JDBCConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, auctionId);

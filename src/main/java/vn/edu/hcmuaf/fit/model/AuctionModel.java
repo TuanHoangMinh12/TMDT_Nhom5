@@ -153,6 +153,7 @@ public class AuctionModel {
     }
 
 
+
     // Tuấn làm
 
     public String getBookName() { return bookName; }

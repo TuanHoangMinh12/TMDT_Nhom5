@@ -1,14 +1,11 @@
 package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
-import vn.edu.hcmuaf.fit.dao.impl.AuctionBidDAO;
-import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
-import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;
+
 import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.services.IAuctionService;
 import vn.edu.hcmuaf.fit.services.ICustomerService;
-import vn.edu.hcmuaf.fit.services.impl.AuctionService;
-import vn.edu.hcmuaf.fit.services.impl.CustomerService;
+
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

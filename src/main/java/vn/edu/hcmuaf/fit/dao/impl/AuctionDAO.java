@@ -5,21 +5,61 @@ import vn.edu.hcmuaf.fit.db.JDBCConnector;
 import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.model.Product;
-
+import vn.edu.hcmuaf.fit.dao.impl.CartDao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AuctionDAO implements IAuctionDAO {
 
+
+    /**
+     * Mapping ResultSet -> AuctionModel
+     */
+    private AuctionModel mapAuction(ResultSet rs) throws SQLException {
+
+        AuctionModel auction = new AuctionModel();
+
+        auction.setId(rs.getInt("id"));
+        auction.setBookId(rs.getInt("book_id"));
+        auction.setStartPrice(rs.getDouble("start_price"));
+        auction.setCurrentPrice(rs.getDouble("current_price"));
+        auction.setMinIncrement(rs.getDouble("min_increment"));
+        auction.setStartTime(rs.getTimestamp("start_time"));
+        auction.setEndTime(rs.getTimestamp("end_time"));
+        auction.setWinnerId((Integer) rs.getObject("winner_id"));
+        auction.setStatus(rs.getString("status"));
+        auction.setCreatedAt(rs.getTimestamp("created_at"));
+
+        Product product = new Product();
+        product.setIdBook(rs.getInt("id_book"));
+        product.setName(rs.getString("name"));
+        product.setImage(rs.getString("image"));
+        product.setPrice(rs.getDouble("price"));
+
+        auction.setProduct(product);
+
+        return auction;
+    }
+
+    /**
+     * Lấy tất cả phiên đấu giá
+     */
+
     // Lấy tất cả phiên đấu giá
     @Override
+
     public List<AuctionModel> findAll() {
+
         List<AuctionModel> list = new ArrayList<>();
 
-        String sql = "SELECT a.*, b.name " +
-                "FROM auction a " +
-                "JOIN book b ON a.book_id = b.id_book";
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.price, ib.image " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id = b.id_book " +
+                        "LEFT JOIN image_book ib ON ib.id_book = b.id_book " +
+                        "GROUP BY a.id " +
+                        "ORDER BY a.created_at DESC";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -28,27 +68,7 @@ public class AuctionDAO implements IAuctionDAO {
         ) {
 
             while (rs.next()) {
-
-                AuctionModel auction = new AuctionModel();
-
-                auction.setId(rs.getInt("id"));
-                auction.setBookId(rs.getInt("book_id"));
-                auction.setStartPrice(rs.getDouble("start_price"));
-                auction.setCurrentPrice(rs.getDouble("current_price"));
-                auction.setMinIncrement(rs.getDouble("min_increment"));
-                auction.setStartTime(rs.getTimestamp("start_time"));
-                auction.setEndTime(rs.getTimestamp("end_time"));
-                auction.setWinnerId((Integer) rs.getObject("winner_id"));
-                auction.setStatus(rs.getString("status"));
-                auction.setCreatedAt(rs.getTimestamp("created_at"));
-
-                Product p = new Product();
-                p.setIdBook(rs.getInt("book_id"));
-                p.setName(rs.getString("name"));
-
-                auction.setProduct(p);
-
-                list.add(auction);
+                list.add(mapAuction(rs));
             }
 
         } catch (Exception e) {
@@ -58,11 +78,23 @@ public class AuctionDAO implements IAuctionDAO {
         return list;
     }
 
+
+    /**
+     * Lấy phiên đấu giá theo id
+     */
+
     // Tìm theo id
     @Override
+
     public AuctionModel findById(int id) {
 
-        String sql = "SELECT * FROM auction WHERE id=?";
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.price, ib.image " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id = b.id_book " +
+                        "LEFT JOIN image_book ib ON ib.id_book = b.id_book " +
+                        "WHERE a.id = ? " +
+                        "GROUP BY a.id";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -71,24 +103,12 @@ public class AuctionDAO implements IAuctionDAO {
 
             ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
 
-            if (rs.next()) {
+                if (rs.next()) {
+                    return mapAuction(rs);
+                }
 
-                AuctionModel auction = new AuctionModel();
-
-                auction.setId(rs.getInt("id"));
-                auction.setBookId(rs.getInt("book_id"));
-                auction.setStartPrice(rs.getDouble("start_price"));
-                auction.setCurrentPrice(rs.getDouble("current_price"));
-                auction.setMinIncrement(rs.getDouble("min_increment"));
-                auction.setStartTime(rs.getTimestamp("start_time"));
-                auction.setEndTime(rs.getTimestamp("end_time"));
-                auction.setWinnerId((Integer) rs.getObject("winner_id"));
-                auction.setStatus(rs.getString("status"));
-                auction.setCreatedAt(rs.getTimestamp("created_at"));
-
-                return auction;
             }
 
         } catch (Exception e) {
@@ -98,6 +118,11 @@ public class AuctionDAO implements IAuctionDAO {
         return null;
     }
 
+
+    /**
+     * Thêm phiên đấu giá
+     */
+
     @Override
     public AuctionModel findByBookId(int bookId) {
         return null;
@@ -105,10 +130,12 @@ public class AuctionDAO implements IAuctionDAO {
 
     // Thêm phiên đấu giá
     @Override
+
     public boolean insert(AuctionModel auction) {
 
-        String sql = "INSERT INTO auction(book_id,start_price,current_price,min_increment,start_time,end_time,status) " +
-                "VALUES(?,?,?,?,?,?,?)";
+        String sql =
+                "INSERT INTO auction(book_id,start_price,current_price,min_increment,start_time,end_time,status) " +
+                        "VALUES(?,?,?,?,?,?,?)";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -132,6 +159,11 @@ public class AuctionDAO implements IAuctionDAO {
         return false;
     }
 
+
+    /**
+     * Cập nhật giá hiện tại và người đang dẫn đầu
+     */
+
     @Override
     public boolean update(AuctionModel auction) {
         return false;
@@ -139,11 +171,15 @@ public class AuctionDAO implements IAuctionDAO {
 
     // Cập nhật giá hiện tại
     @Override
+
     public boolean updateCurrentPrice(int auctionId,
                                       double price,
                                       int winnerId) {
 
-        String sql = "UPDATE auction SET current_price=?, winner_id=? WHERE id=?";
+        String sql =
+                "UPDATE auction " +
+                        "SET current_price=?, winner_id=? " +
+                        "WHERE id=?";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -163,10 +199,15 @@ public class AuctionDAO implements IAuctionDAO {
         return false;
     }
 
-    // Đóng phiên đấu giá
+    /**
+     * Kết thúc phiên đấu giá
+     */
     public boolean finishAuction(int auctionId) {
 
-        String sql = "UPDATE auction SET status='FINISHED' WHERE id=?";
+        String sql =
+                "UPDATE auction " +
+                        "SET status='FINISHED' " +
+                        "WHERE id=?";
 
         try (
                 Connection conn = JDBCConnector.getConnection();
@@ -183,11 +224,105 @@ public class AuctionDAO implements IAuctionDAO {
 
         return false;
     }
+    @Override
+    public void finishExpiredAuction() {
 
+        String sql =
+                "SELECT id " +
+                        "FROM auction " +
+                        "WHERE status='ACTIVE' " +
+                        "AND end_time<=NOW()";
 
+        try(
+                Connection conn = JDBCConnector.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
+        ){
+
+            while(rs.next()){
+
+                int auctionId = rs.getInt("id");
+
+                AuctionBidModel highest =
+                        new AuctionBidDAO().findHighestBid(auctionId);
+
+                if(highest!=null){
+
+                    String update =
+                            "UPDATE auction " +
+                                    "SET status='FINISHED'," +
+                                    "winner_id=?," +
+                                    "current_price=? " +
+                                    "WHERE id=?";
+
+                    PreparedStatement ps2 =
+                            conn.prepareStatement(update);
+
+                    ps2.setInt(1, highest.getUserId());
+                    ps2.setDouble(2, highest.getBidPrice());
+                    ps2.setInt(3, auctionId);
+
+                    ps2.executeUpdate();
+                    // Lấy thông tin phiên đấu giá
+                    AuctionModel auction = findById(auctionId);
+
+                    new CartDao().addAuctionBook(
+                            highest.getUserId(),
+                            auction.getBookId()
+                    );
+                }else{
+
+                    PreparedStatement ps2 =
+                            conn.prepareStatement(
+                                    "UPDATE auction SET status='FINISHED' WHERE id=?");
+
+                    ps2.setInt(1, auctionId);
+
+                    ps2.executeUpdate();
+                }
+
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public List<AuctionModel> findWinnerAuctions(int userId) {
+
+        List<AuctionModel> list = new ArrayList<>();
+
+        String sql =
+                "SELECT a.*, b.id_book, b.name, b.price, ib.image " +
+                        "FROM auction a " +
+                        "JOIN book b ON a.book_id=b.id_book " +
+                        "LEFT JOIN image_book ib ON ib.id_book=b.id_book " +
+                        "WHERE a.winner_id=? " +
+                        "GROUP BY a.id " +
+                        "ORDER BY a.end_time DESC";
+
+        try(
+                Connection conn = JDBCConnector.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)
+        ){
+
+            ps.setInt(1,userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                list.add(mapAuction(rs));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
     // Tuấn làm
 
-    // PHẦN 1 - CRUD PHIÊN ĐẤU GIÁ (bảng auctions)
+    // PHẦN 1 - CRUD PHIÊN ĐẤU GIÁ (bảng auction)
     /**
      * Lấy DANH SÁCH TẤT CẢ phiên đấu giá.
      * JOIN với book để lấy tên sách, JOIN với customer để lấy tên người thắng.
@@ -202,8 +337,8 @@ public class AuctionDAO implements IAuctionDAO {
                         "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
                         "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
                         "       c.email AS winner_email, " +
-                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
-                        "FROM auctions a " +
+                        "       (SELECT COUNT(*) FROM auction_bid ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "FROM auction a " +
                         "JOIN book b ON a.book_id = b.id_book " +
                         "LEFT JOIN customer c ON a.winner_id = c.id_user " +
                         "ORDER BY a.created_at DESC";
@@ -234,8 +369,8 @@ public class AuctionDAO implements IAuctionDAO {
                         "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
                         "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
                         "       c.email AS winner_email, " +
-                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
-                        "FROM auctions a " +
+                        "       (SELECT COUNT(*) FROM auction_bid ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "FROM auction a " +
                         "JOIN book b ON a.book_id = b.id_book " +
                         "LEFT JOIN customer c ON a.winner_id = c.id_user " +
                         "WHERE a.id = ?";
@@ -267,7 +402,7 @@ public class AuctionDAO implements IAuctionDAO {
     public int createAuction(int bookId, double startPrice, double minIncrement,
                              Timestamp startTime, Timestamp endTime) {
         String sql =
-                "INSERT INTO auctions (book_id, start_price, current_price, min_increment, start_time, end_time, status) " +
+                "INSERT INTO auction (book_id, start_price, current_price, min_increment, start_time, end_time, status) " +
                         "VALUES (?, ?, ?, ?, ?, ?, 'WAITING')";
 
         Connection con = JDBCConnector.getConnection();
@@ -296,7 +431,7 @@ public class AuctionDAO implements IAuctionDAO {
                              Timestamp startTime, Timestamp endTime) {
         // Điều kiện AND status='WAITING' giúp tránh sửa phiên đang chạy
         String sql =
-                "UPDATE auctions " +
+                "UPDATE auction " +
                         "SET start_price=?, current_price=?, min_increment=?, start_time=?, end_time=? " +
                         "WHERE id=? AND status='WAITING'";
 
@@ -320,7 +455,7 @@ public class AuctionDAO implements IAuctionDAO {
     // Xóa phiên đấu giá
     @Override
     public int deleteAuction(int id) {
-        String sql = "DELETE FROM auctions WHERE id=? AND status='WAITING'";
+        String sql = "DELETE FROM auction WHERE id=? AND status='WAITING'";
 
         try {
             Connection con = JDBCConnector.getConnection();
@@ -337,7 +472,7 @@ public class AuctionDAO implements IAuctionDAO {
     // Cập nhật STATUS của phiên đấu giá
     @Override
     public int updateStatus(int id, String newStatus) {
-        String sql = "UPDATE auctions SET status=? WHERE id=?";
+        String sql = "UPDATE auction SET status=? WHERE id=?";
 
         try {
             Connection con = JDBCConnector.getConnection();
@@ -363,7 +498,7 @@ public class AuctionDAO implements IAuctionDAO {
     public boolean finalizeAuction(int auctionId) {
         // Bước 1: Tìm người bid cao nhất
         String sqlFindWinner =
-                "SELECT user_id, bid_price FROM auction_bids " +
+                "SELECT user_id, bid_price FROM auction_bid " +
                         "WHERE auction_id = ? " +
                         "ORDER BY bid_price DESC " +
                         "LIMIT 1";
@@ -382,7 +517,7 @@ public class AuctionDAO implements IAuctionDAO {
 
                 // Bước 2: Cập nhật winner_id, current_price và status -> FINISHED
                 String sqlUpdate =
-                        "UPDATE auctions SET winner_id=?, current_price=?, status='FINISHED' " +
+                        "UPDATE auction SET winner_id=?, current_price=?, status='FINISHED' " +
                                 "WHERE id=?";
                 PreparedStatement psUpdate = con.prepareStatement(sqlUpdate);
                 psUpdate.setInt(1, winnerId);
@@ -393,7 +528,7 @@ public class AuctionDAO implements IAuctionDAO {
                 return rows > 0;
             } else {
                 // Không có ai bid -> chỉ chuyển status sang FINISHED, không có winner
-                String sqlNoWinner = "UPDATE auctions SET status='FINISHED' WHERE id=?";
+                String sqlNoWinner = "UPDATE auction SET status='FINISHED' WHERE id=?";
                 PreparedStatement psNo = con.prepareStatement(sqlNoWinner);
                 psNo.setInt(1, auctionId);
                 psNo.executeUpdate();
@@ -416,10 +551,10 @@ public class AuctionDAO implements IAuctionDAO {
     @Override
     public void syncAuctionStatus() {
         String sqlToActive =
-                "UPDATE auctions SET status='ACTIVE' " +
+                "UPDATE auction SET status='ACTIVE' " +
                         "WHERE status='WAITING' AND start_time <= NOW()";
         String sqlToFinished =
-                "UPDATE auctions SET status='FINISHED' " +
+                "UPDATE auction SET status='FINISHED' " +
                         "WHERE status='ACTIVE' AND end_time <= NOW()";
 
         Connection con = JDBCConnector.getConnection();
@@ -442,7 +577,7 @@ public class AuctionDAO implements IAuctionDAO {
      */
     @Override
     public double getTotalRevenue() {
-        String sql = "SELECT COALESCE(SUM(current_price), 0) FROM auctions WHERE status='PAID'";
+        String sql = "SELECT COALESCE(SUM(current_price), 0) FROM auction WHERE status='PAID'";
 
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;
@@ -466,7 +601,7 @@ public class AuctionDAO implements IAuctionDAO {
     @Override
     public int[] countByStatus() {
         int[] counts = {0, 0, 0, 0};
-        String sql = "SELECT status, COUNT(*) AS cnt FROM auctions GROUP BY status";
+        String sql = "SELECT status, COUNT(*) AS cnt FROM auction GROUP BY status";
 
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;

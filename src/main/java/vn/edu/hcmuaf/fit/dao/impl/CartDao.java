@@ -28,7 +28,6 @@ public class CartDao {
     }
 
     // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
-    // 2. LẤY GIỎ HÀNG TỪ DB LÊN (Gọi khi Login)
     public CartModel loadCart(int userId) {
         CartModel cart = new CartModel();
         cart.setIdUser(userId);
@@ -679,6 +678,57 @@ public class CartDao {
             }
         }
         return null;
+    }
+    //Tien
+    public void addAuctionBook(int userId, int productId) {
+
+        try (Connection conn = JDBCConnector.getConnection()) {
+
+            // tìm cart của user
+            String sqlCart = "SELECT id FROM carts WHERE idUser=?";
+
+            PreparedStatement ps = conn.prepareStatement(sqlCart);
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) {
+                return;
+            }
+
+            int cartId = rs.getInt("id");
+
+            // kiểm tra đã có sách chưa
+            String check =
+                    "SELECT * FROM cart_detail " +
+                            "WHERE cart_id=? AND product_id=?";
+
+            PreparedStatement psCheck = conn.prepareStatement(check);
+            psCheck.setInt(1, cartId);
+            psCheck.setInt(2, productId);
+
+            ResultSet rsCheck = psCheck.executeQuery();
+
+            if(rsCheck.next()){
+                return;
+            }
+
+            // thêm vào cart
+            String insert =
+                    "INSERT INTO cart_detail(cart_id,product_id,quantity) " +
+                            "VALUES(?,?,1)";
+
+            PreparedStatement psInsert =
+                    conn.prepareStatement(insert);
+
+            psInsert.setInt(1, cartId);
+            psInsert.setInt(2, productId);
+
+            psInsert.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public ArrayList<BookModel> bookHetHang() {
         String sql = "SELECT b.id_book, b.NAME, b.quantity, b.price,  ct.name\n" +
