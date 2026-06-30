@@ -18,7 +18,7 @@ public class AuctionNotificationDAO implements IAuctionNotificationDAO {
     // Thêm thông báo mới
     @Override
     public int sendNotification(int userId, int auctionId, String title, String content) {
-        String sql = "INSERT INTO auction_notifications (user_id, auction_id, title, content) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO auction_notification (user_id, auction_id, title, content) VALUES (?, ?, ?, ?)";
         try (Connection con = JDBCConnector.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -38,7 +38,7 @@ public class AuctionNotificationDAO implements IAuctionNotificationDAO {
      */
     @Override
     public int countUnreadNotifications(int userId) {
-        String sql = "SELECT COUNT(*) FROM auction_notifications WHERE user_id=? AND is_read=0";
+        String sql = "SELECT COUNT(*) FROM auction_notification WHERE user_id=? AND is_read=0";
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -62,7 +62,7 @@ public class AuctionNotificationDAO implements IAuctionNotificationDAO {
     public List<AuctionNotificationModel> getNotificationsByUser(int userId) {
         List<AuctionNotificationModel> list = new ArrayList<>();
         String sql = "SELECT n.*, CONCAT(c.first_name,' ',c.last_name) AS user_name " +
-                "FROM auction_notifications n " +
+                "FROM auction_notification n " +
                 "JOIN customer c ON n.user_id = c.id_user " +
                 "WHERE n.user_id = ? " +
                 "ORDER BY n.created_at DESC";
@@ -99,7 +99,7 @@ public class AuctionNotificationDAO implements IAuctionNotificationDAO {
     @Override
     public int markNotificationRead(int notificationId, int userId) {
         // Thêm AND user_id=? để tránh user khác đọc thông báo của mình
-        String sql = "UPDATE auction_notifications SET is_read=1 WHERE id=? AND user_id=?";
+        String sql = "UPDATE auction_notification SET is_read=1 WHERE id=? AND user_id=?";
         Connection con = JDBCConnector.getConnection();
         PreparedStatement ps = null;
         try {
