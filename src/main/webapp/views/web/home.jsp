@@ -326,7 +326,7 @@
 <div id="section4" style="margin-top: 24px;">
     <div class="container">
         <div class="category">
-            <a class="category_left" href="${pageContext.request.contextPath}productList?type=allUpcoming">
+            <a class="category_left" href="${pageContext.request.contextPath}/productList?type=allUpcoming">
                 Sách sắp phát hành
                 <span class="category_arrow"></span>
             </a>
@@ -428,11 +428,11 @@
 <div id="section5" style="margin-top: 24px;">
     <div class="container">
         <div class="category">
-            <a class="category_left" href="/authors">
+            <a class="category_left" href="${pageContext.request.contextPath}/authors">
                 Tác giả
                 <span class="category_arrow"></span>
             </a>
-            <a class="category_right" href="">Xem tất cả</a>
+            <a class="category_right" href="${pageContext.request.contextPath}/authors">Xem tất cả</a>
         </div>
         <div class="authors_carousel" style="height: 330px;">
             <div class="container">
@@ -440,11 +440,19 @@
                     <c:forEach var="author" items="${listAuthor}" >
                         <div class="col-md-12">
                             <div class="card h-60 card_author">
-                                <a href="/author?id=${author.idAuthor}">
-                                    <img src="${pageContext.request.contextPath}/${author.img}"
-                                         class="card-img-top img_author" alt="...">
+                                <a href="${pageContext.request.contextPath}/author?id=${author.idAuthor}">
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(author.img, 'http')}">
+                                            <img src="${author.img}"
+                                                 class="card-img-top img_author" alt="${author.name}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/${author.img}"
+                                                 class="card-img-top img_author" alt="${author.name}">
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="card-body">
-                                        <h5 class="card-title title_author">${author.name}</h5>
+                                        <h5 class="card-title title_author"><c:out value="${author.name}"/></h5>
                                     </div>
                                 </a>
                             </div>

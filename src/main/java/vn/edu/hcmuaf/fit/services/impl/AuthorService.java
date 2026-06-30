@@ -20,4 +20,8 @@ public class AuthorService implements IAuthorService {
     public List<AuthorModel> find10Author() {
         return authorDAO.find10Author();
     }
+    @Override
+    public AuthorModel findById(int idAuthor) {
+        return authorDAO.findById(idAuthor);
+    }
 }

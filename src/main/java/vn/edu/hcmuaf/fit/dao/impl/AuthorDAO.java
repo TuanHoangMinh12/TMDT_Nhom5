@@ -84,4 +84,38 @@ public class AuthorDAO implements IAuthorDAO {
         }
         return null;
     }
+    @Override
+    public AuthorModel findById(int idAuthor) {
+        String sql = "SELECT * FROM author WHERE id_author = ?";
+        Connection connection = JDBCConnector.getConnection();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        if (connection != null) {
+            try {
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1, idAuthor);
+                resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    AuthorModel authorModel = new AuthorModel();
+                    authorModel.setIdAuthor(resultSet.getInt("id_author"));
+                    authorModel.setName(resultSet.getString("name"));
+                    authorModel.setImg(resultSet.getString("img"));
+                    authorModel.setInformation(resultSet.getString("information"));
+                    return authorModel;
+                }
+                return null;
+            } catch (SQLException e) {
+                return null;
+            } finally {
+                try {
+                    if (connection != null) connection.close();
+                    if (statement != null) statement.close();
+                    if (resultSet != null) resultSet.close();
+                } catch (SQLException e) {
+                    // ignore
+                }
+            }
+        }
+        return null;
+    }
 }

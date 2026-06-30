@@ -5,6 +5,8 @@
   Time: 8:44 AM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +29,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Header.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Author.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css">
-  <title>Tác giả</title>
+  <title><c:out value="${authorModel.name}"/></title>
 </head>
 
 <body>
@@ -38,31 +40,86 @@
   <div class="container">
     <nav id="breadcrumbbar">
       <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a class="chang_font" href="home.html">Trang chủ</a></li>
-        <li class="breadcrumb-item active"><a href="vanhocnuocngoai.html">Điều khoảng sử dụng</a></li>
+        <li class="breadcrumb-item"><a class="chang_font" href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
+        <li class="breadcrumb-item active"><c:out value="${authorModel.name}"/></li>
       </ul>
     </nav>
     <div class="wrapper">
       <h1>TÁC GIẢ</h1>
     </div>
     <div class="content_container">
-      <h1>Tác giả</h1>
+      <h1><c:out value="${authorModel.name}"/></h1>
       <div class="content_author">
         <div class="img_author">
-          <img src="${pageContext.request.contextPath}/templates/images/author/nguyennhatanh-compressed.jpg" alt="Nguyễn Nhật Ánh">
+          <c:choose>
+            <c:when test="${not empty authorModel.img}">
+              <c:choose>
+                <c:when test="${fn:startsWith(authorModel.img, 'http')}">
+                  <img src="${authorModel.img}" alt="${authorModel.name}">
+                </c:when>
+                <c:otherwise>
+                  <img src="${pageContext.request.contextPath}/${authorModel.img}" alt="${authorModel.name}">
+                </c:otherwise>
+              </c:choose>
+            </c:when>
+            <c:otherwise>
+              <img src="${pageContext.request.contextPath}/templates/images/author/default-author.png" alt="${authorModel.name}">
+            </c:otherwise>
+          </c:choose>
         </div>
         <div class="author_info">
-          <p>Nguyễn Nhật Ánh sinh ngày 7 tháng 5 năm 1955 tại tỉnh Quảng Nam.  Ông được coi là một trong những nhà văn thành công nhất viết sách cho tuổi thơ, tuồi mới lớn với hơn 100 tác phẩm các thể loại.</p>
-
-          <p>Trước khi trở thành nhà văn nổi tiếng, Nguyễn Nhật Ánh từng có thời gian đi dạy học, viết báo với nhiều bút danh như Chu Đình Ngạn, Lê Duy Cật, Đông Phương Sóc, Sóc Phương Đông,... Năm 13 tuổi, ông đã có thơ đăng báo. Năm 1984, tác phẩm truyện dài đầu tiên <em>Trước vòng chung kết </em>đã định vị tên tuổi của ông trong lòng độc giả và kể từ đó, ông tập trung viết cho lứa tuổi thanh thiếu niên.</p>
-
-          <p>Tên tuổi của nhà văn Nguyễn Nhật Ánh gắn liền với các tác phẩm làm say lòng độc giả bao thế hệ như <em>Mắt biếc, Cỏn chút gì để nhớ, Hạ đỏ, Cô gái đến từ hôm qua, Chú bé rắc rối,… </em>Truyện của ông được tái bản liên tục và chưa bao giờ giảm sức hút với những người yêu mến chất văn Nguyễn Nhật Ánh.</p>
-
-          <p>Ông cũng đã đoạt nhiều giải thưởng như: năm 1990, truyện dài “Chú bé rắc rối” được Trung ương Đoàn Thanh niên Cộng sản Hồ Chí Minh trao giải thưởng Văn học Trẻ hạng A. Năm 1995, ông được bầu chọn là nhà văn được yêu thích nhất trong 20 năm (1975-1995) qua cuộc trưng cầu ý kiến bạn đọc về các gương mặt trẻ tiêu biểu trên mọi lĩnh vực của Thành đoàn TP HCM và Báo Tuổi trẻ, đồng thời được Hội Nhà văn TP HCM chọn là một trong 20 nhà văn trẻ tiêu biểu trong 20 năm (1975-1995).</p>
-
-          <p>Năm 2010, tác phẩm <em>Cho tôi xin một vé đi tuổi thơ</em> của ông được trao tặng Giải thưởng Văn học ASEAN.</p>
+          <c:choose>
+            <c:when test="${not empty listInformation}">
+              <c:forEach var="doan" items="${listInformation}">
+                <p><c:out value="${doan}"/></p>
+              </c:forEach>
+            </c:when>
+            <c:otherwise>
+              <p>Hiện chưa có thông tin giới thiệu cho tác giả này.</p>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
+
+      <c:if test="${not empty listBookOfAuthor}">
+        <div class="wrapper" style="margin-top: 32px;">
+          <h1>Sách của <c:out value="${authorModel.name}"/></h1>
+        </div>
+        <div class="row" style="margin-top: 16px;">
+          <c:forEach var="book" items="${listBookOfAuthor}">
+            <div class="col-6 col-md-3 col-lg-2" style="margin-bottom: 24px;">
+              <div class="card h-100">
+                <a href="${pageContext.request.contextPath}/products/product-detail?id=${book.idBook}">
+                  <c:if test="${book.discount != 0}">
+                    <span class="card_sale active_sale">-${book.discount}%</span>
+                  </c:if>
+                  <c:choose>
+                    <c:when test="${fn:startsWith(book.image, 'http')}">
+                      <img src="${book.image}" class="card-img-top" alt="...">
+                    </c:when>
+                    <c:otherwise>
+                      <img src="${pageContext.request.contextPath}/${book.image}" class="card-img-top" alt="...">
+                    </c:otherwise>
+                  </c:choose>
+                  <div class="card-body">
+                    <h5 class="card-title title_book"><c:out value="${book.name}"/></h5>
+                    <div class="container_price">
+                      <p class="card-text_price">${book.priceDiscount}đ</p>
+                      <c:if test="${book.discount != 0}">
+                        <p style="text-decoration: line-through;" class="card-text_price--sale">${book.price}đ</p>
+                      </c:if>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </c:forEach>
+        </div>
+      </c:if>
+
+      <c:if test="${empty listBookOfAuthor}">
+        <p class="text-muted" style="margin-top: 24px;">Hiện chưa có sách nào của tác giả này.</p>
+      </c:if>
     </div>
   </div>
 </div>
