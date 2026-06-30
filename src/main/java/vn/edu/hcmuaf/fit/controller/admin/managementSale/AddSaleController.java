@@ -15,7 +15,7 @@ public class AddSaleController extends HttpServlet {
     private VoucherDAO voucherDAO = new VoucherDAO();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("views/admin/form-add-voucher.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyKhuyenMai/form-add-voucher.jsp").forward(request, response);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class AddSaleController extends HttpServlet {
             voucherDAO.addVoucher(name, qualityInt, percent_discountInt, diktat, price_minimumInt);
         }
 
-        new MessageParameterUntil("Thêm thành công", "success", "views/admin/form-add-voucher.jsp", request, response).send();
+        new MessageParameterUntil("Thêm thành công", "success", "views/admin/qlyKhuyenMai/form-add-voucher.jsp", request, response).send();
     }
 }

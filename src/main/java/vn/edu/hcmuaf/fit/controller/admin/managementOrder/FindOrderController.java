@@ -23,7 +23,7 @@ public class FindOrderController extends HttpServlet {
         if(id != null) {
             int idInt = Integer.parseInt(id);
             request.setAttribute("bill", iBillManagementService.findById(idInt));
-            request.getRequestDispatcher("/views/admin/table-data-order-update.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/qlyDonHang/table-data-order-update.jsp").forward(request, response);
 
 
         }

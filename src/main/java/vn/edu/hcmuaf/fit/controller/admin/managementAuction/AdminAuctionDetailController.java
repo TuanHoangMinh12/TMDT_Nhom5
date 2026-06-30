@@ -77,7 +77,7 @@ public class AdminAuctionDetailController extends HttpServlet {
         request.setAttribute("auction",    auction);
         request.setAttribute("bidHistory", bidHistory);
 
-        request.getRequestDispatcher("views/admin/auction-detail.jsp")
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-detail.jsp")
                .forward(request, response);
     }
 

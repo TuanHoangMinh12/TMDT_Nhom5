@@ -39,7 +39,7 @@ public class AdminAuctionCreateController extends HttpServlet {
         request.setAttribute("title", "Quản Lý Đấu Giá");
         request.setAttribute("listBook", bookManagementService.findAll());
 
-        request.getRequestDispatcher("views/admin/auction-form.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-form.jsp").forward(request, response);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AdminAuctionCreateController extends HttpServlet {
                 request.setAttribute("listBook", bookManagementService.findAll());
                 new MessageParameterUntil(
                     "Giá khởi điểm và bước giá phải lớn hơn 0!", "danger",
-                    "views/admin/auction-form.jsp", request, response
+                    "views/admin/qlyDauGia/auction-form.jsp", request, response
                 ).send();
                 return;
             }
@@ -77,7 +77,7 @@ public class AdminAuctionCreateController extends HttpServlet {
                 request.setAttribute("listBook", bookManagementService.findAll());
                 new MessageParameterUntil(
                     "Thời gian kết thúc phải sau thời gian bắt đầu!", "danger",
-                    "views/admin/auction-form.jsp", request, response
+                    "views/admin/qlyDauGia/auction-form.jsp", request, response
                 ).send();
                 return;
             }
@@ -96,7 +96,7 @@ public class AdminAuctionCreateController extends HttpServlet {
             } else {
                 request.setAttribute("listBook", bookManagementService.findAll());
                 // Vẫn dùng .send() cũ cho trường hợp lỗi (ở lại trang cũ - forward)
-                new MessageParameterUntil("Tạo phiên thất bại!", "danger", "views/admin/auction-form.jsp", request, response)
+                new MessageParameterUntil("Tạo phiên thất bại!", "danger", "views/admin/qlyDauGia/auction-form.jsp", request, response)
                         .send();
             }
         } catch (Exception e) {

@@ -27,7 +27,7 @@ public class TableProductController extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
         }
-        request.getRequestDispatcher("views/admin/table-data-product.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qLySanPham/table-data-product.jsp").forward(request, response);
     }
 
     @Override

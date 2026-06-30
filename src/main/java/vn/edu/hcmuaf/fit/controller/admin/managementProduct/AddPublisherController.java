@@ -31,7 +31,7 @@ public class AddPublisherController extends HttpServlet {
         request.setAttribute("listCatalog", iBookManagementDAO.listCatalog());
         request.setAttribute("listPublisherCompany", iBookManagementDAO.listPublisherCompany());
         request.setAttribute("listPublisher", iBookManagementDAO.listPublisher());
-        request.getRequestDispatcher("views/admin/table-data-product.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlySanPham/table-data-product.jsp").forward(request, response);
     }
 
     @Override

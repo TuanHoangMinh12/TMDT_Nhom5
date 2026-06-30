@@ -29,7 +29,7 @@ public class UpdateOrderController extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
         }
-        request.getRequestDispatcher("views/admin/table-data-order.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDonHang/table-data-order.jsp").forward(request, response);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UpdateOrderController extends HttpServlet {
                 response.sendRedirect("/admin-table-order?message=Upload success&alert=success");
             }
         }catch (Exception e) {
-            request.getRequestDispatcher("/views/admin/table-data-order.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/qlyDonHang/table-data-order.jsp").forward(request, response);
         }
 
     }

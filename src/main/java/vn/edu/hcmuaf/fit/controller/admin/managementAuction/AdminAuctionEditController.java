@@ -45,14 +45,14 @@ public class AdminAuctionEditController extends HttpServlet {
 
         if (auction == null) {
             new MessageParameterUntil("Không tìm thấy phiên đấu giá!", "danger",
-                    "views/admin/auction-list.jsp", request, response).send();
+                    "views/admin/qlyDauGia/auction-list.jsp", request, response).send();
             return;
         }
 
         // Chỉ cho phép sửa phiên đang WAITING
         if (!"WAITING".equals(auction.getStatus())) {
             new MessageParameterUntil("Chỉ được sửa phiên chưa bắt đầu (WAITING)!", "danger",
-                    "views/admin/auction-list.jsp", request, response).send();
+                    "views/admin/qlyDauGia/auction-list.jsp", request, response).send();
             return;
         }
 
@@ -60,7 +60,7 @@ public class AdminAuctionEditController extends HttpServlet {
         request.setAttribute("auction", auction);
 
 
-        request.getRequestDispatcher("views/admin/auction-edit.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-edit.jsp").forward(request, response);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class AdminAuctionEditController extends HttpServlet {
                 request.getSession().setAttribute("alert", "success");
                 response.sendRedirect(request.getContextPath() + "/admin-auction-list");
             } else {
-                new MessageParameterUntil("Xóa thất bại!", "danger", "views/admin/auction-list.jsp", request, response).send();
+                new MessageParameterUntil("Xóa thất bại!", "danger", "views/admin/qlyDauGia/auction-list.jsp", request, response).send();
             }
 
         } else if ("update".equals(action)) {

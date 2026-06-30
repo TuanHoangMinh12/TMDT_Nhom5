@@ -64,7 +64,7 @@ public class AdminAuctionListController extends HttpServlet {
             request.getSession().removeAttribute("alert");
         }
 
-        request.getRequestDispatcher("views/admin/auction-list.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-list.jsp").forward(request, response);
     }
 
     @Override
