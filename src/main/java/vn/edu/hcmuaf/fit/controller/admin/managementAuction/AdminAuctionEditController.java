@@ -2,6 +2,7 @@ package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.services.IAuctionService;
+import vn.edu.hcmuaf.fit.utils.MessageParameterUntil;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -43,23 +44,23 @@ public class AdminAuctionEditController extends HttpServlet {
         AuctionModel auction = auctionService.findById2(id);
 
         if (auction == null) {
-            response.sendRedirect(request.getContextPath() +
-                "/admin-auction-list?message=Không tìm thấy phiên đấu giá!&alert=danger");
+            new MessageParameterUntil("Không tìm thấy phiên đấu giá!", "danger",
+                    "views/admin/auction-list.jsp", request, response).send();
             return;
         }
 
         // Chỉ cho phép sửa phiên đang WAITING
         if (!"WAITING".equals(auction.getStatus())) {
-            response.sendRedirect(request.getContextPath() +
-                "/admin-auction-list?message=Chỉ được sửa phiên chưa bắt đầu (WAITING)!&alert=warning");
+            new MessageParameterUntil("Chỉ được sửa phiên chưa bắt đầu (WAITING)!", "danger",
+                    "views/admin/auction-list.jsp", request, response).send();
             return;
         }
 
         request.setAttribute("title", "Quản Lý Đấu Giá");
         request.setAttribute("auction", auction);
 
-        request.getRequestDispatcher("views/admin/auction-edit.jsp")
-               .forward(request, response);
+
+        request.getRequestDispatcher("views/admin/auction-edit.jsp").forward(request, response);
     }
 
     @Override
@@ -73,14 +74,14 @@ public class AdminAuctionEditController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         if ("delete".equals(action)) {
-            // ===== XÓA phiên =====
+            // Xóa phiên
             int result = auctionService.deleteAuction(id);
             if (result > 0) {
-                response.sendRedirect(request.getContextPath() +
-                    "/admin-auction-list?message=Xóa phiên đấu giá thành công!&alert=success");
+                request.getSession().setAttribute("message", "Đã xóa phiên thành công!");
+                request.getSession().setAttribute("alert", "success");
+                response.sendRedirect(request.getContextPath() + "/admin-auction-list");
             } else {
-                response.sendRedirect(request.getContextPath() +
-                    "/admin-auction-list?message=Không thể xóa! Phiên đã bắt đầu hoặc không tồn tại.&alert=danger");
+                new MessageParameterUntil("Xóa thất bại!", "danger", "views/admin/auction-list.jsp", request, response).send();
             }
 
         } else if ("update".equals(action)) {
@@ -91,29 +92,53 @@ public class AdminAuctionEditController extends HttpServlet {
                 String startTimeStr = request.getParameter("startTime");
                 String endTimeStr   = request.getParameter("endTime");
 
+                // 1. Kiểm tra giá trị âm hoặc bằng 0
+                if (startPrice <= 0 || minIncrement <= 0) {
+                    request.getSession().setAttribute("message", "Giá khởi điểm và bước giá phải lớn hơn 0!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" + id);
+                    return;
+                }
+
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
                 Timestamp startTime = new Timestamp(sdf.parse(startTimeStr).getTime());
                 Timestamp endTime   = new Timestamp(sdf.parse(endTimeStr).getTime());
 
+                // 2. Kiểm tra thời gian
                 if (!endTime.after(startTime)) {
-                    response.sendRedirect(request.getContextPath() +
-                        "/admin-auction-edit?id=" + id +
-                        "&message=Thời gian kết thúc phải sau thời gian bắt đầu!&alert=danger");
+                    request.getSession().setAttribute("message", "Thời gian kết thúc phải sau thời gian bắt đầu!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" + id);
+                    return;
+                }
+
+                // 3. Kiểm tra logic thêm: Thời gian bắt đầu không được là quá khứ
+                if (startTime.before(new Timestamp(System.currentTimeMillis()))) {
+                    request.getSession().setAttribute("message", "Thời gian bắt đầu không thể là thời điểm trong quá khứ!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" + id);
                     return;
                 }
 
                 int result = auctionService.updateAuction(id, startPrice, minIncrement, startTime, endTime);
                 if (result > 0) {
-                    response.sendRedirect(request.getContextPath() +
-                        "/admin-auction-list?message=Cập nhật phiên đấu giá thành công!&alert=success");
+                    // THÀNH CÔNG: Dùng Redirect kết hợp Session (Flash Message)
+                    request.getSession().setAttribute("message", "Cập nhật phiên thành công!");
+                    request.getSession().setAttribute("alert", "success");
+                    response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id="+id);
                 } else {
-                    response.sendRedirect(request.getContextPath() +
-                        "/admin-auction-list?message=Cập nhật thất bại! Phiên không còn ở trạng thái WAITING.&alert=danger");
+//                    new MessageParameterUntil("Cập nhật thất bại!",
+//                            "danger", null, request, response)
+//                            .sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" + id);
+                    request.getSession().setAttribute("message", "Cập nhật thất bại!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" +id);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendRedirect(request.getContextPath() +
-                    "/admin-auction-list?message=Lỗi: " + e.getMessage() + "&alert=danger");
+                request.getSession().setAttribute("message", "Cập nhật thất bại!");
+                request.getSession().setAttribute("alert", "danger");
+                response.sendRedirect(request.getContextPath() + "/admin-auction-edit?id=" + id);
             }
         }
     }

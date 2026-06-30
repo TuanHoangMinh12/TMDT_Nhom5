@@ -31,7 +31,6 @@ public class AdminAuctionCreateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
@@ -40,8 +39,7 @@ public class AdminAuctionCreateController extends HttpServlet {
         request.setAttribute("title", "Quản Lý Đấu Giá");
         request.setAttribute("listBook", bookManagementService.findAll());
 
-        request.getRequestDispatcher("views/admin/auction-form.jsp")
-               .forward(request, response);
+        request.getRequestDispatcher("views/admin/auction-form.jsp").forward(request, response);
     }
 
     @Override
@@ -88,21 +86,24 @@ public class AdminAuctionCreateController extends HttpServlet {
             int result = auctionService.createAuction(bookId, startPrice, minIncrement, startTime, endTime);
 
             if (result > 0) {
-                // Thành công -> redirect về danh sách với thông báo
-                response.sendRedirect(request.getContextPath() +
-                    "/admin-auction-list?message=Tạo phiên đấu giá thành công!&alert=success");
+//                new MessageParameterUntil("Tạo phiên thành công!", "success", null, request, response)
+//                        .sendRedirect(request.getContextPath() + "/admin-auction-list");
+
+                request.getSession().setAttribute("message", "Tạo phiên thành công!");
+                request.getSession().setAttribute("alert", "success");
+                response.sendRedirect(request.getContextPath() + "/admin-auction-list");
+
             } else {
                 request.setAttribute("listBook", bookManagementService.findAll());
-                new MessageParameterUntil(
-                    "Tạo phiên thất bại! Vui lòng thử lại.", "danger",
-                    "views/admin/auction-form.jsp", request, response
-                ).send();
+                // Vẫn dùng .send() cũ cho trường hợp lỗi (ở lại trang cũ - forward)
+                new MessageParameterUntil("Tạo phiên thất bại!", "danger", "views/admin/auction-form.jsp", request, response)
+                        .send();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() +
                 "/admin-auction-list?message=Có lỗi xảy ra: " + e.getMessage() + "&alert=danger");
+
         }
     }
 }

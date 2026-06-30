@@ -38,7 +38,7 @@
   <div class="container">
     <nav id="breadcrumbbar">
       <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a class="chang_font" href="home.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a class="chang_font" href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
         <li class="breadcrumb-item active"><a href="vanhocnuocngoai.html">Phương thức thanh toán</a></li>
       </ul>
     </nav>
@@ -47,7 +47,7 @@
     </div>
     <div class="content_container">
       <p><span style="font-size:16px"><strong>1. Chuyển khoản qua ngân hàng</strong></span></p>
-      <p><span style="font-size:16px">Xin vui lòng chuyển tiền vào tài khoản của nhà sách Doraemon&nbsp;theo
+      <p><span style="font-size:16px">Xin vui lòng chuyển tiền vào tài khoản của nhà sách Hoàng Tiến&nbsp;theo
                         số tài khoản sau:</span><br><span style="font-size:16px">Chủ tài khoản: Công ty TNHH Sách &amp;
                         Lịch Đại Nam</span></p>
       <p><span style="font-size:16px">Số tài khoản:&nbsp;</span><span style="font-size:12.0pt"><span

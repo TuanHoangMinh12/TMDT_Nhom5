@@ -29,6 +29,14 @@ public class MessageParameterUntil {
         request.getRequestDispatcher(this.link).forward(request, response);
     }
 
+    // Thêm hàm này vào trong class MessageParameterUntil
+    public void sendRedirect(String redirectLink) throws IOException {
+        // Lưu message vào Session để redirect xong vẫn còn
+        request.getSession().setAttribute("message", this.message);
+        request.getSession().setAttribute("alert", this.alert);
+        response.sendRedirect(redirectLink);
+    }
+
     public String getMessage() {
         return message;
     }

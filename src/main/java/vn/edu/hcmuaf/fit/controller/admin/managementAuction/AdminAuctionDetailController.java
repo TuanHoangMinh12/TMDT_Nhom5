@@ -5,6 +5,7 @@ import vn.edu.hcmuaf.fit.model.AuctionBidModel;
 import vn.edu.hcmuaf.fit.model.AuctionModel;
 import vn.edu.hcmuaf.fit.services.IAuctionService;
 import vn.edu.hcmuaf.fit.services.ICustomerService;
+import vn.edu.hcmuaf.fit.utils.MessageParameterUntil;
 
 
 import javax.inject.Inject;
@@ -52,8 +53,9 @@ public class AdminAuctionDetailController extends HttpServlet {
         // Lấy thông tin phiên đấu giá
         AuctionModel auction = auctionService.findById2(auctionId);
         if (auction == null) {
-            response.sendRedirect(request.getContextPath() +
-                "/admin-auction-list?message=Không tìm thấy phiên!&alert=danger");
+            request.getSession().setAttribute("message", "Không tìm thấy phiên đấu giá!");
+            request.getSession().setAttribute("alert", "danger");
+            response.sendRedirect(request.getContextPath() + "/admin-auction-list");
             return;
         }
 
@@ -66,9 +68,12 @@ public class AdminAuctionDetailController extends HttpServlet {
         if (message != null) {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
+
+            request.getSession().removeAttribute("message");
+            request.getSession().removeAttribute("alert");
         }
 
-        request.setAttribute("title",      "Quản Lý Đấu Giá");
+        request.setAttribute("title","Quản Lý Đấu Giá");
         request.setAttribute("auction",    auction);
         request.setAttribute("bidHistory", bidHistory);
 
@@ -93,19 +98,21 @@ public class AdminAuctionDetailController extends HttpServlet {
                 // ===== CHỐT PHIÊN =====
                 // Chỉ chốt được phiên đã FINISHED
                 AuctionModel auction = auctionService.findById2(auctionId);
+
                 if (auction == null || !"FINISHED".equals(auction.getStatus())) {
-                    response.sendRedirect(redirect +
-                        "&message=Chỉ chốt được phiên đã kết thúc!&alert=warning");
+                    new MessageParameterUntil("Chỉ chốt được phiên đã kết thúc!", "warning", null, request, response)
+                            .sendRedirect(redirect);
                     return;
                 }
+
                 // Tìm người thắng và cập nhật DB
                 boolean ok = auctionService.finalizeAndNotify(auctionId);
                 if (ok) {
-                    response.sendRedirect(redirect +
-                            "&message=Chốt phiên thành công! Thông báo đã được gửi đến người tham gia.&alert=success");
+                    new MessageParameterUntil("Chốt phiên thành công!", "success", null, request, response)
+                            .sendRedirect(redirect);
                 } else {
-                    response.sendRedirect(redirect +
-                            "&message=Chốt phiên thất bại!&alert=danger");
+                    new MessageParameterUntil("Chốt phiên thất bại!", "danger", null, request, response)
+                            .sendRedirect(redirect);
                 }
                 break;
 
@@ -113,11 +120,11 @@ public class AdminAuctionDetailController extends HttpServlet {
                 // ===== ĐÁNH DẤU ĐÃ THANH TOÁN (FINISHED -> PAID) =====
                 int r = auctionService.updateStatus(auctionId, "PAID");
                 if (r > 0) {
-                    response.sendRedirect(redirect +
-                        "&message=Đã cập nhật trạng thái PAID thành công!&alert=success");
+                    new MessageParameterUntil("Đã cập nhật trạng thái PAID thành công!", "success", null, request, response)
+                            .sendRedirect(redirect);
                 } else {
-                    response.sendRedirect(redirect +
-                        "&message=Cập nhật thất bại!&alert=danger");
+                    new MessageParameterUntil("Cập nhật thất bại!", "danger", null, request, response)
+                            .sendRedirect(redirect);
                 }
                 break;
 
@@ -126,11 +133,20 @@ public class AdminAuctionDetailController extends HttpServlet {
                 int userId = Integer.parseInt(request.getParameter("userId"));
                 int lockResult = customerService.lockUser(userId);
                 if (lockResult > 0) {
-                    response.sendRedirect(redirect +
-                        "&message=Đã khóa tài khoản người dùng #" + userId + "!&alert=success");
+//                    response.sendRedirect(redirect +
+//                        "&message=Đã khóa tài khoản người dùng #" + userId + "!&alert=success");
+
+                    request.getSession().setAttribute("message", "Đã khóa tài khoản ID người dùng " + userId);
+                    request.getSession().setAttribute("alert", "success");
+                    response.sendRedirect(redirect);
                 } else {
-                    response.sendRedirect(redirect +
-                        "&message=Khóa tài khoản thất bại!&alert=danger");
+//                    response.sendRedirect(redirect +
+//                        "&message=Khóa tài khoản thất bại!&alert=danger");
+//                    response.sendRedirect( redirect);
+                    request.getSession().setAttribute("message", "Khóa tài khoản thất bại!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(redirect);
+
                 }
                 break;
 
@@ -139,11 +155,22 @@ public class AdminAuctionDetailController extends HttpServlet {
                 int unlockId = Integer.parseInt(request.getParameter("userId"));
                 int unlockResult = customerService.unlockUser(unlockId);
                 if (unlockResult > 0) {
-                    response.sendRedirect(redirect +
-                        "&message=Đã mở khóa tài khoản người dùng #" + unlockId + "!&alert=success");
+//                    response.sendRedirect(redirect +
+//                        "&message=Đã mở khóa tài khoản người dùng #" + unlockId + "!&alert=success");
+//                    response.sendRedirect(redirect);
+
+                    request.getSession().setAttribute("message", "Đã mở khóa ID tài khoản người dùng" + unlockId);
+                    request.getSession().setAttribute("alert", "success");
+                    response.sendRedirect(redirect);
+
                 } else {
-                    response.sendRedirect(redirect +
-                        "&message=Mở khóa thất bại!&alert=danger");
+//                    response.sendRedirect(redirect +
+//                        "&message=Mở khóa thất bại!&alert=danger");
+//                    response.sendRedirect( redirect);
+
+                    request.getSession().setAttribute("message", "Mở khóa thất bại!");
+                    request.getSession().setAttribute("alert", "danger");
+                    response.sendRedirect(redirect);
                 }
                 break;
 

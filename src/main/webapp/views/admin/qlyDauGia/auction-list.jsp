@@ -244,5 +244,17 @@
         setTimeout("time()", 1000);
     }
 </script>
+
+<%--<script>--%>
+<%--    <c:if test="${not empty message}">--%>
+<%--    swal({--%>
+<%--        title: "${alert == 'success' ? 'Thành công!' : 'Lỗi!'}",--%>
+<%--        text: "${message}",--%>
+<%--        icon: "${alert == 'success' ? 'success' : 'error'}",--%>
+<%--        button: "Đóng"--%>
+<%--    });--%>
+<%--    </c:if>--%>
+<%--</script>--%>
+
 </body>
 </html>

@@ -1,6 +1,7 @@
 package vn.edu.hcmuaf.fit.controller.admin.managementCustomer;
 
 import vn.edu.hcmuaf.fit.bean.Log;
+import vn.edu.hcmuaf.fit.dao.impl.CustomerDAO;
 import vn.edu.hcmuaf.fit.model.CustomerModel;
 import vn.edu.hcmuaf.fit.services.ICustomerService;
 import vn.edu.hcmuaf.fit.utils.SessionUtil;
@@ -34,49 +35,52 @@ public class LockCustomerController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
-        // Admin đang đăng nhập (để ghi Log)
         CustomerModel adminUser = (CustomerModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
-
         int idUser = Integer.parseInt(request.getParameter("idUser"));
-        String action = request.getParameter("action"); // "lock" hoặc "unlock"
+        String action = request.getParameter("action"); // Nhận "lock" hoặc "unlock"
 
         try {
             InetAddress myIP = InetAddress.getLocalHost();
-            String ip   = myIP.getHostAddress();
+            String ip = myIP.getHostAddress();
 
-            int result;
-            String logMsg, successMsg, errorMsg;
+            int result = 0;
+            String successMsg = "";
+            String errorMsg = "";
 
+            // Chỉ xử lý 1 action dựa trên tham số truyền vào
             if ("lock".equals(action)) {
-                result = iCustomerService.lockUser(idUser);   // -> status=2
-                logMsg = "Khóa tài khoản người dùng ID: " + idUser;
+                result = iCustomerService.lockUser(idUser);
                 successMsg = "Đã khóa tài khoản thành công!";
                 errorMsg = "Khóa tài khoản thất bại!";
-            } else {
-                result = iCustomerService.unlockUser(idUser); // -> status=1
-                logMsg = "Mở khóa tài khoản người dùng ID: " + idUser;
+            } else if ("unlock".equals(action)) {
+                result = iCustomerService.unlockUser(idUser);
                 successMsg = "Đã mở khóa tài khoản thành công!";
                 errorMsg = "Mở khóa tài khoản thất bại!";
             }
 
             if (result >= 1) {
-                // Ghi log hành động admin (theo đúng pattern dự án)
                 if (adminUser != null) {
-                    Log log = new Log(Log.WARNING, ip, logMsg, adminUser.getIdUser(), "Tài khoản bị tác động: " + idUser, 1);
+                    Log log = new Log(Log.WARNING, ip, "Admin thực hiện: " + action + " tài khoản",
+                            adminUser.getIdUser(), "Tài khoản bị tác động: " + idUser, 1);
                     log.insert();
                 }
-                response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=" + successMsg + "&alert=success");
+                request.getSession().setAttribute("message", successMsg);
+                request.getSession().setAttribute("alert", "success");
             } else {
-                response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=" + errorMsg + "&alert=danger");
+                request.getSession().setAttribute("message", errorMsg);
+                request.getSession().setAttribute("alert", "danger");
             }
+
+            response.sendRedirect(request.getContextPath() + "/admin-table-customer");
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=Có lỗi xảy ra!&alert=danger");
+            request.getSession().setAttribute("message", "Có lỗi xảy ra!");
+            request.getSession().setAttribute("alert", "danger");
+            response.sendRedirect(request.getContextPath() + "/admin-table-customer");
         }
     }
 

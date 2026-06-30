@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -118,9 +117,10 @@
 <%--              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>--%>
               <button class="tablinks" onclick="openCity(event, 'ChoLayHang')">Chờ lấy hàng</button>
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
-              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
               <button class="tablinks" onclick="openCity(event, 'DonHangDaMua')">Đơn hàng đã mua</button>
               <button class="tablinks" onclick="openCity(event, 'DonDaHuy')">Đơn đã hủy</button>
+              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
+
             </div>
 
             <c:if test="${not empty message}">
