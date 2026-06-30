@@ -7,4 +7,5 @@ import java.util.List;
 public interface IAuthorDAO {
     List<AuthorModel> findAll();
     List<AuthorModel> find10Author();
+    AuthorModel findById(int idAuthor);
 }
