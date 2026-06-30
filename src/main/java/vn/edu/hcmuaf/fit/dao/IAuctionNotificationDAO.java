@@ -11,5 +11,6 @@ public interface IAuctionNotificationDAO {
     // Lấy tất cả thông báo của một user (mới nhất lên đầu).
     List<AuctionNotificationModel> getNotificationsByUser(int userId);
     int markNotificationRead(int notificationId, int userId);
-
+    List<AuctionNotificationModel> getLatestNotifications(int userId, int limit);
+    AuctionNotificationModel findById(int id);
 }
