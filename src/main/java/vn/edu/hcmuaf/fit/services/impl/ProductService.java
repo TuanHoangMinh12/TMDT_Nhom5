@@ -86,6 +86,10 @@ public class ProductService implements IProductService {
     public int outOfStock() {
         return iProductDAO.outOfStock();
     }
+    @Override
+    public List<BookModel> find12BookAuthor(int idAuthor) {
+        return iProductDAO.find12BookAuthor(idAuthor);
+    }
 
 
     //Giỏ hàng

@@ -22,6 +22,7 @@ public interface IProductDAO {
     List<BookModel> find12BookCatalog(int idInt);
 
     List<BookModel> find12BookPublisher(int idInt);
+    List<BookModel> find12BookAuthor(int idAuthor);
 
     int totalProduct();
 
