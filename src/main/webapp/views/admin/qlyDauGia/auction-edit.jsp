@@ -56,34 +56,36 @@
                             <small class="text-muted">Không thể đổi sách sau khi tạo phiên.</small>
                         </div>
 
-                        <div class="form-group col-md-6">
-                            <label class="control-label">
-                                Giá khởi điểm (đ) <span class="text-danger">*</span>
-                            </label>
-                            <input name="startPrice" type="number" class="form-control"
-                                   value="${auction.startPrice}" min="1000" step="1000" required>
-                        </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Giá khởi điểm (đ) <span class="text-danger">*</span></label>
+                                <input name="startPrice" type="number" class="form-control"
+                                       value="<fmt:formatNumber value='${auction.startPrice}' pattern='0'/>"
+                                       min="1000" step="1000" required
+                                       oninvalid="this.setCustomValidity('Vui lòng nhập giá tối thiểu 1.000đ')"
+                                       oninput="this.setCustomValidity('')">
+                            </div>
 
-                        <div class="form-group col-md-6">
-                            <label class="control-label">
-                                Bước giá tối thiểu (đ) <span class="text-danger">*</span>
-                            </label>
-                            <input name="minIncrement" type="number" class="form-control"
-                                   value="${auction.minIncrement}" min="1000" step="1000" required>
-                        </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">
+                                    Bước giá tối thiểu (đ) <span class="text-danger">*</span>
+                                </label>
+                                <input name="minIncrement" type="number" class="form-control"
+                                       value="<fmt:formatNumber value='${auction.minIncrement}' pattern='0'/>"
+                                       min="1000" step="1000" required>
+                            </div>
 
                         <%--
                           Định dạng datetime-local cần "yyyy-MM-ddTHH:mm"
                           Dùng fmt:formatDate để chuyển từ Timestamp sang chuỗi đó
                         --%>
-                        <div class="form-group col-md-6">
-                            <label class="control-label">
-                                Thời gian bắt đầu <span class="text-danger">*</span>
-                            </label>
-                            <input name="startTime" type="datetime-local" class="form-control"
-                                   value="<fmt:formatDate value='${auction.startTime}' pattern='yyyy-MM-dd&apos;T&apos;HH:mm'/>"
-                                   required>
-                        </div>
+                            <div class="form-group col-md-6">
+                                <label class="control-label">Thời gian bắt đầu <span
+                                        class="text-danger">*</span></label>
+                                <input name="startTime" id="startTime" type="datetime-local" class="form-control"
+                                       value="<fmt:formatDate value='${auction.startTime}' pattern='yyyy-MM-dd&apos;T&apos;HH:mm'/>"
+                                       required>
+                            </div>
+
 
                         <div class="form-group col-md-6">
                             <label class="control-label">
@@ -105,13 +107,41 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
 </main>
 
+<script src="${pageContext.request.contextPath}/templates/admin/doc/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/templates/admin/doc/js/jquery-3.2.1.min.js"></script>
 <script src="${pageContext.request.contextPath}/templates/admin/doc/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/templates/admin/doc/js/main.js"></script>
+
+<%--<script>--%>
+<%--    <c:if test="${not empty message}">--%>
+<%--    swal({--%>
+<%--        title: "${alert == 'success' ? 'Thành công!' : 'Lỗi!'}",--%>
+<%--        text: "${message}",--%>
+<%--        icon: "${alert == 'success' ? 'success' : 'error'}",--%>
+<%--        button: "Đóng"--%>
+<%--    });--%>
+<%--    </c:if>--%>
+<%--</script>--%>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const startInput = document.querySelector('input[name="startTime"]');
+        const endInput = document.querySelector('input[name="endTime"]');
+
+        // Khi thay đổi start thì cập nhật min cho end
+        startInput.addEventListener('change', function() {
+            endInput.min = startInput.value;
+        });
+
+        // Setup ban đầu
+        endInput.min = startInput.value;
+    });
+</script>
+
 </body>
 </html>

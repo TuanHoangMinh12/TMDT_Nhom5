@@ -28,7 +28,7 @@ public class FindProductController extends HttpServlet {
             List<BookManagementModel> list = new ArrayList<>();
             list.add(iBookManagementService.findById(idInt));
             request.setAttribute("bookUpdate", list);
-            request.getRequestDispatcher("/views/admin/table-data-product-update.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/qlySanPham/table-data-product-update.jsp").forward(request, response);
         }
     }
 

@@ -85,6 +85,8 @@ public class AuctionService implements IAuctionService {
     public List<AuctionModel> getWinnerAuctions(int userId) {
         return auctionDAO.findWinnerAuctions(userId);
     }
+
+
     // Tuấn làm
 
     @Override
@@ -141,7 +143,12 @@ public class AuctionService implements IAuctionService {
     // Bọc thêm hàm của BidDAO để Controller gọi được Lịch sử
     @Override
     public List<AuctionBidModel> getBidsByAuctionId(int auctionId) {
-        return bidDAO.findByAuctionId(auctionId);
+        return bidDAO.getBidsByAuctionId(auctionId);
+    }
+
+    @Override
+    public int countBidByUserInAuction(int userId, int auctionId) {
+        return bidDAO.countBidByUserInAuction(userId, auctionId);
     }
 
     // Hàm chốt phiên và tự động gửi thông báo cho tất cả những người tham gia

@@ -1,5 +1,6 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -97,7 +98,11 @@
           <div class="wrap_left">
             <div style="margin-top: 12px;" class="wrap mt">
               <span class="sum_price">Tổng tiền:</span>
-              <div class="ml" id="sum_price"> ${sessionScope.cartOrder.totalPrice} đ</div>
+              <div class="ml" id="sum_price">
+                 <fmt:formatNumber value="${sessionScope.cartOrder.totalPrice}" type="number" groupingUsed="true"/> đ
+              </div>
+
+
             </div>
 
           </div>

@@ -102,6 +102,7 @@ paymentMethod.jsp<%@ include file="/common/taglib.jsp" %>
         crossorigin="anonymous"></script>
 <script src="${pageContext.request.contextPath}/templates/scripts/forgotPassword.js"></script>
 <script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
+
 </body>
 
 </html>

@@ -33,7 +33,7 @@ public class TableOrderController extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
         }
-        request.getRequestDispatcher("views/admin/table-data-order.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDonHang/table-data-order.jsp").forward(request, response);
 
     }
 

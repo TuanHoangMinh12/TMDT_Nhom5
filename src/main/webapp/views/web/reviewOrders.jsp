@@ -94,8 +94,7 @@
               <a id="reviewOrders" title="Xem lại đơn hàng" href="${pageContext.request.contextPath}/account?action=reviewOrders">Xem
                 lại đơn hàng</a></li>
             <li class="first">
-              <a id="changePrivateKey" title="Đổi Private Key"  href="${pageContext.request.contextPath}/account?action=changePrivateKey">Đổi
-                Private Key</a>
+              <a id="myAuction" title="Đấu giá của tôi"  href="${pageContext.request.contextPath}/account?action=myAuction">Đấu giá của tôi</a>
             </li>
             <li class="first">
               <a id="logout" title="Đăng xuất" href="${pageContext.request.contextPath}/logout?action=logout">Đăng xuất</a>
@@ -109,18 +108,18 @@
             <div class="order-box-header-left">
               Thông tin đơn hàng
             </div>
-<%--            <div class="clear">--%>
-<%--              Các hóa đơn--%>
-<%--            </div>--%>
+            <%--            <div class="clear">--%>
+            <%--              Các hóa đơn--%>
+            <%--            </div>--%>
           </div>
           <div class="paging">
             <div class="tab">
-<%--              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>--%>
+              <%--              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>--%>
               <button class="tablinks" onclick="openCity(event, 'ChoLayHang')">Chờ lấy hàng</button>
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
-              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
               <button class="tablinks" onclick="openCity(event, 'DonHangDaMua')">Đơn hàng đã mua</button>
               <button class="tablinks" onclick="openCity(event, 'DonDaHuy')">Đơn đã hủy</button>
+                <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
             </div>
 
             <c:if test="${not empty message}">
@@ -130,7 +129,7 @@
             </c:if>
             <c:if test="${orderSuccess == '1'}">
               <div class="alert alert-success" role="alert">
-                  Đặt hàng thành công
+                Đặt hàng thành công
               </div>
             </c:if>
             <c:if test="${isVerify == '1'}">
@@ -138,11 +137,11 @@
                 Đơn hàng đã được xác thực
               </div>
             </c:if>
-              <c:if test="${isVerify == '0' && orderSuccess != '1'}">
-                  <div class="alert alert-danger" role="alert">
-                      Đơn hàng chưa được xác thực
-                  </div>
-              </c:if>
+            <c:if test="${isVerify == '0' && orderSuccess != '1'}">
+              <div class="alert alert-danger" role="alert">
+                Đơn hàng chưa được xác thực
+              </div>
+            </c:if>
             <div id="ChoXacNhan" class="tabcontent">
               <table class="table">
                 <thead>
@@ -182,36 +181,36 @@
             <div id="ChoLayHang" class="tabcontent">
 
               <table class="table">
-              <thead>
-              <tr>
-                <th scope="col">Mã đơn hàng</th>
-                <th scope="col" style="width: 300px">Tên sản phẩm</th>
-                <th scope="col">Ảnh</th>
-                <th scope="col">Tình trạng</th>
-                <th scope="col">Chi tiết</th>
-              </tr>
-              </thead>
-              <tbody>
-              <c:forEach var="cartW" items="${listBillWarByIdOrder}">
+                <thead>
                 <tr>
-                  <td><a href="${pageContext.request.contextPath}/orderDetail?id=${cartW.getId()}">${cartW.getId()}</a></td>
-                  <td>
-                    <c:forEach var="billW" items="${cartW.getBills()}">
-                      <p>${billW.name}<br><br></p>
-                    </c:forEach>
-                  </td>
-                  <td>
-                    <c:forEach var="billW" items="${cartW.getBills()}">
-                      <img style="height: 50px" src="${pageContext.request.contextPath}/${billW.image}"><br><br>
-                    </c:forEach>
-                  </td>
-                  <td><a class="btn_blue" href="${pageContext.request.contextPath}/cancelOrder?id=${cartW.id}">Hủy đơn</a></td>
-                  <td><a class="btn_blue" href="${pageContext.request.contextPath}/orderDetail?id=${cartW.id}">Chi tiết</a></td>
+                  <th scope="col">Mã đơn hàng</th>
+                  <th scope="col" style="width: 300px">Tên sản phẩm</th>
+                  <th scope="col">Ảnh</th>
+                  <th scope="col">Tình trạng</th>
+                  <th scope="col">Chi tiết</th>
                 </tr>
-              </c:forEach>
+                </thead>
+                <tbody>
+                <c:forEach var="cartW" items="${listBillWarByIdOrder}">
+                  <tr>
+                    <td><a href="${pageContext.request.contextPath}/orderDetail?id=${cartW.getId()}">${cartW.getId()}</a></td>
+                    <td>
+                      <c:forEach var="billW" items="${cartW.getBills()}">
+                        <p>${billW.name}<br><br></p>
+                      </c:forEach>
+                    </td>
+                    <td>
+                      <c:forEach var="billW" items="${cartW.getBills()}">
+                        <img style="height: 50px" src="${pageContext.request.contextPath}/${billW.image}"><br><br>
+                      </c:forEach>
+                    </td>
+                    <td><a class="btn_blue" href="${pageContext.request.contextPath}/cancelOrder?id=${cartW.id}">Hủy đơn</a></td>
+                    <td><a class="btn_blue" href="${pageContext.request.contextPath}/orderDetail?id=${cartW.id}">Chi tiết</a></td>
+                  </tr>
+                </c:forEach>
 
-              </tbody>
-            </table>
+                </tbody>
+              </table>
             </div>
 
             <div id="DangGiao" class="tabcontent">

@@ -37,7 +37,7 @@ public class OrderDetailController extends HttpServlet {
         request.setAttribute("CUSTOMER", customerDAO.findById(cartModel.getIdUser())) ;
         request.setAttribute("cart", listDonHang(idInt));
         request.setAttribute("LISTBILL",  cartDao.getAllDetailCart(cartModel.getIdUser(),idInt));
-        request.getRequestDispatcher("/views/admin/confirm-order-detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/admin/qlyDonHang/confirm-order-detail.jsp").forward(request, response);
     }
 
     @Override

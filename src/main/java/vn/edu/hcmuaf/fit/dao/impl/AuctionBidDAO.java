@@ -292,6 +292,8 @@ public class AuctionBidDAO implements IAuctionBidDAO {
         b.setBidPrice(rs.getDouble("bid_price"));
         b.setBidTime(rs.getTimestamp("bid_time"));
 
+        b.setUserName(rs.getString("user_name"));
+        b.setUserEmail(rs.getString("user_email"));
         return b;
     }
     /** Đóng Connection, PreparedStatement, ResultSet an toàn */

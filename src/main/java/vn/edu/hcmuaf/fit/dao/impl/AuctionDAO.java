@@ -650,21 +650,20 @@ public class AuctionDAO implements IAuctionDAO {
      */
     @Override
     public double getTotalRevenue() {
-        String sql = "SELECT COALESCE(SUM(current_price), 0) FROM auction WHERE status='PAID'";
+        double total = 0;
+        // Chỉ cộng các phiên đã PAID
+        String sql = "SELECT SUM(current_price) FROM auction WHERE status = 'PAID'";
+        try (Connection con = JDBCConnector.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-        Connection con = JDBCConnector.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            if (rs.next()) return rs.getDouble(1);
+            if (rs.next()) {
+                total = rs.getDouble(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeAll(con, ps, rs);
         }
-        return 0.0;
+        return total;
     }
 
     /**

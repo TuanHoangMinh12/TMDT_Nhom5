@@ -111,9 +111,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
-<script src="${pageContext.request.contextPath}/templates/scripts/changePassword1.js"></script>
+<script src="${pageContext.request.contextPath}/templates/scripts/changePassword.js"></script>
 <script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script src="${pageContext.request.contextPath}/https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script>
     const disable_1 = document.getElementById("disable_1");
     const disable_2 = document.getElementById("disable_2")

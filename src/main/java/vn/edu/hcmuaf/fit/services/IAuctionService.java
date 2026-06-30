@@ -38,11 +38,13 @@ public interface IAuctionService {
 
     void syncAuctionStatus();     // TỰ độNG đồng bộ trạng thái phiên dựa theo thời gian thực
 
-    public double getTotalRevenue();
+    double getTotalRevenue();
 
     int[] countByStatus();
 
     List<AuctionBidModel> getBidsByAuctionId(int auctionId);
+    int countBidByUserInAuction(int userId, int auctionId);
+
 
     boolean finalizeAndNotify(int auctionId);
 }

@@ -123,7 +123,7 @@
         <select name="pay" class="form-control" id="pay" aria-label=".form-select-sm">
           <option value="" selected>Chọn hình thức</option>
           <option value="0">Cod: Giao hàng nhận tiền</option>
-          <option value="1">Chuyển khoảng</option>
+          <option value="1">Chuyển khoản</option>
         </select>
         <i class="fa-solid fa-circle-check"></i>
         <i class="fa-solid fa-circle-xmark"></i>
@@ -227,7 +227,7 @@
     window.location.href = '${pageContext.request.contextPath}/order?id=' + pId
   })
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
 
 </body>

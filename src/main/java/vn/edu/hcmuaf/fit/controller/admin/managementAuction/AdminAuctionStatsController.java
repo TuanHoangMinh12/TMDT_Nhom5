@@ -49,7 +49,7 @@ public class AdminAuctionStatsController extends HttpServlet {
         request.setAttribute("countPaid",       countByStatus[3]);
         request.setAttribute("allAuctions",     allAuctions);
 
-        request.getRequestDispatcher("views/admin/auction-stats.jsp")
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-stats.jsp")
                .forward(request, response);
     }
 }

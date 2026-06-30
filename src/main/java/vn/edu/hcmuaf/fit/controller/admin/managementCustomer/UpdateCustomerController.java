@@ -28,7 +28,7 @@ public class UpdateCustomerController extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
         }
-        request.getRequestDispatcher("views/admin/table-data-customer.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyKhachHang/table-data-customer.jsp").forward(request, response);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UpdateCustomerController extends HttpServlet {
                 response.sendRedirect(request.getContextPath() +"/admin-table-customer?message=Upload error&alert=error");
             }
         } catch (Exception e) {
-            request.getRequestDispatcher(request.getContextPath() +"views/admin/table-data-customer.jsp").forward(request, response);
+            request.getRequestDispatcher(request.getContextPath() +"views/admin/qlyKhachHang/table-data-customer.jsp").forward(request, response);
         }
     }
 }

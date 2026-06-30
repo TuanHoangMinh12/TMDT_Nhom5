@@ -15,7 +15,7 @@ public class ManagementContactController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("title", "Quản lý contact");
         request.setAttribute("listContact", new ContactDao().getAll());
-        request.getRequestDispatcher("views/admin/management-contact.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyContact/management-contact.jsp").forward(request, response);
     }
 
     @Override
