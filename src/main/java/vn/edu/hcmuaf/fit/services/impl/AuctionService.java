@@ -119,7 +119,10 @@ public class AuctionService implements IAuctionService {
     public int updateAuction(int id, double startPrice, double minIncrement, Timestamp startTime, Timestamp endTime) {
         return auctionDAO.updateAuction(id, startPrice, minIncrement, startTime, endTime);
     }
-
+    @Override
+    public int countActiveAuction() {
+        return auctionDAO.countActiveAuction();
+    }
     @Override
     public int deleteAuction(int id) {
         return auctionDAO.deleteAuction(id);
