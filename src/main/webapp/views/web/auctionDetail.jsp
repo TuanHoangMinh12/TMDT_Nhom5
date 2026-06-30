@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -77,19 +78,19 @@
 
                     <tr>
                         <th width="30%">Giá khởi điểm</th>
-                        <td>${auction.startPrice} đ</td>
+                        <td><fmt:formatNumber value="${auction.startPrice}" pattern="#,##0"/> đ</td>
                     </tr>
 
                     <tr>
                         <th>Giá hiện tại</th>
                         <td class="text-danger font-weight-bold">
-                            ${auction.currentPrice} đ
+                            <fmt:formatNumber value="${auction.currentPrice}" pattern="#,##0"/> đ
                         </td>
                     </tr>
 
                     <tr>
                         <th>Bước giá</th>
-                        <td>${auction.minIncrement} đ</td>
+                        <td><fmt:formatNumber value="${auction.minIncrement}" pattern="#,##0"/> đ</td>
                     </tr>
 
                     <tr>
@@ -130,7 +131,7 @@
 
                         <p>
                             Giá thắng:
-                            <strong>${auction.currentPrice} đ</strong>
+                            <strong><fmt:formatNumber value="${auction.currentPrice}" pattern="#,##0"/> đ</strong>
                         </p>
 
                     </div>
@@ -161,6 +162,11 @@
                                    class="form-control"
                                    min="${auction.currentPrice + auction.minIncrement}"
                                    required>
+
+                            <small class="form-text text-muted">
+                                Giá tối thiểu:
+                                <fmt:formatNumber value="${auction.currentPrice + auction.minIncrement}" pattern="#,##0"/> đ
+                            </small>
 
                         </div>
 
@@ -214,7 +220,7 @@
                         </td>
 
                         <td class="text-danger">
-                                ${bid.bidPrice} đ
+                            <fmt:formatNumber value="${bid.bidPrice}" pattern="#,##0"/> đ
                         </td>
 
                         <td>
