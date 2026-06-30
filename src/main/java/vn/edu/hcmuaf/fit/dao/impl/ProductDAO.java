@@ -114,6 +114,57 @@ public class ProductDAO implements IProductDAO {
         }
         return null;
     }
+    @Override
+    public List<BookModel> find12BookAuthor(int idAuthor) {
+        List<BookModel> listBook = new ArrayList<>();
+        Connection connection = JDBCConnector.getConnection();
+        String sql = new String("SELECT b.id_book, b.name, a.name, b.price - b.price * b.discount_price AS giagiam \n" +
+                ", b.price, b.discount_price*100 AS giam, IF(v_rate.`start` is null, 0, v_rate.`start`) AS `start`\n" +
+                ", IF(v_comment.sl_comment is null, 0, v_comment.sl_comment) AS sl_comment,b.id_pc,b.id_p\n" +
+                "FROM book b LEFT JOIN author a ON b.id_author = a.id_author\n" +
+                "LEFT JOIN v_rate ON b.id_book = v_rate.id_book \n" +
+                "LEFT JOIN v_comment ON b.id_book = v_comment.id_book " +
+                "WHERE b.id_author = ?");
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        if(connection != null) {
+            try {
+                statement = connection.prepareStatement(sql.toString());
+                statement.setInt(1, idAuthor);
+                resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    BookModel bookModel = new BookModel();
+                    bookModel.setIdBook(resultSet.getInt(1));
+                    bookModel.setName(resultSet.getString(2));
+                    bookModel.setNameAuthor(resultSet.getString(3));
+                    bookModel.setPriceDiscount(resultSet.getDouble(4));
+                    bookModel.setPrice(resultSet.getDouble(5));
+                    bookModel.setDiscount(resultSet.getInt(6));
+                    bookModel.setQuantityStart(resultSet.getInt(7));
+                    bookModel.setQuantityComment(resultSet.getInt(8));
+                    bookModel.setIdCP(resultSet.getString(9));
+                    bookModel.setIdP(resultSet.getString(10));
+                    String image = findImageById(resultSet.getInt(1));
+                    bookModel.setImage(image);
+                    listBook.add(bookModel);
+                }
+
+                return listBook;
+            } catch (SQLException e) {
+                return null;
+            } finally {
+                try {
+                    if(connection != null) connection.close();
+                    if(statement != null) statement.close();
+                    if(resultSet != null) resultSet.close();
+                } catch (SQLException e) {
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
     public String findImageById(int id) {
         List<String> images = new ArrayList<>();
         Connection connection = JDBCConnector.getConnection();
