@@ -1,12 +1,7 @@
 package vn.edu.hcmuaf.fit.controller.admin.managementAuction;
 
-import vn.edu.hcmuaf.fit.dao.impl.AuctionDAO;
-import vn.edu.hcmuaf.fit.dao.impl.BookManagementDAO;
-import vn.edu.hcmuaf.fit.model.BookManagementModel;
 import vn.edu.hcmuaf.fit.services.IAuctionService;
 import vn.edu.hcmuaf.fit.services.IBookManagementService;
-import vn.edu.hcmuaf.fit.services.impl.AuctionService;
-import vn.edu.hcmuaf.fit.services.impl.BookManagementService;
 import vn.edu.hcmuaf.fit.utils.MessageParameterUntil;
 
 import javax.inject.Inject;
@@ -58,7 +53,7 @@ public class AdminAuctionCreateController extends HttpServlet {
 
         try {
             // Lấy dữ liệu từ form
-            int    bookId       = Integer.parseInt(request.getParameter("bookId"));
+            int bookId = Integer.parseInt(request.getParameter("bookId"));
             double startPrice   = Double.parseDouble(request.getParameter("startPrice"));
             double minIncrement = Double.parseDouble(request.getParameter("minIncrement"));
             String startTimeStr = request.getParameter("startTime");  // "yyyy-MM-ddTHH:mm"

@@ -230,7 +230,7 @@ public class AuctionDAO implements IAuctionDAO {
         String sql =
                 "SELECT id " +
                         "FROM auction " +
-                        "WHERE status='OPEN' " +
+                        "WHERE status='ACTIVE' " +
                         "AND end_time<=NOW()";
 
         try(
@@ -337,7 +337,7 @@ public class AuctionDAO implements IAuctionDAO {
                         "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
                         "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
                         "       c.email AS winner_email, " +
-                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "       (SELECT COUNT(*) FROM auction_bid ab WHERE ab.auction_id = a.id) AS total_bids " +
                         "FROM auction a " +
                         "JOIN book b ON a.book_id = b.id_book " +
                         "LEFT JOIN customer c ON a.winner_id = c.id_user " +
@@ -369,7 +369,7 @@ public class AuctionDAO implements IAuctionDAO {
                         "       (SELECT img.image FROM image_book img WHERE img.id_book = a.book_id LIMIT 1) AS book_image, " +
                         "       CONCAT(c.first_name,' ',c.last_name) AS winner_name, " +
                         "       c.email AS winner_email, " +
-                        "       (SELECT COUNT(*) FROM auction_bids ab WHERE ab.auction_id = a.id) AS total_bids " +
+                        "       (SELECT COUNT(*) FROM auction_bid ab WHERE ab.auction_id = a.id) AS total_bids " +
                         "FROM auction a " +
                         "JOIN book b ON a.book_id = b.id_book " +
                         "LEFT JOIN customer c ON a.winner_id = c.id_user " +
@@ -498,7 +498,7 @@ public class AuctionDAO implements IAuctionDAO {
     public boolean finalizeAuction(int auctionId) {
         // Bước 1: Tìm người bid cao nhất
         String sqlFindWinner =
-                "SELECT user_id, bid_price FROM auction_bids " +
+                "SELECT user_id, bid_price FROM auction_bid " +
                         "WHERE auction_id = ? " +
                         "ORDER BY bid_price DESC " +
                         "LIMIT 1";
