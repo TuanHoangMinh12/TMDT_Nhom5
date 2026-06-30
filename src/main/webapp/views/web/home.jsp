@@ -153,9 +153,9 @@
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookPayTop.nameAuthor}</small>
                                         <p class="card-text">
                                         <div class="container_price">
-                                            <p class="card-text_price">${bookPayTop.price}đ</p>
+                                            <p class="card-text_price">${bookPayTop.priceDiscount}đ</p>
                                             <c:if test="${bookPayTop.discount != 0}">
-                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookPayTop.priceDiscount}đ
+                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookPayTop.price}đ
                                                 </p>
                                             </c:if>
 
@@ -256,9 +256,9 @@
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookNew.nameAuthor}</small>
                                         <p class="card-text">
                                         <div class="container_price">
-                                            <p class="card-text_price">${bookNew.price}đ</p>
+                                            <p class="card-text_price">${bookNew.priceDiscount}đ</p>
                                             <c:if test="${bookNew.discount != 0}">
-                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookNew.priceDiscount}đ
+                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookNew.price}đ
                                                 </p>
                                             </c:if>
                                         </div>
@@ -358,9 +358,9 @@
                                         <small class="tacgia text-muted" style="font-weight: bold">${bookSap.nameAuthor}</small>
                                         <p class="card-text">
                                         <div class="container_price">
-                                            <p class="card-text_price">${bookSap.price}đ</p>
+                                            <p class="card-text_price">${bookSap.priceDiscount}đ</p>
                                             <c:if test="${bookSap.discount != 0}">
-                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookSap.priceDiscount}đ
+                                                <p style="text-decoration: line-through;" class="card-text_price--sale">${bookSap.price}đ
                                                 </p>
                                             </c:if>
                                         </div>

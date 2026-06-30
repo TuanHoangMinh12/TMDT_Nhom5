@@ -63,7 +63,10 @@ public class AuctionAddCartController extends HttpServlet {
         product.setPrice(auction.getCurrentPrice());
         product.setPriceDiscount(auction.getCurrentPrice());
 
-        cart.addProduct(product, 1);
+        product.setAuctionBook(true);
+        if (!cart.getMap().containsKey(product.getIdBook())) {
+            cart.addProduct(product, 1);
+        }
 
         request.getSession().setAttribute(cartKey,cart);
 

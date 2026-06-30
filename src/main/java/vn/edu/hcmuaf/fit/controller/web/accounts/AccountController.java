@@ -44,7 +44,12 @@ public class AccountController extends HttpServlet {
                     request.setAttribute("listBillCancelByIdOrder", listDonHang(cus,-1));
 
                     request.getRequestDispatcher("/views/web/reviewOrders.jsp").forward(request, response);
-                }
+                } else if (action.equalsIgnoreCase("myAuction")) {
+
+                response.sendRedirect(request.getContextPath() + "/my-auction");
+                return;
+
+            }
             } else {
                 request.setAttribute("cus", cus);
                 request.getRequestDispatcher("/views/web/account.jsp").forward(request, response);

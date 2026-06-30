@@ -92,7 +92,83 @@ public class AuctionNotificationDAO implements IAuctionNotificationDAO {
         }
         return list;
     }
+    @Override
+    public List<AuctionNotificationModel> getLatestNotifications(int userId, int limit) {
 
+        List<AuctionNotificationModel> list = new ArrayList<>();
+
+        String sql =
+                "SELECT * FROM auction_notification " +
+                        "WHERE user_id=? " +
+                        "ORDER BY created_at DESC " +
+                        "LIMIT ?";
+
+        try (
+                Connection con = JDBCConnector.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, userId);
+            ps.setInt(2, limit);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                AuctionNotificationModel n = new AuctionNotificationModel();
+
+                n.setId(rs.getInt("id"));
+                n.setUserId(rs.getInt("user_id"));
+                n.setAuctionId(rs.getInt("auction_id"));
+                n.setTitle(rs.getString("title"));
+                n.setContent(rs.getString("content"));
+                n.setIsRead(rs.getInt("is_read"));
+                n.setCreatedAt(rs.getTimestamp("created_at"));
+
+                list.add(n);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    @Override
+    public AuctionNotificationModel findById(int id) {
+
+        String sql = "SELECT * FROM auction_notification WHERE id=?";
+
+        try (
+                Connection con = JDBCConnector.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+
+                AuctionNotificationModel n = new AuctionNotificationModel();
+
+                n.setId(rs.getInt("id"));
+                n.setUserId(rs.getInt("user_id"));
+                n.setAuctionId(rs.getInt("auction_id"));
+                n.setTitle(rs.getString("title"));
+                n.setContent(rs.getString("content"));
+                n.setIsRead(rs.getInt("is_read"));
+                n.setCreatedAt(rs.getTimestamp("created_at"));
+
+                return n;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     /**
      * Đánh dấu đã đọc một thông báo.
      */

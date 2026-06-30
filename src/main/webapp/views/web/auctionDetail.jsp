@@ -99,7 +99,7 @@
                 </div>
             </c:if>
 
-            <c:if test="${auction.status=='OPEN'}">
+            <c:if test="${auction.status=='ACTIVE'}">
 
                 <form action="${pageContext.request.contextPath}/auction-bid"
                       method="post">

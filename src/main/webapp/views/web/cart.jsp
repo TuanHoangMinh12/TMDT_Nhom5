@@ -97,15 +97,46 @@
               </div>
             </td>
             <td>
-              <div class="d-flex quantity">
-                <div class="input-group-prepend minus">
-                  <span class="input-group-text btn-spin btn-dec btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">-</span>
-                </div>
-                <input type="text" value="${item.value.quantity}" style="width: 60px; background-color: #FFFFFF; border: 1px solid #cacaca" class="soluongsp text-center input-quantity" />
-                <div class="input-group-append plus">
-                  <span class="input-group-text btn-spin btn-inc btn-number" style="cursor: pointer; background-color: #FFFFFF; border: 1px solid #cacaca">+</span>
-                </div>
-              </div>
+
+              <c:choose>
+
+                <c:when test="${item.value.product.auctionBook}">
+
+                  <div class="text-center">
+            <span class="badge badge-warning p-2">
+                Số lượng: 1
+            </span>
+                  </div>
+
+                </c:when>
+
+                <c:otherwise>
+
+                  <div class="d-flex quantity">
+                    <div class="input-group-prepend minus">
+                <span class="input-group-text btn-spin btn-dec btn-number"
+                      style="cursor:pointer;background:#FFFFFF;border:1px solid #cacaca">
+                    -
+                </span>
+                    </div>
+
+                    <input type="text"
+                           value="${item.value.quantity}"
+                           style="width:60px;background:#FFFFFF;border:1px solid #cacaca"
+                           class="soluongsp text-center input-quantity"/>
+
+                    <div class="input-group-append plus">
+                <span class="input-group-text btn-spin btn-inc btn-number"
+                      style="cursor:pointer;background:#FFFFFF;border:1px solid #cacaca">
+                    +
+                </span>
+                    </div>
+                  </div>
+
+                </c:otherwise>
+
+              </c:choose>
+
             </td>
             <td><span class="col-sum_price"><fmt:formatNumber value="${item.value.product.priceDiscount * item.value.quantity}" pattern="#,##0"/>đ</span></td>
             <td class="action text-center" data-title="Remove">

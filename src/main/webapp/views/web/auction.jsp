@@ -10,6 +10,12 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Header.css'/>">
+
+    <link rel="stylesheet"
+          href="<c:url value='/templates/styles/Footer.css'/>">
+
     <style>
         body{
             background:#f5f5f5;
@@ -25,11 +31,9 @@
         }
     </style>
 </head>
-
 <body>
-
-<div class="container mt-5">
-
+<%@include file="/common/web/header.jsp"%>
+<div class="container" style="padding-top:120px;">
     <h2 class="text-center mb-4">
         DANH SÁCH ĐẤU GIÁ
     </h2>
@@ -86,7 +90,12 @@
     </c:if>
 
 </div>
+<%@include file="/common/web/footer.jsp"%>
+<script src="${pageContext.request.contextPath}/templates/scripts/header.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 

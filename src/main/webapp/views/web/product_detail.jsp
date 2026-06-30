@@ -121,9 +121,9 @@
         </div>
         <hr>
         <div class="product-content-right-product-price">
-          <div class="giabia">Giá:<span class="giacu ml-2">${bookModel.priceDiscount} ₫</span></div>
-          <div class="giaban">Giá bán tại Doraemon: <span class="giamoi font-weight-bold">${bookModel.price} đ</span></div>
-          <div class="tietkiem">Tiết kiệm: <b>20.000 ₫</b></div>
+          <div class="giabia">Giá:<span class="giacu ml-2">${bookModel.price} ₫</span></div>
+          <div class="giaban">Giá bán tại Doraemon: <span class="giamoi font-weight-bold">${bookModel.priceDiscount} đ</span></div>
+          <div class="tietkiem">Tiết kiệm: <b>${bookModel.price - bookModel.priceDiscount} ₫</b></div>
           <c:if test="${quantityRemain != 0}">
             <div class="tietkiem">Số lượng còn lại: <b>${quantityRemain}</b></div>
           </c:if>
