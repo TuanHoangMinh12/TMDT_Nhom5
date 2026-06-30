@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +94,9 @@
                         </tr>
                         <tr>
                             <td>Tổng giá trị:</td>
-                            <td>${orderReviewDetail.totolPrice} VNĐ</td>
+                            <td>
+                                <fmt:formatNumber value="${orderReviewDetail.totolPrice}" pattern="#,##0"/>VNĐ
+                            </td>
                         </tr>
                         <tr>
                             <td>Tình trạng:</td>

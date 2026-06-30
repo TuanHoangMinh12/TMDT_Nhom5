@@ -17,7 +17,7 @@ public class ManagementSaleController extends HttpServlet {
         request.setAttribute("title", "Danh Sách Khuyến Mãi");
         request.setAttribute("listVoucher", voucherDAO.findAllVoucher());
         System.out.println(voucherDAO.findAllVoucher());
-        request.getRequestDispatcher("views/admin/management-sales.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyKhuyenMai/management-sales.jsp").forward(request, response);
     }
 
     @Override

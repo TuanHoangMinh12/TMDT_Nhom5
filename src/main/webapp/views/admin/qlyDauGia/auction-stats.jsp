@@ -32,7 +32,7 @@
     <!-- ===== 4 Ô TỔNG QUAN ===== -->
     <div class="row">
         <div class="col-md-3">
-            <div class="widget-small success coloured-icon">
+            <div class="widget-small primary coloured-icon">
                 <i class="icon bx bx-money fa-3x"></i>
                 <div class="info">
                     <h4>Tổng doanh thu đấu giá</h4>

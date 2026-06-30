@@ -28,7 +28,7 @@ public class FindOrderDetailController extends HttpServlet {
             List<BillDetail> list = new ArrayList<>();
             list.add(iBillDetailsService.findByID(idInt));
             request.setAttribute("listItem", list);
-            request.getRequestDispatcher("/views/admin/management_order_details.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/qlyDonHang/management_order_details.jsp").forward(request, response);
         }
     }
 

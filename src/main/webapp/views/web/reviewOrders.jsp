@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ndl22
@@ -16,10 +15,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"/>
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/AccountPage.css'/> " />
-  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />
-
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Header.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/AccountPage.css'/> " />--%>
+<%--  <link rel="stylesheet" href="<c:url value='/templates/styles/Footer.css'/> " />--%>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Header.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/AccountPage.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/templates/styles/Footer.css" />
   <style>
     .tab {
       overflow-y: hidden;
@@ -118,9 +119,10 @@
 <%--              <button class="tablinks" onclick="openCity(event, 'ChoXacNhan')">Chờ xác nhận</button>--%>
               <button class="tablinks" onclick="openCity(event, 'ChoLayHang')">Chờ lấy hàng</button>
               <button class="tablinks" onclick="openCity(event, 'DangGiao')">Đang giao</button>
-              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
               <button class="tablinks" onclick="openCity(event, 'DonHangDaMua')">Đơn hàng đã mua</button>
               <button class="tablinks" onclick="openCity(event, 'DonDaHuy')">Đơn đã hủy</button>
+              <button class="tablinks" onclick="openCity(event, 'DanhGia')">Đánh giá</button>
+
             </div>
 
             <c:if test="${not empty message}">

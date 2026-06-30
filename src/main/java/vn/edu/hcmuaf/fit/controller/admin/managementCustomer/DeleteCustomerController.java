@@ -19,17 +19,21 @@ public class DeleteCustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             int idUser = Integer.parseInt(request.getParameter("idUser"));
-
-            int result = iCustomerService.deleteUser(idUser); // Gọi hàm xóa bạn vừa tạo
+            int result = iCustomerService.deleteUser(idUser);
 
             if (result > 0) {
-                response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=Đã xóa khách hàng thành công!&alert=success");
+                request.getSession().setAttribute("message", "Đã xóa khách hàng thành công!");
+                request.getSession().setAttribute("alert", "success");
             } else {
-                response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=Lỗi: Không xóa được khách hàng!&alert=danger");
+                request.getSession().setAttribute("message", "Lỗi: Không xóa được khách hàng!");
+                request.getSession().setAttribute("alert", "danger");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/admin-table-customer?message=Lỗi hệ thống!&alert=danger");
+            request.getSession().setAttribute("message", "Lỗi hệ thống!");
+            request.getSession().setAttribute("alert", "danger");
         }
+        // Luôn redirect về trang danh sách
+        response.sendRedirect(request.getContextPath() + "/admin-table-customer");
     }
 }

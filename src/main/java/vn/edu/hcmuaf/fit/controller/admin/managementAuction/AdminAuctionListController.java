@@ -51,15 +51,20 @@ public class AdminAuctionListController extends HttpServlet {
         request.setAttribute("countPaid",     counts[3]);
 
         // Nhận message từ redirect (thêm/sửa/xóa thành công)
-        String message = request.getParameter("message");
-        String alert   = request.getParameter("alert");
-        if (message != null && alert != null) {
+
+        String message = (String) request.getSession().getAttribute("message");
+        String alert = (String) request.getSession().getAttribute("alert");
+
+        if (message != null) {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
+
+            // Xóa session sau khi đã lấy ra để thông báo không bị hiện lại khi F5
+            request.getSession().removeAttribute("message");
+            request.getSession().removeAttribute("alert");
         }
 
-        request.getRequestDispatcher("views/admin/auction-list.jsp")
-               .forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDauGia/auction-list.jsp").forward(request, response);
     }
 
     @Override

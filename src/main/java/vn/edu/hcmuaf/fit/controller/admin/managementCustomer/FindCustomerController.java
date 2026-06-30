@@ -25,7 +25,7 @@ public class FindCustomerController extends HttpServlet {
             List<CustomerModel> list = new ArrayList<>();
             list.add(iCustomerService.findById(Integer.parseInt(idUser)));
             request.setAttribute("customerUpdate", list);
-            request.getRequestDispatcher("/views/admin/table-data-customer-update.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/admin/qlyKhachHang/table-data-customer-update.jsp").forward(request, response);
         }
     }
 

@@ -23,7 +23,7 @@ public class ManagementContactFindController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
             String id = request.getParameter("id");
             request.setAttribute("contact", new ContactDao().getContactById(Integer.parseInt(id)));
-            request.getRequestDispatcher("views/admin/form-feedBack-contact.jsp").forward(request, response);
+            request.getRequestDispatcher("views/admin/qlyContact/form-feedBack-contact.jsp").forward(request, response);
     }
 
     @Override

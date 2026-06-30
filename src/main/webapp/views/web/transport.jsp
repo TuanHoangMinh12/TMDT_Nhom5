@@ -39,8 +39,8 @@
     <div class="container">
         <nav id="breadcrumbbar">
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a class="chang_font" href="home.html">Trang chủ</a></li>
-                <li class="breadcrumb-item active"><a href="vanhocnuocngoai.html">Phương thức vận chuyển</a></li>
+                <li class="breadcrumb-item"><a class="chang_font" href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
+                <li class="breadcrumb-item active"><a href="${pageContext.request.contextPath}/vanhocnuocngoai">Phương thức vận chuyển</a></li>
             </ul>
         </nav>
         <div class="wrapper">

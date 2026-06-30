@@ -19,7 +19,7 @@ public class TableCustomerController extends HttpServlet {
         // title dung de active aside
         req.setAttribute("title", "Danh Sách Khách Hàng");
         req.setAttribute("listCustomer", iCustomerService.findAllCustomer());
-        req.getRequestDispatcher("views/admin/table-data-customer.jsp").forward(req, resp);
+        req.getRequestDispatcher("views/admin/qLyKhachHang/table-data-customer.jsp").forward(req, resp);
     }
 
     @Override
