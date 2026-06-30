@@ -28,7 +28,7 @@ public class UpdateCustomerController extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("alert", alert);
         }
-        request.getRequestDispatcher("views/admin/table-data-customer.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyKhachHang/table-data-customer.jsp").forward(request, response);
     }
 
     @Override

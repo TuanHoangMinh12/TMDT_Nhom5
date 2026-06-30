@@ -13,7 +13,7 @@ public class TableOrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // title dung de active aside
         request.setAttribute("title", "Danh Sách Đơn Hàng");
-        request.getRequestDispatcher("views/admin/qLyDonHang/table-data-order.jsp").forward(request, response);
+        request.getRequestDispatcher("views/admin/qlyDonHang/table-data-order.jsp").forward(request, response);
 
     }
 
