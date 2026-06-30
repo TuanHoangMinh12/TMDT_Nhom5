@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Servlet xử lý trang CHI TIẾT phiên đấu giá.
  * GET  ?id=X          -> Hiển thị chi tiết + lịch sử bid của phiên
@@ -62,6 +63,18 @@ public class AdminAuctionDetailController extends HttpServlet {
         // Lấy danh sách lịch sử bid của phiên này
         List<AuctionBidModel> bidHistory = auctionService.getBidsByAuctionId(auctionId);
 
+        // Đếm số lần bid của từng user trong phiên này -> phát hiện spam
+        Map<Integer, Integer> bidCountMap = new HashMap<>();
+        for (AuctionBidModel bid : bidHistory) {
+            int uid = bid.getUserId();
+            if (!bidCountMap.containsKey(uid)) {
+                bidCountMap.put(uid, auctionService.countBidByUserInAuction(uid, auctionId));
+            }
+        }
+
+        // Ngưỡng cảnh báo spam (có thể chỉnh tùy ý)
+        int spamThreshold = 5;
+
         // Nhận message từ redirect
         String message = request.getParameter("message");
         String alert   = request.getParameter("alert");
@@ -76,6 +89,8 @@ public class AdminAuctionDetailController extends HttpServlet {
         request.setAttribute("title","Quản Lý Đấu Giá");
         request.setAttribute("auction",    auction);
         request.setAttribute("bidHistory", bidHistory);
+        request.setAttribute("bidCountMap", bidCountMap);
+        request.setAttribute("spamThreshold", spamThreshold);
 
         request.getRequestDispatcher("views/admin/qlyDauGia/auction-detail.jsp")
                .forward(request, response);

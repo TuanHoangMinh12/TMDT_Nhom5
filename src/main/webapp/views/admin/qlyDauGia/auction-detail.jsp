@@ -191,7 +191,7 @@
                         <table class="table table-hover table-bordered table-sm" id="bidTable">
                             <thead class="thead-light">
                             <tr>
-                                <th>#</th>
+                                <th>STT</th>
                                 <th>Người đặt</th>
                                 <th>Email</th>
                                 <th>Số tiền bid</th>
@@ -207,14 +207,31 @@
                                 --%>
                                 <tr class="${loop.index == 0 && auction.status != 'WAITING' ? 'winner-row' : ''}">
                                     <td>${loop.count}</td>
+<%--                                    <td>--%>
+<%--                                        <c:if test="${loop.index == 0 && auction.status != 'WAITING'}">--%>
+<%--                                            <i class="fas fa-trophy text-warning"></i>--%>
+<%--                                        </c:if>--%>
+<%--                                        ${bid.userName}--%>
+<%--                                        <br>--%>
+<%--                                        <small class="text-muted">ID: ${bid.userId}</small>--%>
+<%--                                    </td>--%>
+
                                     <td>
                                         <c:if test="${loop.index == 0 && auction.status != 'WAITING'}">
                                             <i class="fas fa-trophy text-warning"></i>
                                         </c:if>
-                                        ${bid.userName}
+                                            ${bid.userName}
                                         <br>
                                         <small class="text-muted">ID: ${bid.userId}</small>
+                                            <%-- Cảnh báo spam nếu user bid quá nhiều lần trong phiên này --%>
+                                        <c:if test="${bidCountMap[bid.userId] >= spamThreshold}">
+                                            <br>
+                                            <span class="badge badge-danger" title="User này đã bid ${bidCountMap[bid.userId]} lần trong phiên này">
+                                                <i class="fas fa-exclamation-triangle"></i> Spam (${bidCountMap[bid.userId]} lần)
+                                            </span>
+                                        </c:if>
                                     </td>
+
                                     <td>${bid.userEmail}</td>
                                     <td>
                                         <b style="color:#e44;">

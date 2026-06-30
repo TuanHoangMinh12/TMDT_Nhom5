@@ -43,6 +43,8 @@ public interface IAuctionService {
     int[] countByStatus();
 
     List<AuctionBidModel> getBidsByAuctionId(int auctionId);
+    int countBidByUserInAuction(int userId, int auctionId);
+
 
     boolean finalizeAndNotify(int auctionId);
 }
